@@ -1,0 +1,51 @@
+# ===========================
+# Environment Variables
+# ===========================
+# NEVER commit real .env files. Only .env.example should be committed.
+.env
+.env.*
+!.env.example
+
+# ===========================
+# Dependencies
+# ===========================
+node_modules/
+
+# ===========================
+# Build Outputs
+# ===========================
+dist/
+dist-ssr/
+build/
+.output/
+.vinxi/
+.nitro/
+
+# ===========================
+# OS / Editor Junk
+# ===========================
+.DS_Store
+Thumbs.db
+*.log
+
+# ===========================
+# Framework / Tool Caches
+# ===========================
+.tanstack/
+.wrangler/
+__unconfig*
+
+# ===========================
+# Database (Prisma)
+# ===========================
+/server/generated/prisma
+
+# ===========================
+# IDE settings
+# ===========================
+# Personal IDE files - exclude these
+.vscode/*.log
+.vscode/launch.json
+.idea/
+# Note: .vscode/settings.json and .vscode/extensions.json ARE committed
+# so all team members get the same editor setup automatically.

@@ -1,0 +1,175 @@
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
+import { Loader2, Mail, Lock, ArrowRight, AlertCircleIcon } from 'lucide-react'
+import { toast } from 'sonner'
+import { loginSchema } from '../auth.schema'
+import type { TLogin } from '../auth.schema'
+import { authService } from '../auth.service'
+import { useAuthStore } from '../../../shared/stores/auth.store'
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '#/shared/components/ui/alert'
+
+export default function LoginForm() {
+  const navigate = useNavigate()
+  const setAuth = useAuthStore((state) => state.setAuth)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TLogin>({
+    resolver: zodResolver(loginSchema),
+  })
+
+  const mutation = useMutation({
+    mutationFn: (data: TLogin) => authService.login(data),
+    onSuccess: async (response) => {
+      // 1. Set basic auth data
+      setAuth(response.data.user, response.data.accessToken)
+
+      // 2. Fetch full profile via /me
+      await useAuthStore.getState().getMe()
+
+      toast.success(
+        `Welcome back, ${useAuthStore.getState().user?.firstName || 'User'}!`,
+        {
+          description: 'Successfully logged in. Redirecting to dashboard...',
+        },
+      )
+
+      setTimeout(() => {
+        navigate({ to: '/dashboard' })
+      }, 1000)
+    },
+    onError: (error: any) => {
+      console.error('Login error full:', error)
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        'Login failed. Please check your credentials.'
+      toast.error(message)
+    },
+  })
+
+  const onSubmit = (data: TLogin) => {
+    mutation.mutate(data)
+  }
+
+  return (
+    <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="text-center space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
+          Welcome Back
+        </h1>
+        <p className="text-muted-foreground">
+          Enter your credentials to access your account
+        </p>
+      </div>
+
+      {mutation.isError && (
+        <Alert variant="destructive">
+          <AlertCircleIcon className="h-4 w-4" />
+          <AlertTitle>Failed to login</AlertTitle>
+          <AlertDescription>
+            {(mutation.error as any)?.response?.data?.message ||
+              'Invalid credentials'}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Error Alert */}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <input
+                {...register('email')}
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+              />
+            </div>
+            {errors.email && (
+              <p className="text-xs font-medium text-destructive animate-in fade-in zoom-in-95">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="password"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Password
+              </label>
+              <a
+                href="#"
+                className="text-xs text-indigo-500 hover:text-indigo-600 transition-colors"
+              >
+                Forgot password?
+              </a>
+            </div>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <input
+                {...register('password')}
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+              />
+            </div>
+            {errors.password && (
+              <p className="text-xs font-medium text-destructive animate-in fade-in zoom-in-95">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <button
+          disabled={mutation.isPending}
+          type="submit"
+          className="relative w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:opacity-70"
+        >
+          {mutation.isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <>
+              Sign In
+              <ArrowRight className="h-4 w-4" />
+            </>
+          )}
+        </button>
+      </form>
+
+      <div className="text-center">
+        <p className="text-sm text-muted-foreground">
+          Don&apos;t have an account?{' '}
+          <button
+            onClick={() => navigate({ to: '/register' })}
+            className="font-medium text-indigo-500 hover:text-indigo-600 transition-colors"
+          >
+            Create an account
+          </button>
+        </p>
+      </div>
+    </div>
+  )
+}

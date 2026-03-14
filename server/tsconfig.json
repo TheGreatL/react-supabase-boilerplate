@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler", // This is the magic line for clean imports
+    "allowImportingTsExtensions": false,
+    "moduleDetection": "force",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "outDir": "./dist",
+    "rootDir": "./"
+  },
+  "include": ["src/**/*", "prisma.config.ts", "prisma/**/*"],
+  "exclude": ["node_modules", "dist", "generated"]
+}

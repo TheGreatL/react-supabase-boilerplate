@@ -1,0 +1,35 @@
+{
+  "recommendations": [
+    // ─── Formatting & Linting ──────────────────
+    // Prettier — auto-formats code on save
+    "esbenp.prettier-vscode",
+    // ESLint — highlights and auto-fixes lint errors
+    "dbaeumer.vscode-eslint",
+
+    // ─── TypeScript ────────────────────────────
+    // Better TypeScript error display
+    "yoavbls.pretty-ts-errors",
+
+    // ─── Tailwind CSS ──────────────────────────
+    // Autocomplete for Tailwind class names
+    "bradlc.vscode-tailwindcss",
+
+    // ─── Prisma ────────────────────────────────
+    // Syntax highlighting and formatting for .prisma files
+    "Prisma.prisma",
+
+    // ─── Git ───────────────────────────────────
+    // Visualizes git blame, history, and file changes
+    "eamodio.gitlens",
+
+    // ─── DX Utilities ──────────────────────────
+    // EditorConfig support (reads .editorconfig file)
+    "EditorConfig.EditorConfig",
+    // Spell checker for code and comments
+    "streetsidesoftware.code-spell-checker",
+    // REST API testing inside VS Code
+    "humao.rest-client",
+    // Docker container management
+    "ms-azuretools.vscode-docker"
+  ]
+}

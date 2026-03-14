@@ -1,0 +1,37 @@
+{
+  // ─── Formatting ───────────────────────────────────────────────
+  // Use Prettier as the default formatter for all files
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Automatically format the file every time you save
+  "editor.formatOnSave": true,
+  // Run ESLint auto-fix on save as well
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // ─── File Settings ────────────────────────────────────────────
+  // 2 spaces for indentation (matches .prettierrc and .editorconfig)
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  // Trim trailing whitespace on save
+  "files.trimTrailingWhitespace": true,
+  // Always add a newline at the end of a file
+  "files.insertFinalNewline": true,
+
+  // ─── Language-specific overrides ──────────────────────────────
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // ─── Spell Checker ────────────────────────────────────────────
+  "cSpell.words": ["oklch", "rgba", "Roboto"]
+}

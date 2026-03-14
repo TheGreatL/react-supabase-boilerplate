@@ -1,0 +1,48 @@
+{
+  "name": "capstone-ni-jayjay-quiton",
+  "version": "1.0.0",
+  "description": "Project for Capstone of Jay Jay Quiton",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run docker:dev",
+    "docker:up": "docker-compose up -d --build",
+    "docker:dev": "docker-compose up --build",
+    "docker:start": "docker-compose up",
+    "docker:stop": "docker-compose stop",
+    "docker:logs": "docker-compose logs -f",
+    "docker:restart": "docker-compose restart",
+    "docker:down": "docker-compose down",
+    "docker:migrate": "docker exec -it capstone_api npm run db:migrate",
+    "docker:studio": "docker exec -it capstone_api npm run db:studio",
+    "docker:seed": "docker exec -it capstone_api npm run db:seed",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheGreatL/Capstone-Ni-JayJay-Quiton.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TheGreatL/Capstone-Ni-JayJay-Quiton/issues"
+  },
+  "homepage": "https://github.com/TheGreatL/Capstone-Ni-JayJay-Quiton#readme",
+  "dependencies": {
+    "express-rate-limit": "^8.3.1"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.4"
+  },
+  "lint-staged": {
+    "client/src/**/*.{ts,tsx}": [
+      "npx --prefix client prettier --write",
+      "npx --prefix client eslint --fix"
+    ],
+    "server/src/**/*.ts": [
+      "npx --prefix server eslint --fix"
+    ]
+  }
+}
