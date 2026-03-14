@@ -1,6 +1,6 @@
 # Capstone Project
 
-> A full-stack web application built for JayJay Quiton's Capstone.
+> A full-stack web application 
 
 ---
 
