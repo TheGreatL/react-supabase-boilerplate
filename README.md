@@ -67,8 +67,21 @@ This starts everything: the database, the server, and the frontend — all at on
 **View & manage your data** via pgAdmin at `http://localhost:5050`.
 
 Login with:
-- **Email**: the value of `PGADMIN_EMAIL` in your `.env`
-- **Password**: the value of `PGADMIN_PASSWORD` in your `.env`
+**Email**: the value of `PGADMIN_EMAIL` in your `.env` (default: `admin@admin.com`)
+**Password**: the value of `PGADMIN_PASSWORD` in your `.env` (default: `admin123`)
+
+### 🔌 How to Connect to the Database
+Once logged into pgAdmin, follow these steps to see your data:
+
+1.  **Right-click** on `Servers` > `Register` > `Server...`
+2.  **General Tab**: Name it something like `Capstone DB`
+3.  **Connection Tab**:
+    - **Host name/address**: `db` (⚠️ Important: Use the service name, not `localhost` or `postgres`)
+    - **Port**: `5432` (⚠️ Important: Use the internal Docker port)
+    - **Maintenance database**: `capstone_db` (or check your `.env`)
+    - **Username**: `postgres`
+    - **Password**: `postgres123` (or check your `.env`)
+4.  **Click Save**.
 
 **Seed your database** (add default test data):
 ```bash
