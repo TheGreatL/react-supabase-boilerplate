@@ -165,30 +165,61 @@ After cloning the repo, make sure you do these things:
 
 ## 👥 Working as a Team
 
-This project is set up for collaborative development. Here's what keeps everyone's code consistent.
+This project follows the **Gold Standard** for collaborative development to ensure a clean, readable, and trackable history.
 
-### 🌳 Git Branching Strategy
+### 📂 Primary Branches
 
-| Branch | Purpose |
-|---|---|
-| `main` | Production-ready code only — **never commit directly here** |
-| `test` | Integration branch — merge your feature here first |
-| `feat/your-feature-name` | Your individual feature work |
-| `fix/bug-description` | Bug fix branches |
-
-**Workflow:**
-```
-1. Pull latest test      →  git checkout test && git pull
-2. Create your branch  →  git checkout -b feat/my-feature
-3. Make your changes   →  (write code, commit often)
-4. Push your branch    →  git push origin feat/my-feature
-5. Open a Pull Request →  feat/my-feature → test
-```
-> **Rule:** Never push directly to `main` or `test`. Always go through a Pull Request.
+| Branch | Purpose | Description |
+|---|---|---|
+| `main` | **Production** | Highly stable code. Only merged from `test` after thorough verification. |
+| `test` | **Development / Testing** | Integration branch where features are combined and tested before production. |
 
 ---
 
-### 🎨 Automatic Code Formatting
+### 🌳 Branch Naming Strategy
+
+Always create a new branch for your work. Use the following prefix pattern: `type/description-slug`
+
+| Prefix | Use Case | Example |
+|---|---|---|
+| `feat/` | A new feature | `feat/google-login` |
+| `fix/` | A bug fix | `fix/header-overflow` |
+| `refactor/` | Code change that neither fixes a bug nor adds a feature | `refactor/auth-logic` |
+| `docs/` | Documentation only changes | `docs/update-readme` |
+| `style/` | Formatting, missing semi-colons, etc; no code change | `style/fix-indentation` |
+| `perf/` | A code change that improves performance | `perf/speed-up-queries` |
+| `test/` | Adding missing tests or correcting existing tests | `test/auth-service` |
+| `chore/` | Updating build tasks, package manager configs, etc | `chore/update-deps` |
+
+**Workflow:**
+1. **Pull latest test** → `git checkout test && git pull`
+2. **Create branch** → `git checkout -b feat/my-new-feature`
+3. **Work & Commit** → (See Commit Convention below)
+4. **Push & PR** → `git push origin feat/my-new-feature` then open a PR into `test`.
+
+---
+
+### 💬 Commit Message Convention
+
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. This allows for automated changelogs and easier history browsing.
+
+**Pattern:** `type(scope): description`
+
+- **Type**: Must be one of the prefixes from the table above (feat, fix, etc.).
+- **Scope**: (Optional) The module or feature being changed (e.g., auth, ui, db).
+- **Description**: A brief, imperative-style summary (e.g., "add validation", "fix crash").
+
+**Examples:**
+- `feat(api): add logout endpoint`
+- `fix(client): resolve button double-click issue`
+- `docs: fix typo in setup instructions`
+- `chore!: upgrade node version` (The `!` indicates a breaking change)
+
+---
+
+### 🎨 Automatic Code Quality
+
+This project enforces consistency on **3 levels**:
 
 This project enforces consistent formatting on **3 levels** so no one has to think about it:
 
