@@ -39,3 +39,15 @@ To ensure consistency and type safety throughout the project:
 2. **Strict Typing**: Avoid using the `any` type at all costs. Use descriptive interfaces or `unknown` with type
    guards/assertions if the shape is truly dynamic.
 3. **File Naming**: Follow the `lowercase-with-hyphens.purpose.extension` format.
+
+---
+
+## 🎖️ Gold Standard Principles
+
+### 1. Single Source of Truth (Repository Pattern)
+Services MUST NOT interact with `prisma` directly. All data access must go through **Repositories**. This ensures a single source of truth for queries and makes it easier to change the data source (e.g., from Prisma to another ORM) without affecting business logic.
+
+### 2. Mandatory Pagination
+All listing/collection endpoints (`getAll`) MUST return a paginated response using the `ApiResponse.paginated` utility. This ensures the API is scalable and prevents performance issues as the data grows.
+- Default: `page=1`, `limit=10`
+- Response includes `meta` with `total`, `totalPages`, `hasNextPage`, and `hasPrevPage`.

@@ -6,9 +6,7 @@ import {Prisma} from '@prisma/client';
  * makes them reusable across features (e.g., when a Post repository needs a User with Profile).
  */
 
-export type TUserWithProfile = Prisma.UserGetPayload<{
-  include: {profile: true};
-}>;
+// TUserWithProfile is removed as Profile model is not yet implemented
 
 // You can also define custom selects here
 export const UserBasicSelect = {

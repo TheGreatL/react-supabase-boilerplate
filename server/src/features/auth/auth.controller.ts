@@ -1,9 +1,10 @@
 import {Request, Response} from 'express';
+import httpStatus from 'http-status';
 import {asyncHandler} from '../../shared/utils/async-handler';
 import {ApiResponse} from '../../shared/utils/api-response';
 import {AuthService} from './auth.service';
 import {TAuthRequest, TLogin} from './auth.schema';
-import {TAuthenticatedRequest} from '../../shared/middleware/auth.middleware';
+import {TAuthenticatedRequest} from '../../shared/types/auth.types';
 
 const authService = new AuthService();
 
@@ -32,14 +33,14 @@ export default class AuthController {
 
     AuthController.setRefreshTokenCookie(res, refreshToken);
 
-    return ApiResponse.success(res, {accessToken}, 'Registration successful', 201);
+    return ApiResponse.success(res, {accessToken}, 'Registration successful', httpStatus.CREATED);
   });
 
   static refresh = asyncHandler(async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-      return ApiResponse.error(res, 'Refresh token required', 401);
+      return ApiResponse.error(res, 'Refresh token required', httpStatus.UNAUTHORIZED);
     }
 
     const accessToken = await authService.refreshToken(refreshToken);

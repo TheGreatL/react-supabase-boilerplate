@@ -6,6 +6,5 @@ const route = Router();
 
 route.get('/', authMiddleware, UserController.getAllUsers);
 route.get('/:id', authMiddleware, UserController.getUserById);
-route.patch('/profile', authMiddleware, UserController.updateProfile);
 
 export default route;

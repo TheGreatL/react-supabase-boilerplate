@@ -1,10 +1,11 @@
 import {Request, Response, NextFunction} from 'express';
+import httpStatus from 'http-status';
 import {ApiResponse} from '../utils/api-response';
 import {logger} from '../lib/logger';
 import {HttpException} from '../exceptions/http-exception';
 
 export const errorMiddleware = (error: any, req: Request, res: Response, _next: NextFunction) => {
-  let statusCode = 500;
+  let statusCode = httpStatus.INTERNAL_SERVER_ERROR as number;
   let message = 'Internal Server Error';
   let errors = null;
 
@@ -17,7 +18,7 @@ export const errorMiddleware = (error: any, req: Request, res: Response, _next: 
 
   // Handle specific errors like Zod validation if needed
   if (error.name === 'ZodError') {
-    statusCode = 400;
+    statusCode = httpStatus.BAD_REQUEST;
     message = 'Validation Error';
     errors = error.errors;
   }

@@ -1,4 +1,5 @@
 import {Role} from '@prisma/client';
+import {Request} from 'express';
 
 /**
  * Payload stored within identifying JWT tokens
@@ -23,4 +24,11 @@ export interface TRefreshTokenPayload {
 export interface TTokenPair {
   accessToken: string;
   refreshToken: string;
+}
+
+/**
+ * Request object with user payload attached
+ */
+export interface TAuthenticatedRequest extends Request {
+  user?: TJWTPayload;
 }

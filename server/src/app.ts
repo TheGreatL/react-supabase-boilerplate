@@ -2,6 +2,7 @@ import express, {json, urlencoded, type Request, type Response} from 'express';
 import routes from './routes';
 import helmet from 'helmet';
 import cors from 'cors';
+import httpStatus from 'http-status';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import {config} from './shared/config';
@@ -42,7 +43,7 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // 6. 404 Handler for undefined routes
 app.use((req: Request, res: Response) => {
-  ApiResponse.error(res, 'Resource not found', 404);
+  ApiResponse.error(res, 'Resource not found', httpStatus.NOT_FOUND);
 });
 
 // 7. Global Error Handler (Must be last)
