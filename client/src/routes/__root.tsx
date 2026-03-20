@@ -15,6 +15,9 @@ import appCss from '../shared/styles/global.css?url'
 import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from '#/shared/components/ui/sonner'
 
+import { useAuthStore } from '../shared/stores/auth.store'
+import { useEffect } from 'react'
+
 interface MyRouterContext {
   queryClient: QueryClient
 }
@@ -32,7 +35,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Capstone System',
+        title: 'Boilerplate System',
       },
     ],
     links: [
@@ -56,10 +59,15 @@ function NotFoundComponent() {
           <AlertTriangle size={48} />
         </div>
         <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900">404</h1>
-          <h2 className="text-xl font-semibold text-slate-600">Page not found</h2>
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900">
+            404
+          </h1>
+          <h2 className="text-xl font-semibold text-slate-600">
+            Page not found
+          </h2>
           <p className="text-slate-400 max-w-xs mx-auto">
-            Sorry, we couldn't find the page you're looking for. It might have been moved or deleted.
+            Sorry, we couldn't find the page you're looking for. It might have
+            been moved or deleted.
           </p>
         </div>
         <a
@@ -141,9 +149,6 @@ function ErrorComponent({ error }: { error: any }) {
     </div>
   )
 }
-
-import { useAuthStore } from '../shared/stores/auth.store'
-import { useEffect } from 'react'
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const initialize = useAuthStore((state) => state.initialize)

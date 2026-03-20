@@ -1,7 +1,7 @@
 {
-  "name": "capstone-ni-jayjay-quiton",
+  "name": "react-supabase-boilerplate",
   "version": "1.0.0",
-  "description": "Project for Capstone of Jay Jay Quiton",
+  "description": "A generic full-stack React + Node.js boilerplate",
   "main": "index.js",
   "scripts": {
     "dev": "npm run docker:dev",
@@ -12,23 +12,23 @@
     "docker:logs": "docker-compose logs -f",
     "docker:restart": "docker-compose restart",
     "docker:down": "docker-compose down",
-    "docker:migrate": "docker exec -it capstone_api npm run db:migrate",
-    "docker:studio": "docker exec -it capstone_api npm run db:studio",
-    "docker:seed": "docker exec -it capstone_api npm run db:seed",
+    "docker:migrate": "docker exec -it boilerplate_api npm run db:migrate",
+    "docker:studio": "docker exec -it boilerplate_api npm run db:studio",
+    "docker:seed": "docker exec -it boilerplate_api npm run db:seed",
     "prepare": "husky"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TheGreatL/Capstone-Ni-JayJay-Quiton.git"
+    "url": ""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/TheGreatL/Capstone-Ni-JayJay-Quiton/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/TheGreatL/Capstone-Ni-JayJay-Quiton#readme",
+  "homepage": "",
   "dependencies": {
     "express-rate-limit": "^8.3.1"
   },

@@ -1,4 +1,4 @@
-# Capstone Project
+# React Node Boilerplate
 
 > A full-stack web application 
 
@@ -42,9 +42,11 @@ git clone <your-repo-url>
 
 **2. Set up your environment variables**
 
-Copy `.env.example` to a new file named `.env` and fill in values.
+Copy all `.env.example` files to `.env` in the root, `/client`, and `/server` directories and fill in their values.
 ```bash
 cp .env.example .env
+cp server/.env.example server/.env
+cp client/.env.example client/.env
 ```
 > ⚠️ **Important:** Never share your `.env` file. It contains passwords and secret keys.
 
@@ -74,11 +76,11 @@ Login with:
 Once logged into pgAdmin, follow these steps to see your data:
 
 1.  **Right-click** on `Servers` > `Register` > `Server...`
-2.  **General Tab**: Name it something like `Capstone DB`
+2.  **General Tab**: Name it something like `Boilerplate DB`
 3.  **Connection Tab**:
     - **Host name/address**: `db` (⚠️ Important: Use the service name, not `localhost` or `postgres`)
     - **Port**: `5432` (⚠️ Important: Use the internal Docker port)
-    - **Maintenance database**: `capstone_db` (or check your `.env`)
+    - **Maintenance database**: `boilerplate_db` (or check your `.env`)
     - **Username**: `postgres`
     - **Password**: `postgres123` (or check your `.env`)
 4.  **Click Save**.
@@ -103,7 +105,7 @@ npm run docker:dev
 After cloning the repo, make sure you do these things:
 
 - [ ] Install Docker Desktop and make sure it's running.
-- [ ] Create your `.env` file from `.env.example` and fill in values.
+- [ ] Create your `.env` files for the **root**, **server**, and **client** from their respective `.env.example` files and fill in any required values.
 - [ ] Run `npm run docker:dev` to start the app.
 - [ ] Run `npm run docker:seed` to populate the database with test users.
 

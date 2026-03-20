@@ -1,7 +1,7 @@
 # Project Architecture
 
 ## 🚀 Overview
-This is a "Gold Standard" monorepo designed for the Capstone project of Jay Jay Quiton. It leverages a modern, containerized stack with a focus on type safety, professional architecture, and premium aesthetics.
+This is a "Gold Standard" monorepo designed as a generic full-stack boilerplate. It leverages a modern, containerized stack with a focus on type safety, professional architecture, and premium aesthetics.
 
 ## 📁 Monorepo Structure
 - **`/client`**: React + Vite frontend leveraging TanStack Router and Tailwind v4.

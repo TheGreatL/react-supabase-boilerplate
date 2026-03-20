@@ -4,9 +4,9 @@ const options: swaggerJSDoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Capstone API',
+      title: 'Boilerplate API',
       version: '1.0.0',
-      description: 'API documentation for the Capstone Project',
+      description: 'API documentation for the generic Boilerplate Project',
     },
     servers: [
       {

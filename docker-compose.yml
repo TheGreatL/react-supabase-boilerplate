@@ -1,14 +1,14 @@
 services:
   db:
     image: postgres:15
-    container_name: capstone_db
+    container_name: boilerplate_db
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5433:5432"
+      - "${POSTGRES_PORT:-5433}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -16,7 +16,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: capstone_api
+    container_name: boilerplate_api
     restart: always
     ports:
       - "${SERVER_PORT:-3001}:3001"
@@ -36,7 +36,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    container_name: capstone_client
+    container_name: boilerplate_client
     restart: always
     ports:
       - "${CLIENT_PORT:-5173}:5173"
@@ -46,7 +46,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: capstone_pgadmin
+    container_name: boilerplate_pgadmin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
