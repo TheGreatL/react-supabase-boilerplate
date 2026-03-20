@@ -1,4 +1,13 @@
 import swaggerJSDoc from 'swagger-jsdoc';
+import {OpenApiGeneratorV3} from '@asteasolutions/zod-to-openapi';
+import {registry} from './openapi-registry';
+
+// Import schemas to ensure they are registered
+import '../../features/auth/auth.schema';
+import '../../features/user/user.schema';
+
+const generator = new OpenApiGeneratorV3(registry.definitions);
+const components = generator.generateComponents();
 
 const options: swaggerJSDoc.Options = {
   definition: {
@@ -15,6 +24,7 @@ const options: swaggerJSDoc.Options = {
       }
     ],
     components: {
+      ...components.components,
       securitySchemes: {
         bearerAuth: {
           type: 'http',
