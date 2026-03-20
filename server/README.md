@@ -58,7 +58,7 @@ Browser → Route → Controller → Service → Repository → Database
 
 ## 📋 API Documentation
 
-Once the server is running, visit:  
+Once the server is running, visit:
 **`http://localhost:3001/api/docs`**
 
 You'll see an interactive page listing all available API endpoints where you can test them directly from the browser.
@@ -67,13 +67,16 @@ You'll see an interactive page listing all available API endpoints where you can
 
 ## 💾 Database Commands
 
-| Command | What it does |
-|---|---|
-| `npm run db:generate` | Re-generates the Prisma client after schema changes |
-| `npm run db:migrate` | Applies new schema changes to the database |
-| `npm run db:seed` | Fills the database with default test data |
-| `npm run db:studio` | Opens a visual database browser at `http://localhost:5555` |
-| `npm run db:reset` | **⚠️ Wipes the database** and restarts from scratch |
+| Command | What it does | Run in Docker? |
+|---|---|---|
+| `npm run db:generate` | Re-generates Prisma client | `docker compose exec api npm run db:generate` |
+| `npm run db:migrate` | Applies schema changes | `docker compose exec api npm run db:migrate` |
+| `npm run db:seed` | Fills default test data | `docker compose exec api npm run db:seed` |
+| `npm run db:studio` | Opens visual browser | (Run on host terminal) |
+| `npm run db:reset` | **⚠️ Wiped database** | `docker compose exec api npm run db:reset` |
+
+> [!IMPORTANT]
+> To run these commands from your **host terminal**, ensure your `.env` is set to `localhost:5432`. If you have a local Postgres conflict, use `localhost:5433` instead. If running **via Docker exec**, it uses the internal network automatically.
 
 ---
 
