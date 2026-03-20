@@ -29,4 +29,3 @@ export const errorMiddleware = (error: any, req: Request, res: Response, _next: 
 
   ApiResponse.error(res, message, statusCode, errors);
 };
-

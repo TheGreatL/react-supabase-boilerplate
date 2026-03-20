@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import {asyncHandler} from '../../shared/utils/async-handler';
 import {ApiResponse} from '../../shared/utils/api-response';
 import {AuthService} from './auth.service';
-import {TLogin} from './auth.schema';
+import {TAuthRequest, TLogin} from './auth.schema';
 import {TAuthenticatedRequest} from '../../shared/middleware/auth.middleware';
 
 const authService = new AuthService();
@@ -27,7 +27,7 @@ export default class AuthController {
   });
 
   static register = asyncHandler(async (req: Request, res: Response) => {
-    const data = req.body as TLogin;
+    const data = req.body as TAuthRequest;
     const {accessToken, refreshToken} = await authService.register(data);
 
     AuthController.setRefreshTokenCookie(res, refreshToken);

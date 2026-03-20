@@ -3,7 +3,7 @@ import {prisma} from '../../shared/lib/prisma';
 import {HttpException} from '../../shared/exceptions/http-exception';
 import {TokenService} from '../../shared/services/token.service';
 import {TJWTPayload, TRefreshTokenPayload, TTokenPair} from '../../shared/types/auth.types';
-import {TLogin, TAuthRequest} from './auth.schema';
+import {TAuthRequest, TLogin} from './auth.schema';
 
 /**
  * Gold Standard:
