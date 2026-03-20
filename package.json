@@ -15,6 +15,7 @@
     "docker:migrate": "docker exec -it boilerplate_api npm run db:migrate",
     "docker:studio": "docker exec -it boilerplate_api npm run db:studio",
     "docker:seed": "docker exec -it boilerplate_api npm run db:seed",
+    "docker:reset": "docker exec -it boilerplate_api npm run db:reset",
     "prepare": "husky"
   },
   "repository": {
@@ -46,3 +47,4 @@
     ]
   }
 }
+
