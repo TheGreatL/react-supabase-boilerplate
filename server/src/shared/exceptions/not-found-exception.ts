@@ -1,4 +1,4 @@
-import { HttpException } from './http-exception';
+import {HttpException} from './http-exception';
 
 export class NotFoundException extends HttpException {
   constructor(message: string = 'Resource not found') {

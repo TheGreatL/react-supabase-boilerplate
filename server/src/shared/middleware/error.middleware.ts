@@ -1,16 +1,11 @@
-import { Request, Response, NextFunction } from "express";
-import { ApiResponse } from "../utils/api-response";
-import { logger } from "../lib/logger";
-import { HttpException } from "../exceptions/http-exception";
+import {Request, Response, NextFunction} from 'express';
+import {ApiResponse} from '../utils/api-response';
+import {logger} from '../lib/logger';
+import {HttpException} from '../exceptions/http-exception';
 
-export const errorMiddleware = (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const errorMiddleware = (error: any, req: Request, res: Response, next: NextFunction) => {
   let statusCode = 500;
-  let message = "Internal Server Error";
+  let message = 'Internal Server Error';
   let errors = null;
 
   if (error instanceof HttpException) {

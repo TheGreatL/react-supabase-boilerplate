@@ -18,7 +18,9 @@ export const Route = createFileRoute('/dashboard')({
     <div className="flex min-h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-2">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
-        <p className="text-sm font-medium text-slate-500">Loading Dashboard...</p>
+        <p className="text-sm font-medium text-slate-500">
+          Loading Dashboard...
+        </p>
       </div>
     </div>
   ),
@@ -56,7 +58,9 @@ function DashboardComponent() {
             </p>
           </div>
           <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm col-span-2">
-            <h3 className="text-sm font-medium text-slate-400">Email Address</h3>
+            <h3 className="text-sm font-medium text-slate-400">
+              Email Address
+            </h3>
             <p className="text-xl font-bold text-slate-900">{user?.email}</p>
           </div>
         </div>

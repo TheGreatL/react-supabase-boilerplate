@@ -20,11 +20,10 @@ When Claude Code starts:
 
 When components are used:
 
-**Commands**: User types slash command → Claude Code looks up → Executes
-**Agents**: Task arrives → Claude Code evaluates capabilities → Selects agent
-**Skills**: Task context matches description → Claude Code loads skill
-**Hooks**: Event occurs → Claude Code calls matching hooks
-**MCP Servers**: Tool call matches server capability → Forwards to server
+**Commands**: User types slash command → Claude Code looks up → Executes **Agents**: Task arrives → Claude Code
+evaluates capabilities → Selects agent **Skills**: Task context matches description → Claude Code loads skill **Hooks**:
+Event occurs → Claude Code calls matching hooks **MCP Servers**: Tool call matches server capability → Forwards to
+server
 
 ## Command Organization Patterns
 
@@ -42,11 +41,13 @@ commands/
 ```
 
 **When to use**:
+
 - 5-15 commands total
 - All commands at same abstraction level
 - No clear categorization
 
 **Advantages**:
+
 - Simple, easy to navigate
 - No configuration needed
 - Fast discovery
@@ -70,22 +71,21 @@ workflow-commands/     # Workflow automation
 ```
 
 **Manifest configuration**:
+
 ```json
 {
-  "commands": [
-    "./commands",
-    "./admin-commands",
-    "./workflow-commands"
-  ]
+  "commands": ["./commands", "./admin-commands", "./workflow-commands"]
 }
 ```
 
 **When to use**:
+
 - 15+ commands
 - Clear functional categories
 - Different permission levels
 
 **Advantages**:
+
 - Organized by purpose
 - Easier to maintain
 - Can restrict access by directory
@@ -112,20 +112,18 @@ commands/
 
 ```json
 {
-  "commands": [
-    "./commands/ci",
-    "./commands/deployment",
-    "./commands/management"
-  ]
+  "commands": ["./commands/ci", "./commands/deployment", "./commands/management"]
 }
 ```
 
 **When to use**:
+
 - 20+ commands
 - Multi-level categorization
 - Complex workflows
 
 **Advantages**:
+
 - Maximum organization
 - Clear boundaries
 - Scalable structure
@@ -145,6 +143,7 @@ agents/
 ```
 
 **When to use**:
+
 - Agents have distinct, non-overlapping roles
 - Users invoke agents manually
 - Clear agent responsibilities
@@ -162,6 +161,7 @@ agents/
 ```
 
 **When to use**:
+
 - Technology-specific agents
 - Domain expertise focus
 - Automatic agent selection
@@ -179,6 +179,7 @@ agents/
 ```
 
 **When to use**:
+
 - Sequential workflows
 - Stage-specific expertise
 - Pipeline automation
@@ -202,6 +203,7 @@ skills/
 ```
 
 **When to use**:
+
 - Knowledge-based skills
 - Educational or reference content
 - Broad applicability
@@ -227,6 +229,7 @@ skills/
 ```
 
 **When to use**:
+
 - Tool-specific expertise
 - Complex tool configurations
 - Tool best practices
@@ -254,6 +257,7 @@ skills/
 ```
 
 **When to use**:
+
 - Multi-step processes
 - Company-specific workflows
 - Process automation
@@ -282,6 +286,7 @@ skills/
 ```
 
 **Resource usage**:
+
 - **SKILL.md**: Overview and when to use resources
 - **references/**: Detailed guides (loaded as needed)
 - **examples/**: Copy-paste code samples
@@ -304,6 +309,7 @@ hooks/
 ```
 
 **hooks.json**:
+
 ```json
 {
   "PreToolUse": [...],
@@ -314,6 +320,7 @@ hooks/
 ```
 
 **When to use**:
+
 - 5-10 hooks total
 - Simple hook logic
 - Centralized configuration
@@ -337,6 +344,7 @@ hooks/
 ```
 
 **hooks.json** (combines):
+
 ```json
 {
   "PreToolUse": ${file:./pre-tool-use.json},
@@ -348,6 +356,7 @@ hooks/
 **Note**: Use build script to combine files, Claude Code doesn't support file references.
 
 **When to use**:
+
 - 10+ hooks
 - Different teams managing different events
 - Complex hook configurations
@@ -374,6 +383,7 @@ hooks/
 ```
 
 **When to use**:
+
 - Many hook scripts
 - Clear functional boundaries
 - Team specialization
@@ -394,6 +404,7 @@ scripts/
 ```
 
 **When to use**:
+
 - 5-10 scripts
 - All scripts related
 - Simple plugin
@@ -419,6 +430,7 @@ scripts/
 ```
 
 **When to use**:
+
 - 10+ scripts
 - Clear categories
 - Reusable utilities
@@ -441,6 +453,7 @@ scripts/
 ```
 
 **When to use**:
+
 - Multi-language scripts
 - Different runtime requirements
 - Language-specific dependencies
@@ -467,6 +480,7 @@ plugin/
 ```
 
 **Usage in components**:
+
 ```bash
 #!/bin/bash
 source "${CLAUDE_PLUGIN_ROOT}/lib/test-utils.sh"
@@ -474,6 +488,7 @@ run_tests
 ```
 
 **Benefits**:
+
 - Code reuse
 - Consistent behavior
 - Easier maintenance
@@ -494,6 +509,7 @@ plugin/
 ```
 
 **When to use**:
+
 - Large plugins (100+ files)
 - Multiple developers
 - Clear separation of concerns
@@ -519,17 +535,15 @@ plugin/
 ```
 
 **Manifest**:
+
 ```json
 {
-  "commands": [
-    "./core/commands",
-    "./extensions/extension-a/commands",
-    "./extensions/extension-b/commands"
-  ]
+  "commands": ["./core/commands", "./extensions/extension-a/commands", "./extensions/extension-b/commands"]
 }
 ```
 
 **When to use**:
+
 - Modular functionality
 - Optional features
 - Plugin families

@@ -1,14 +1,12 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
 }
 
 enum Role {
-    USER
-    ADMIN
-    SUPER_ADMIN
-    EMPLOYEE
+  USER
+  ADMIN
 }

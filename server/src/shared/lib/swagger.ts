@@ -6,30 +6,30 @@ const options: swaggerJSDoc.Options = {
     info: {
       title: 'Boilerplate API',
       version: '1.0.0',
-      description: 'API documentation for the generic Boilerplate Project',
+      description: 'API documentation for the generic Boilerplate Project'
     },
     servers: [
       {
         url: '/api',
-        description: 'Development server',
-      },
+        description: 'Development server'
+      }
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
+          bearerFormat: 'JWT'
+        }
+      }
     },
     security: [
       {
-        bearerAuth: [],
-      },
-    ],
+        bearerAuth: []
+      }
+    ]
   },
-  apis: ['./src/features/**/*.route.ts', './src/features/**/*.controller.ts'],
+  apis: ['./src/features/**/*.route.ts', './src/features/**/*.controller.ts']
 };
 
 export const swaggerSpec = swaggerJSDoc(options);

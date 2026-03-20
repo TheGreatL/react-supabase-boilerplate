@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import {Prisma} from '@prisma/client';
 
 /**
  * Gold Standard:
@@ -7,7 +7,7 @@ import { Prisma } from "@prisma/client";
  */
 
 export type UserWithProfile = Prisma.UserGetPayload<{
-  include: { profile: true };
+  include: {profile: true};
 }>;
 
 // You can also define custom selects here
@@ -16,7 +16,7 @@ export const UserBasicSelect = {
   email: true,
   firstName: true,
   lastName: true,
-  role: true,
+  role: true
 } as const;
 
 export type UserBasic = Prisma.UserGetPayload<{

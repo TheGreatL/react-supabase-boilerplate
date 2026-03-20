@@ -6,6 +6,7 @@ description: This skill enforces robust, scalable testing methodologies for the 
 # Testing Standards Skill (Frontend)
 
 ## 🎯 Purpose
+
 This skill ensures that frontend code is verified through rigorous, maintainable tests using modern tooling.
 
 ## 🛠️ Frontend Testing Rules
@@ -16,5 +17,6 @@ This skill ensures that frontend code is verified through rigorous, maintainable
 - **Mocks**: When testing components, properly mock external dependencies like TanStack Router (navigation) or TanStack Query (data fetching wrappers).
 
 ### General Philosophy
+
 - **AAA Pattern**: Structure every test using **Arrange** (setup), **Act** (execution), and **Assert** (verification).
 - **Test Isolation**: Tests must run independently without shared state side-effects.

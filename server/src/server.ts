@@ -1,6 +1,6 @@
-import { createServer } from "http";
-import app from "./app";
-import { config } from "./shared/config";
+import {createServer} from 'http';
+import app from './app';
+import {config} from './shared/config';
 
 const server = createServer(app);
 const PORT = config.PORT;

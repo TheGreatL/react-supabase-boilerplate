@@ -6,7 +6,8 @@ Complete reference for `plugin.json` configuration.
 
 **Required path**: `.claude-plugin/plugin.json`
 
-The manifest MUST be in the `.claude-plugin/` directory at the plugin root. Claude Code will not recognize plugins without this file in the correct location.
+The manifest MUST be in the `.claude-plugin/` directory at the plugin root. Claude Code will not recognize plugins
+without this file in the correct location.
 
 ## Complete Field Reference
 
@@ -14,16 +15,16 @@ The manifest MUST be in the `.claude-plugin/` directory at the plugin root. Clau
 
 #### name (required)
 
-**Type**: String
-**Format**: kebab-case
-**Example**: `"test-automation-suite"`
+**Type**: String **Format**: kebab-case **Example**: `"test-automation-suite"`
 
 The unique identifier for the plugin. Used for:
+
 - Plugin identification in Claude Code
 - Conflict detection with other plugins
 - Command namespacing (optional)
 
 **Requirements**:
+
 - Must be unique across all installed plugins
 - Use only lowercase letters, numbers, and hyphens
 - No spaces or special characters
@@ -31,32 +32,35 @@ The unique identifier for the plugin. Used for:
 - End with a letter or number
 
 **Validation**:
+
 ```javascript
-/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/
+/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 ```
 
 **Examples**:
+
 - ✅ Good: `api-tester`, `code-review`, `git-workflow-automation`
 - ❌ Bad: `API Tester`, `code_review`, `-git-workflow`, `test-`
 
 #### version
 
-**Type**: String
-**Format**: Semantic versioning (MAJOR.MINOR.PATCH)
-**Example**: `"2.1.0"`
-**Default**: `"0.1.0"` if not specified
+**Type**: String **Format**: Semantic versioning (MAJOR.MINOR.PATCH) **Example**: `"2.1.0"` **Default**: `"0.1.0"` if
+not specified
 
 Semantic versioning guidelines:
+
 - **MAJOR**: Incompatible API changes, breaking changes
 - **MINOR**: New functionality, backward-compatible
 - **PATCH**: Bug fixes, backward-compatible
 
 **Pre-release versions**:
+
 - `"1.0.0-alpha.1"` - Alpha release
 - `"1.0.0-beta.2"` - Beta release
 - `"1.0.0-rc.1"` - Release candidate
 
 **Examples**:
+
 - `"0.1.0"` - Initial development
 - `"1.0.0"` - First stable release
 - `"1.2.3"` - Patch update to 1.2
@@ -64,19 +68,20 @@ Semantic versioning guidelines:
 
 #### description
 
-**Type**: String
-**Length**: 50-200 characters recommended
-**Example**: `"Automates code review workflows with style checks and automated feedback"`
+**Type**: String **Length**: 50-200 characters recommended **Example**:
+`"Automates code review workflows with style checks and automated feedback"`
 
 Brief explanation of plugin purpose and functionality.
 
 **Best practices**:
+
 - Focus on what the plugin does, not how
 - Use active voice
 - Mention key features or benefits
 - Keep under 200 characters for marketplace display
 
 **Examples**:
+
 - ✅ "Generates comprehensive test suites from code analysis and coverage reports"
 - ✅ "Integrates with Jira for automatic issue tracking and sprint management"
 - ❌ "A plugin that helps you do testing stuff"
@@ -86,8 +91,7 @@ Brief explanation of plugin purpose and functionality.
 
 #### author
 
-**Type**: Object
-**Fields**: name (required), email (optional), url (optional)
+**Type**: Object **Fields**: name (required), email (optional), url (optional)
 
 ```json
 {
@@ -100,6 +104,7 @@ Brief explanation of plugin purpose and functionality.
 ```
 
 **Alternative format** (string only):
+
 ```json
 {
   "author": "Jane Developer <jane@example.com> (https://janedeveloper.com)"
@@ -107,6 +112,7 @@ Brief explanation of plugin purpose and functionality.
 ```
 
 **Use cases**:
+
 - Credit and attribution
 - Contact for support or questions
 - Marketplace display
@@ -114,30 +120,31 @@ Brief explanation of plugin purpose and functionality.
 
 #### homepage
 
-**Type**: String (URL)
-**Example**: `"https://docs.example.com/plugins/my-plugin"`
+**Type**: String (URL) **Example**: `"https://docs.example.com/plugins/my-plugin"`
 
 Link to plugin documentation or landing page.
 
 **Should point to**:
+
 - Plugin documentation site
 - Project homepage
 - Detailed usage guide
 - Installation instructions
 
 **Not for**:
+
 - Source code (use `repository` field)
 - Issue tracker (include in documentation)
 - Personal websites (use `author.url`)
 
 #### repository
 
-**Type**: String (URL) or Object
-**Example**: `"https://github.com/user/plugin-name"`
+**Type**: String (URL) or Object **Example**: `"https://github.com/user/plugin-name"`
 
 Source code repository location.
 
 **String format**:
+
 ```json
 {
   "repository": "https://github.com/user/plugin-name"
@@ -145,6 +152,7 @@ Source code repository location.
 ```
 
 **Object format** (detailed):
+
 ```json
 {
   "repository": {
@@ -156,6 +164,7 @@ Source code repository location.
 ```
 
 **Use cases**:
+
 - Source code access
 - Issue reporting
 - Community contributions
@@ -163,13 +172,12 @@ Source code repository location.
 
 #### license
 
-**Type**: String
-**Format**: SPDX identifier
-**Example**: `"MIT"`
+**Type**: String **Format**: SPDX identifier **Example**: `"MIT"`
 
 Software license identifier.
 
 **Common licenses**:
+
 - `"MIT"` - Permissive, popular choice
 - `"Apache-2.0"` - Permissive with patent grant
 - `"GPL-3.0"` - Copyleft
@@ -180,6 +188,7 @@ Software license identifier.
 **Full list**: https://spdx.org/licenses/
 
 **Multiple licenses**:
+
 ```json
 {
   "license": "(MIT OR Apache-2.0)"
@@ -188,12 +197,12 @@ Software license identifier.
 
 #### keywords
 
-**Type**: Array of strings
-**Example**: `["testing", "automation", "ci-cd", "quality-assurance"]`
+**Type**: Array of strings **Example**: `["testing", "automation", "ci-cd", "quality-assurance"]`
 
 Tags for plugin discovery and categorization.
 
 **Best practices**:
+
 - Use 5-10 keywords
 - Include functionality categories
 - Add technology names
@@ -201,6 +210,7 @@ Tags for plugin discovery and categorization.
 - Avoid duplicating plugin name
 
 **Categories to consider**:
+
 - Functionality: `testing`, `debugging`, `documentation`, `deployment`
 - Technologies: `typescript`, `python`, `docker`, `aws`
 - Workflows: `ci-cd`, `code-review`, `git-workflow`
@@ -210,13 +220,12 @@ Tags for plugin discovery and categorization.
 
 #### commands
 
-**Type**: String or Array of strings
-**Default**: `["./commands"]`
-**Example**: `"./cli-commands"`
+**Type**: String or Array of strings **Default**: `["./commands"]` **Example**: `"./cli-commands"`
 
 Additional directories or files containing command definitions.
 
 **Single path**:
+
 ```json
 {
   "commands": "./custom-commands"
@@ -224,46 +233,43 @@ Additional directories or files containing command definitions.
 ```
 
 **Multiple paths**:
+
 ```json
 {
-  "commands": [
-    "./commands",
-    "./admin-commands",
-    "./experimental-commands"
-  ]
+  "commands": ["./commands", "./admin-commands", "./experimental-commands"]
 }
 ```
 
 **Behavior**: Supplements default `commands/` directory (does not replace)
 
 **Use cases**:
+
 - Organizing commands by category
 - Separating stable from experimental commands
 - Loading commands from shared locations
 
 #### agents
 
-**Type**: String or Array of strings
-**Default**: `["./agents"]`
-**Example**: `"./specialized-agents"`
+**Type**: String or Array of strings **Default**: `["./agents"]` **Example**: `"./specialized-agents"`
 
 Additional directories or files containing agent definitions.
 
 **Format**: Same as `commands` field
 
 **Use cases**:
+
 - Grouping agents by specialization
 - Separating general-purpose from task-specific agents
 - Loading agents from plugin dependencies
 
 #### hooks
 
-**Type**: String (path to JSON file) or Object (inline configuration)
-**Default**: `"./hooks/hooks.json"`
+**Type**: String (path to JSON file) or Object (inline configuration) **Default**: `"./hooks/hooks.json"`
 
 Hook configuration location or inline definition.
 
 **File path**:
+
 ```json
 {
   "hooks": "./config/hooks.json"
@@ -271,6 +277,7 @@ Hook configuration location or inline definition.
 ```
 
 **Inline configuration**:
+
 ```json
 {
   "hooks": {
@@ -291,18 +298,19 @@ Hook configuration location or inline definition.
 ```
 
 **Use cases**:
+
 - Simple plugins: Inline configuration (< 50 lines)
 - Complex plugins: External JSON file
 - Multiple hook sets: Separate files for different contexts
 
 #### mcpServers
 
-**Type**: String (path to JSON file) or Object (inline configuration)
-**Default**: `./.mcp.json`
+**Type**: String (path to JSON file) or Object (inline configuration) **Default**: `./.mcp.json`
 
 MCP server configuration location or inline definition.
 
 **File path**:
+
 ```json
 {
   "mcpServers": "./.mcp.json"
@@ -310,6 +318,7 @@ MCP server configuration location or inline definition.
 ```
 
 **Inline configuration**:
+
 ```json
 {
   "mcpServers": {
@@ -325,6 +334,7 @@ MCP server configuration location or inline definition.
 ```
 
 **Use cases**:
+
 - Simple plugins: Single inline server (< 20 lines)
 - Complex plugins: External `.mcp.json` file
 - Multiple servers: Always use external file
@@ -341,6 +351,7 @@ All paths in component fields must follow these rules:
 4. **Forward slashes only**: Even on Windows
 
 **Examples**:
+
 - ✅ `"./commands"`
 - ✅ `"./src/commands"`
 - ✅ `"./configs/hooks.json"`
@@ -377,17 +388,20 @@ When Claude Code loads components:
 Claude Code validates the manifest on plugin load:
 
 **Syntax validation**:
+
 - Valid JSON format
 - No syntax errors
 - Correct field types
 
 **Field validation**:
+
 - `name` field present and valid format
 - `version` follows semantic versioning (if present)
 - Paths are relative with `./` prefix
 - URLs are valid (if present)
 
 **Component validation**:
+
 - Referenced paths exist
 - Hook and MCP configurations are valid
 - No circular dependencies
@@ -395,54 +409,66 @@ Claude Code validates the manifest on plugin load:
 ### Common Validation Errors
 
 **Invalid name format**:
+
 ```json
 {
-  "name": "My Plugin"  // ❌ Contains spaces
+  "name": "My Plugin" // ❌ Contains spaces
 }
 ```
+
 Fix: Use kebab-case
+
 ```json
 {
-  "name": "my-plugin"  // ✅
+  "name": "my-plugin" // ✅
 }
 ```
 
 **Absolute path**:
+
 ```json
 {
-  "commands": "/Users/name/commands"  // ❌ Absolute path
+  "commands": "/Users/name/commands" // ❌ Absolute path
 }
 ```
+
 Fix: Use relative path
+
 ```json
 {
-  "commands": "./commands"  // ✅
+  "commands": "./commands" // ✅
 }
 ```
 
 **Missing ./ prefix**:
+
 ```json
 {
-  "hooks": "hooks/hooks.json"  // ❌ No ./
+  "hooks": "hooks/hooks.json" // ❌ No ./
 }
 ```
+
 Fix: Add ./ prefix
+
 ```json
 {
-  "hooks": "./hooks/hooks.json"  // ✅
+  "hooks": "./hooks/hooks.json" // ✅
 }
 ```
 
 **Invalid version**:
+
 ```json
 {
-  "version": "1.0"  // ❌ Not semantic versioning
+  "version": "1.0" // ❌ Not semantic versioning
 }
 ```
+
 Fix: Use MAJOR.MINOR.PATCH
+
 ```json
 {
-  "version": "1.0.0"  // ✅
+  "version": "1.0.0" // ✅
 }
 ```
 
@@ -500,18 +526,8 @@ Full configuration with all features:
     "url": "https://github.com/company/devops-plugin.git"
   },
   "license": "Apache-2.0",
-  "keywords": [
-    "devops",
-    "ci-cd",
-    "automation",
-    "kubernetes",
-    "docker",
-    "deployment"
-  ],
-  "commands": [
-    "./commands",
-    "./admin-commands"
-  ],
+  "keywords": ["devops", "ci-cd", "automation", "kubernetes", "docker", "deployment"],
+  "commands": ["./commands", "./admin-commands"],
   "agents": "./specialized-agents",
   "hooks": "./config/hooks.json",
   "mcpServers": "./.mcp.json"

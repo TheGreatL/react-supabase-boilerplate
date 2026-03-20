@@ -1,26 +1,26 @@
-import { Prisma, User } from "@prisma/client";
-import { prisma } from "../../shared/lib/prisma";
-import { UserWithProfile } from "../../shared/types/user.types";
+import {Prisma, User} from '@prisma/client';
+import {prisma} from '../../shared/lib/prisma';
+import {UserWithProfile} from '../../shared/types/user.types';
 
 export class UserRepository {
   async findById(id: string): Promise<User | null> {
     return prisma.user.findUnique({
-      where: { id },
+      where: {id}
     });
   }
 
   async findByIdWithProfile(id: string): Promise<UserWithProfile | null> {
     return prisma.user.findUnique({
-      where: { id },
+      where: {id},
       include: {
-        profile: true,
-      },
+        profile: true
+      }
     });
   }
 
   async findByEmail(email: string): Promise<User | null> {
     return prisma.user.findUnique({
-      where: { email },
+      where: {email}
     });
   }
 
@@ -30,8 +30,8 @@ export class UserRepository {
 
   async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
     return prisma.user.update({
-      where: { id },
-      data,
+      where: {id},
+      data
     });
   }
 }

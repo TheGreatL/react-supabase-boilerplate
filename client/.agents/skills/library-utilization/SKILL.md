@@ -6,6 +6,7 @@ description: This skill enforces the usage of existing, top-tier libraries alrea
 # Library Utilization Skill (Frontend)
 
 ## 🎯 Purpose
+
 This project is built on a modern, powerful stack. This skill ensures that we fully leverage the tools we have installed, writing less boilerplate and relying on community-tested solutions.
 
 ## 🛠️ Frontend Implementation Rules

@@ -77,16 +77,16 @@ Run comprehensive linting checks on the project codebase.
 
 Execute the linting script:
 
-\`\`\`bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/run-linter.sh
-\`\`\`
+\`\`\`bash bash ${CLAUDE_PLUGIN_ROOT}/scripts/run-linter.sh \`\`\`
 
 Parse the output and present issues organized by:
+
 - Critical issues (must fix)
 - Warnings (should fix)
 - Style suggestions (optional)
 
 For each issue, show:
+
 - File path and line number
 - Issue description
 - Suggested fix (if available)
@@ -114,6 +114,7 @@ Execute the project test suite and generate coverage reports.
 ## Output
 
 Present results in structured format:
+
 - Test summary (passed/failed/skipped)
 - Coverage percentage by file
 - Critical untested areas
@@ -122,6 +123,7 @@ Present results in structured format:
 ## Integration
 
 After test completion, offer to:
+
 - Fix failing tests
 - Generate tests for untested code (using test-generator agent)
 - Update documentation based on test changes
@@ -167,6 +169,7 @@ Automatically loads `code-standards` skill for project-specific guidelines.
 ## Output Format
 
 For each file reviewed:
+
 - Overall assessment
 - Critical issues (must fix before merge)
 - Important issues (should fix)
@@ -214,6 +217,7 @@ Automatically loads `testing-patterns` skill for project-specific test conventio
 ## Test Quality
 
 Generated tests include:
+
 - Happy path scenarios
 - Edge cases and boundary conditions
 - Error handling verification
@@ -226,7 +230,9 @@ Generated tests include:
 ```markdown
 ---
 name: Code Standards
-description: This skill should be used when reviewing code, enforcing style guidelines, checking naming conventions, or ensuring code quality standards. Provides project-specific coding standards and best practices.
+description:
+  This skill should be used when reviewing code, enforcing style guidelines, checking naming conventions, or ensuring
+  code quality standards. Provides project-specific coding standards and best practices.
 version: 1.0.0
 ---
 
@@ -237,6 +243,7 @@ Comprehensive coding standards and best practices for maintaining code quality.
 ## Overview
 
 Enforce consistent code quality through standardized conventions for:
+
 - Code style and formatting
 - Naming conventions
 - Documentation requirements
@@ -265,6 +272,7 @@ Enforce consistent code quality through standardized conventions for:
 ### Function Documentation
 
 Every function must include:
+
 - Purpose description
 - Parameter descriptions with types
 - Return value description with type
@@ -273,6 +281,7 @@ Every function must include:
 ### Module Documentation
 
 Every module must include:
+
 - Module purpose
 - Public API overview
 - Usage examples
@@ -290,21 +299,9 @@ Every module must include:
 
 ### Example Pattern
 
-\`\`\`javascript
-async function processData(data) {
-  try {
-    const result = await transform(data)
-    return result
-  } catch (error) {
-    logger.error('Data processing failed', {
-      data: sanitize(data),
-      error: error.message,
-      stack: error.stack
-    })
-    throw new DataProcessingError('Failed to process data', { cause: error })
-  }
-}
-\`\`\`
+\`\`\`javascript async function processData(data) { try { const result = await transform(data) return result } catch
+(error) { logger.error('Data processing failed', { data: sanitize(data), error: error.message, stack: error.stack })
+throw new DataProcessingError('Failed to process data', { cause: error }) } } \`\`\`
 
 ## Security Practices
 
@@ -317,6 +314,7 @@ async function processData(data) {
 ## Detailed Guidelines
 
 For comprehensive style guides by language, see:
+
 - `references/style-guide.md`
 ```
 
@@ -333,50 +331,28 @@ Detailed style guidelines for all supported languages.
 
 Use `const` by default, `let` when reassignment needed, never `var`:
 
-\`\`\`javascript
-// Good
-const MAX_RETRIES = 3
-let currentTry = 0
+\`\`\`javascript // Good const MAX_RETRIES = 3 let currentTry = 0
 
-// Bad
-var MAX_RETRIES = 3
-\`\`\`
+// Bad var MAX_RETRIES = 3 \`\`\`
 
 ### Function Declarations
 
 Use function expressions for consistency:
 
-\`\`\`javascript
-// Good
-const calculateTotal = (items) => {
-  return items.reduce((sum, item) => sum + item.price, 0)
-}
+\`\`\`javascript // Good const calculateTotal = (items) => { return items.reduce((sum, item) => sum + item.price, 0) }
 
-// Bad (inconsistent style)
-function calculateTotal(items) {
-  return items.reduce((sum, item) => sum + item.price, 0)
-}
+// Bad (inconsistent style) function calculateTotal(items) { return items.reduce((sum, item) => sum + item.price, 0) }
 \`\`\`
 
 ### Async/Await
 
 Prefer async/await over promise chains:
 
-\`\`\`javascript
-// Good
-async function fetchUserData(userId) {
-  const user = await db.getUser(userId)
-  const orders = await db.getOrders(user.id)
-  return { user, orders }
-}
+\`\`\`javascript // Good async function fetchUserData(userId) { const user = await db.getUser(userId) const orders =
+await db.getOrders(user.id) return { user, orders } }
 
-// Bad
-function fetchUserData(userId) {
-  return db.getUser(userId)
-    .then(user => db.getOrders(user.id)
-      .then(orders => ({ user, orders })))
-}
-\`\`\`
+// Bad function fetchUserData(userId) { return db.getUser(userId) .then(user => db.getOrders(user.id) .then(orders => ({
+user, orders }))) } \`\`\`
 
 ## Python
 
@@ -385,39 +361,37 @@ function fetchUserData(userId) {
 Order imports: standard library, third-party, local:
 
 \`\`\`python
+
 # Good
-import os
-import sys
 
-import numpy as np
-import pandas as pd
+import os import sys
 
-from app.models import User
-from app.utils import helper
+import numpy as np import pandas as pd
+
+from app.models import User from app.utils import helper
 
 # Bad - mixed order
-from app.models import User
-import numpy as np
-import os
-\`\`\`
+
+from app.models import User import numpy as np import os \`\`\`
 
 ### Type Hints
 
 Use type hints for all function signatures:
 
 \`\`\`python
+
 # Good
-def calculate_average(numbers: list[float]) -> float:
-    return sum(numbers) / len(numbers)
+
+def calculate_average(numbers: list[float]) -> float: return sum(numbers) / len(numbers)
 
 # Bad
-def calculate_average(numbers):
-    return sum(numbers) / len(numbers)
-\`\`\`
+
+def calculate_average(numbers): return sum(numbers) / len(numbers) \`\`\`
 
 ## Additional Languages
 
 See language-specific guides for:
+
 - Go: `references/go-style.md`
 - Rust: `references/rust-style.md`
 - Ruby: `references/ruby-style.md`

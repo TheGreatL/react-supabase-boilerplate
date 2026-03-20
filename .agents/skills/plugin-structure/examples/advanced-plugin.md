@@ -128,15 +128,8 @@ enterprise-devops/
     "deployment",
     "monitoring"
   ],
-  "commands": [
-    "./commands/ci",
-    "./commands/monitoring",
-    "./commands/admin"
-  ],
-  "agents": [
-    "./agents/orchestration",
-    "./agents/specialized"
-  ],
+  "commands": ["./commands/ci", "./commands/monitoring", "./commands/admin"],
+  "agents": ["./agents/orchestration", "./agents/specialized"],
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json"
 }
@@ -194,14 +187,8 @@ Trigger CI/CD build pipeline and monitor progress in real-time.
    - Check for uncommitted changes
    - Validate configuration files
 
-2. **Trigger**: Start build via MCP server
-   \`\`\`javascript
-   // Uses github-actions MCP server
-   const build = await tools.github_actions_trigger_workflow({
-     workflow: 'build.yml',
-     ref: currentBranch
-   })
-   \`\`\`
+2. **Trigger**: Start build via MCP server \`\`\`javascript // Uses github-actions MCP server const build = await
+   tools.github_actions_trigger_workflow({ workflow: 'build.yml', ref: currentBranch }) \`\`\`
 
 3. **Monitor**: Track build progress
    - Display real-time logs
@@ -217,6 +204,7 @@ Trigger CI/CD build pipeline and monitor progress in real-time.
 ## Integration
 
 After successful build:
+
 - Offer to deploy to staging
 - Suggest performance optimizations
 - Generate deployment checklist
@@ -282,29 +270,22 @@ Specialized agent for orchestrating complex deployments across multiple environm
 ## MCP Integration
 
 Uses multiple MCP servers:
+
 - `kubernetes`: Deploy and manage containers
 - `terraform`: Provision infrastructure
 - `github-actions`: Trigger deployment pipelines
 
 ## Monitoring Integration
 
-Integrates with monitoring tools via lib:
-\`\`\`javascript
-const { DatadogClient } = require('${CLAUDE_PLUGIN_ROOT}/lib/integrations/datadog')
-const metrics = await DatadogClient.getMetrics(service, timeRange)
-\`\`\`
+Integrates with monitoring tools via lib: \`\`\`javascript const { DatadogClient } =
+require('${CLAUDE_PLUGIN_ROOT}/lib/integrations/datadog') const metrics = await DatadogClient.getMetrics(service,
+timeRange) \`\`\`
 
 ## Notification Integration
 
-Sends updates via Slack and PagerDuty:
-\`\`\`javascript
-const { SlackClient } = require('${CLAUDE_PLUGIN_ROOT}/lib/integrations/slack')
-await SlackClient.notify({
-  channel: '#deployments',
-  message: 'Deployment started',
-  metadata: deploymentPlan
-})
-\`\`\`
+Sends updates via Slack and PagerDuty: \`\`\`javascript const { SlackClient } =
+require('${CLAUDE_PLUGIN_ROOT}/lib/integrations/slack') await SlackClient.notify({ channel: '#deployments', message:
+'Deployment started', metadata: deploymentPlan }) \`\`\`
 ```
 
 ### skills/kubernetes-ops/SKILL.md
@@ -312,7 +293,10 @@ await SlackClient.notify({
 ```markdown
 ---
 name: Kubernetes Operations
-description: This skill should be used when deploying to Kubernetes, managing K8s resources, troubleshooting cluster issues, configuring ingress/services, scaling deployments, or working with Kubernetes manifests. Provides comprehensive Kubernetes operational knowledge and best practices.
+description:
+  This skill should be used when deploying to Kubernetes, managing K8s resources, troubleshooting cluster issues,
+  configuring ingress/services, scaling deployments, or working with Kubernetes manifests. Provides comprehensive
+  Kubernetes operational knowledge and best practices.
 version: 2.0.0
 ---
 
@@ -323,6 +307,7 @@ Comprehensive operational knowledge for managing Kubernetes clusters and workloa
 ## Overview
 
 Manage Kubernetes infrastructure effectively through:
+
 - Deployment strategies and patterns
 - Resource configuration and optimization
 - Troubleshooting and debugging
@@ -334,16 +319,19 @@ Manage Kubernetes infrastructure effectively through:
 ### Resource Management
 
 **Deployments**: Use for stateless applications
+
 - Rolling updates for zero-downtime deployments
 - Rollback capabilities for failed deployments
 - Replica management for scaling
 
 **StatefulSets**: Use for stateful applications
+
 - Stable network identities
 - Persistent storage
 - Ordered deployment and scaling
 
 **DaemonSets**: Use for node-level services
+
 - Log collectors
 - Monitoring agents
 - Network plugins
@@ -351,11 +339,13 @@ Manage Kubernetes infrastructure effectively through:
 ### Configuration
 
 **ConfigMaps**: Store non-sensitive configuration
+
 - Environment-specific settings
 - Application configuration files
 - Feature flags
 
 **Secrets**: Store sensitive data
+
 - API keys and tokens
 - Database credentials
 - TLS certificates
@@ -365,11 +355,13 @@ Use external secret management (Vault, AWS Secrets Manager) for production.
 ### Networking
 
 **Services**: Expose applications internally
+
 - ClusterIP for internal communication
 - NodePort for external access (non-production)
 - LoadBalancer for external access (production)
 
 **Ingress**: HTTP/HTTPS routing
+
 - Path-based routing
 - Host-based routing
 - TLS termination
@@ -379,30 +371,21 @@ Use external secret management (Vault, AWS Secrets Manager) for production.
 
 ### Rolling Update
 
-Default strategy, gradual replacement:
-\`\`\`yaml
-strategy:
-  type: RollingUpdate
-  rollingUpdate:
-    maxSurge: 1
-    maxUnavailable: 0
-\`\`\`
+Default strategy, gradual replacement: \`\`\`yaml strategy: type: RollingUpdate rollingUpdate: maxSurge: 1
+maxUnavailable: 0 \`\`\`
 
 **When to use**: Standard deployments, minor updates
 
 ### Recreate
 
-Stop all pods, then create new ones:
-\`\`\`yaml
-strategy:
-  type: Recreate
-\`\`\`
+Stop all pods, then create new ones: \`\`\`yaml strategy: type: Recreate \`\`\`
 
 **When to use**: Stateful apps that can't run multiple versions
 
 ### Blue-Green
 
 Run two complete environments, switch traffic:
+
 1. Deploy new version (green)
 2. Test green environment
 3. Switch traffic to green
@@ -413,6 +396,7 @@ Run two complete environments, switch traffic:
 ### Canary
 
 Gradually roll out to subset of users:
+
 1. Deploy canary version (10% traffic)
 2. Monitor metrics and errors
 3. Increase traffic gradually
@@ -424,41 +408,19 @@ Gradually roll out to subset of users:
 
 ### Resource Requests and Limits
 
-Always set for production workloads:
-\`\`\`yaml
-resources:
-  requests:
-    memory: "256Mi"
-    cpu: "250m"
-  limits:
-    memory: "512Mi"
-    cpu: "500m"
-\`\`\`
+Always set for production workloads: \`\`\`yaml resources: requests: memory: "256Mi" cpu: "250m" limits: memory: "512Mi"
+cpu: "500m" \`\`\`
 
-**Requests**: Guaranteed resources
-**Limits**: Maximum allowed resources
+**Requests**: Guaranteed resources **Limits**: Maximum allowed resources
 
 ### Health Checks
 
-Essential for reliability:
-\`\`\`yaml
-livenessProbe:
-  httpGet:
-    path: /health
-    port: 8080
-  initialDelaySeconds: 30
-  periodSeconds: 10
+Essential for reliability: \`\`\`yaml livenessProbe: httpGet: path: /health port: 8080 initialDelaySeconds: 30
+periodSeconds: 10
 
-readinessProbe:
-  httpGet:
-    path: /ready
-    port: 8080
-  initialDelaySeconds: 5
-  periodSeconds: 5
-\`\`\`
+readinessProbe: httpGet: path: /ready port: 8080 initialDelaySeconds: 5 periodSeconds: 5 \`\`\`
 
-**Liveness**: Restart unhealthy pods
-**Readiness**: Remove unready pods from service
+**Liveness**: Restart unhealthy pods **Readiness**: Remove unready pods from service
 
 ## Troubleshooting
 
@@ -486,24 +448,12 @@ readinessProbe:
 
 ### Debugging Commands
 
-Get pod details:
-\`\`\`bash
-kubectl describe pod <name>
-kubectl logs <name>
-kubectl logs <name> --previous  # logs from crashed container
-\`\`\`
+Get pod details: \`\`\`bash kubectl describe pod <name> kubectl logs <name> kubectl logs <name> --previous # logs from
+crashed container \`\`\`
 
-Execute commands in pod:
-\`\`\`bash
-kubectl exec -it <name> -- /bin/sh
-kubectl exec <name> -- env
-\`\`\`
+Execute commands in pod: \`\`\`bash kubectl exec -it <name> -- /bin/sh kubectl exec <name> -- env \`\`\`
 
-Check resource usage:
-\`\`\`bash
-kubectl top nodes
-kubectl top pods
-\`\`\`
+Check resource usage: \`\`\`bash kubectl top nodes kubectl top pods \`\`\`
 
 ## Security Best Practices
 
@@ -514,35 +464,13 @@ kubectl top pods
 - Drop unnecessary capabilities
 - Use security contexts
 
-Example:
-\`\`\`yaml
-securityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  readOnlyRootFilesystem: true
-  capabilities:
-    drop:
-      - ALL
-\`\`\`
+Example: \`\`\`yaml securityContext: runAsNonRoot: true runAsUser: 1000 readOnlyRootFilesystem: true capabilities:
+drop: - ALL \`\`\`
 
 ### Network Policies
 
-Restrict pod communication:
-\`\`\`yaml
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: api-allow
-spec:
-  podSelector:
-    matchLabels:
-      app: api
-  ingress:
-    - from:
-      - podSelector:
-          matchLabels:
-            app: frontend
-\`\`\`
+Restrict pod communication: \`\`\`yaml apiVersion: networking.k8s.io/v1 kind: NetworkPolicy metadata: name: api-allow
+spec: podSelector: matchLabels: app: api ingress: - from: - podSelector: matchLabels: app: frontend \`\`\`
 
 ### Secrets Management
 
@@ -563,50 +491,24 @@ spec:
 
 ### Horizontal Pod Autoscaling
 
-Automatically scale based on metrics:
-\`\`\`yaml
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: api-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: api
-  minReplicas: 2
-  maxReplicas: 10
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
-\`\`\`
+Automatically scale based on metrics: \`\`\`yaml apiVersion: autoscaling/v2 kind: HorizontalPodAutoscaler metadata:
+name: api-hpa spec: scaleTargetRef: apiVersion: apps/v1 kind: Deployment name: api minReplicas: 2 maxReplicas: 10
+metrics: - type: Resource resource: name: cpu target: type: Utilization averageUtilization: 70 \`\`\`
 
 ## MCP Server Integration
 
 This skill works with the kubernetes MCP server for operations:
 
-**List pods**:
-\`\`\`javascript
-const pods = await tools.k8s_list_pods({ namespace: 'default' })
-\`\`\`
+**List pods**: \`\`\`javascript const pods = await tools.k8s_list_pods({ namespace: 'default' }) \`\`\`
 
-**Get pod logs**:
-\`\`\`javascript
-const logs = await tools.k8s_get_logs({ pod: 'api-xyz', container: 'app' })
-\`\`\`
+**Get pod logs**: \`\`\`javascript const logs = await tools.k8s_get_logs({ pod: 'api-xyz', container: 'app' }) \`\`\`
 
-**Apply manifests**:
-\`\`\`javascript
-const result = await tools.k8s_apply_manifest({ file: 'deployment.yaml' })
-\`\`\`
+**Apply manifests**: \`\`\`javascript const result = await tools.k8s_apply_manifest({ file: 'deployment.yaml' }) \`\`\`
 
 ## Detailed References
 
 For in-depth information:
+
 - **Deployment patterns**: `references/deployment-patterns.md`
 - **Troubleshooting guide**: `references/troubleshooting.md`
 - **Security hardening**: `references/security.md`
@@ -614,16 +516,15 @@ For in-depth information:
 ## Example Manifests
 
 For copy-paste examples:
+
 - **Basic deployment**: `examples/basic-deployment.yaml`
 - **StatefulSet**: `examples/stateful-set.yaml`
 - **Ingress config**: `examples/ingress-config.yaml`
 
 ## Validation Scripts
 
-For manifest validation:
-\`\`\`bash
-bash ${CLAUDE_PLUGIN_ROOT}/skills/kubernetes-ops/scripts/validate-manifest.sh deployment.yaml
-\`\`\`
+For manifest validation: \`\`\`bash bash ${CLAUDE_PLUGIN_ROOT}/skills/kubernetes-ops/scripts/validate-manifest.sh
+deployment.yaml \`\`\`
 ```
 
 ### hooks/hooks.json
@@ -700,13 +601,13 @@ bash ${CLAUDE_PLUGIN_ROOT}/skills/kubernetes-ops/scripts/validate-manifest.sh de
 
 ### Multi-Level Organization
 
-**Commands**: Organized by function (CI, monitoring, admin)
-**Agents**: Separated by role (orchestration vs. specialized)
-**Skills**: Rich resources (references, examples, scripts)
+**Commands**: Organized by function (CI, monitoring, admin) **Agents**: Separated by role (orchestration vs.
+specialized) **Skills**: Rich resources (references, examples, scripts)
 
 ### MCP Integration
 
 Three custom MCP servers:
+
 - **Kubernetes**: Cluster operations
 - **Terraform**: Infrastructure provisioning
 - **GitHub Actions**: CI/CD automation
@@ -714,6 +615,7 @@ Three custom MCP servers:
 ### Shared Libraries
 
 Reusable code in `lib/`:
+
 - **Core**: Common utilities (logging, config, auth)
 - **Integrations**: External services (Slack, Datadog)
 - **Utils**: Helper functions (retry, validation)
@@ -721,12 +623,14 @@ Reusable code in `lib/`:
 ### Configuration Management
 
 Environment-specific configs in `config/`:
+
 - **Environments**: Per-environment settings
 - **Templates**: Reusable deployment templates
 
 ### Security Automation
 
 Multiple security hooks:
+
 - Secret scanning before writes
 - Permission validation on session start
 - Configuration auditing on completion
@@ -734,6 +638,7 @@ Multiple security hooks:
 ### Monitoring Integration
 
 Built-in monitoring via lib integrations:
+
 - Datadog for metrics
 - PagerDuty for alerts
 - Slack for notifications
