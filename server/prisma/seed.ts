@@ -14,20 +14,6 @@ async function main() {
 
   const hashedPassword = await bcrypt.hash('password123', 10);
 
-  // 1. Create Super Admin
-  const superAdmin = await prisma.user.upsert({
-    where: {email: 'superadmin@example.com'},
-    update: {},
-    create: {
-      email: 'superadmin@example.com',
-      password: hashedPassword,
-      firstName: 'Super',
-      lastName: 'Admin',
-      role: Role.ADMIN
-    }
-  });
-  console.log('✅ Super Admin created:', superAdmin.email);
-
   // 2. Create Admin
   const admin = await prisma.user.upsert({
     where: {email: 'admin@example.com'},
@@ -41,20 +27,6 @@ async function main() {
     }
   });
   console.log('✅ Admin created:', admin.email);
-
-  // 3. Create Employee
-  const employee = await prisma.user.upsert({
-    where: {email: 'employee@example.com'},
-    update: {},
-    create: {
-      email: 'employee@example.com',
-      password: hashedPassword,
-      firstName: 'John',
-      lastName: 'Employee',
-      role: Role.USER
-    }
-  });
-  console.log('✅ Employee created:', employee.email);
 
   // 4. Create standard Users
   const user = await prisma.user.upsert({

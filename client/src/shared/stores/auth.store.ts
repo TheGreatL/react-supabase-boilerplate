@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { authService } from '../../features/auth/auth.service'
 
-interface User {
+interface TUser {
   id: string
   email: string
   firstName: string
@@ -10,23 +11,21 @@ interface User {
   avatar?: string
 }
 
-interface AuthState {
-  user: User | null
+interface TAuthState {
+  user: TUser | null
   isAuthenticated: boolean
-  setAuth: (user: User, accessToken: string) => void
+  setAuth: (user: TUser, accessToken: string) => void
   getMe: () => Promise<void>
   initialize: () => Promise<void>
   logout: () => void
 }
 
-import { authService } from '../../features/auth/auth.service'
-
-export const useAuthStore = create<AuthState>()(
-  persist(
+export const useAuthStore = create<TAuthState>()(
+  persist<TAuthState>(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
-      setAuth: (user, accessToken) => {
+      setAuth: (user: TUser, accessToken: string) => {
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken)
         }
@@ -36,10 +35,11 @@ export const useAuthStore = create<AuthState>()(
         try {
           const response = await authService.getMe()
           if (response.success) {
-            set({ user: response.data, isAuthenticated: true })
+            set({ user: response.data })
           }
-        } catch (error) {
-          get().logout()
+        } catch (error: unknown) {
+          console.error('Failed to fetch user profile:', error)
+          // Don't logout automatically here to avoid infinite loops
         }
       },
       initialize: async () => {

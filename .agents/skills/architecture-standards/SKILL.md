@@ -61,3 +61,15 @@ folder structure and uniform, lowercase file naming conventions.
   - `login-form.tsx`
   - `profile-card.tsx`
   - `dashboard.page.tsx` (if representing a full route layout)
+
+#### 4. Naming Conventions for Types & Interfaces
+
+- **T-Prefix Rule**: ALL types and interfaces MUST start with a capital `T` followed by an uppercase first letter.
+  - **Correct**: `TJWTPayload`, `TAuthResponse`
+  - **Incorrect**: `JWTPayload`, `AuthResponse`
+
+#### 5. Strict Typing
+
+- **No `any`**: The use of `any` is strictly forbidden.
+  - Use specific interfaces, types, or `Record<string, unknown>`.
+  - If a type is truly unknown, use `unknown` and perform type checking before access.

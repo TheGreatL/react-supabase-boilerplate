@@ -15,11 +15,4 @@ export class UserController {
     const user = await userService.getUserById(req.params.id as string);
     return ApiResponse.success(res, user, 'User retrieved successfully');
   });
-
-  static updateProfile = asyncHandler(async (req: Request, res: Response) => {
-    // Usually you'd get the ID from req.user for profile updates
-    const userId = (req as any).user.id;
-    const user = await userService.updateUser(userId, req.body);
-    return ApiResponse.success(res, user, 'Profile updated successfully');
-  });
 }

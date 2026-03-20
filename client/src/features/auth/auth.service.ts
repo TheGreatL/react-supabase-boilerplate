@@ -7,7 +7,7 @@ export const authService = {
     return response.data
   },
 
-  register: async (data: any) => {
+  register: async (data: TRegister) => {
     const response = await api.post('/auth/register', data)
     return response.data
   },

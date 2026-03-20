@@ -6,7 +6,7 @@ import {Prisma} from '@prisma/client';
  * makes them reusable across features (e.g., when a Post repository needs a User with Profile).
  */
 
-export type UserWithProfile = Prisma.UserGetPayload<{
+export type TUserWithProfile = Prisma.UserGetPayload<{
   include: {profile: true};
 }>;
 
@@ -19,6 +19,6 @@ export const UserBasicSelect = {
   role: true
 } as const;
 
-export type UserBasic = Prisma.UserGetPayload<{
+export type TUserBasic = Prisma.UserGetPayload<{
   select: typeof UserBasicSelect;
 }>;

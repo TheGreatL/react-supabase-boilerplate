@@ -1,6 +1,6 @@
 import {Response} from 'express';
 
-export class ApiResponse<T = any> {
+export class ApiResponse<T> {
   public success: boolean;
   public message: string;
   public data?: T;

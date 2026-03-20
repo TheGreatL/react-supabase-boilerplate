@@ -1,0 +1,204 @@
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
+import {
+  Loader2,
+  Mail,
+  Lock,
+  User,
+  ArrowRight,
+  AlertCircleIcon,
+} from 'lucide-react'
+import { toast } from 'sonner'
+import { registerSchema } from '../auth.schema'
+import type { TRegister } from '../auth.schema'
+import { authService } from '../auth.service'
+import { useAuthStore } from '../../../shared/stores/auth.store'
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '#/shared/components/ui/alert'
+
+export default function RegisterForm() {
+  const navigate = useNavigate()
+  const setAuth = useAuthStore((state) => state.setAuth)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TRegister>({
+    resolver: zodResolver(registerSchema),
+  })
+
+  const mutation = useMutation({
+    mutationFn: (data: TRegister) => authService.register(data),
+    onSuccess: async (response) => {
+      setAuth(response.data.user, response.data.accessToken)
+      await useAuthStore.getState().getMe()
+
+      toast.success('Account created successfully!', {
+        description: 'Welcome to our platform. Redirecting to dashboard...',
+      })
+
+      setTimeout(() => {
+        navigate({ to: '/dashboard' })
+      }, 1000)
+    },
+    onError: (
+      error: Error & { response?: { data?: { message?: string } } },
+    ) => {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        'Registration failed. Please try again.'
+      toast.error(message)
+    },
+  })
+
+  const onSubmit = (data: TRegister) => {
+    mutation.mutate(data)
+  }
+
+  return (
+    <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="text-center space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
+          Create an Account
+        </h1>
+        <p className="text-muted-foreground">
+          Enter your details to create your account
+        </p>
+      </div>
+
+      {mutation.isError && (
+        <Alert variant="destructive">
+          <AlertCircleIcon className="h-4 w-4" />
+          <AlertTitle>Registration failed</AlertTitle>
+          <AlertDescription>
+            {(
+              mutation.error as Error & {
+                response?: { data?: { message?: string } }
+              }
+            )?.response?.data?.message ||
+              'Something went wrong. Please try again.'}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label htmlFor="firstName" className="text-sm font-medium">
+              First Name
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <input
+                {...register('firstName')}
+                id="firstName"
+                placeholder="John"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              />
+            </div>
+            {errors.firstName && (
+              <p className="text-xs font-medium text-destructive">
+                {errors.firstName.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="lastName" className="text-sm font-medium">
+              Last Name
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <input
+                {...register('lastName')}
+                id="lastName"
+                placeholder="Doe"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              />
+            </div>
+            {errors.lastName && (
+              <p className="text-xs font-medium text-destructive">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="email" className="text-sm font-medium">
+            Email Address
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <input
+              {...register('email')}
+              id="email"
+              type="email"
+              placeholder="name@example.com"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
+          {errors.email && (
+            <p className="text-xs font-medium text-destructive">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <input
+              {...register('password')}
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
+          {errors.password && (
+            <p className="text-xs font-medium text-destructive">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        <button
+          disabled={mutation.isPending}
+          type="submit"
+          className="relative w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:opacity-70"
+        >
+          {mutation.isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <>
+              Create Account
+              <ArrowRight className="h-4 w-4" />
+            </>
+          )}
+        </button>
+      </form>
+
+      <div className="text-center">
+        <p className="text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <button
+            onClick={() => navigate({ to: '/login' })}
+            className="font-medium text-indigo-500 hover:text-indigo-600 transition-colors"
+          >
+            Sign in instead
+          </button>
+        </p>
+      </div>
+    </div>
+  )
+}

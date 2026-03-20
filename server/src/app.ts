@@ -10,30 +10,42 @@ import {ApiResponse} from './shared/utils/api-response';
 import swaggerUi from 'swagger-ui-express';
 import {swaggerSpec} from './shared/lib/swagger';
 
+/**
+ * Gold Standard:
+ * App.ts is the main Express application configuration.
+ * It sets up middleware, security headers, routing, and error handling.
+ */
 const app = express();
-app.use(json());
+
+// 1. Core Middleware
+app.use(json()); // Parse JSON request bodies
+app.use(urlencoded({extended: true})); // Parse URL-encoded bodies
+app.use(cookieParser()); // Parse cookies (used for refresh tokens)
+
+// 2. Security Middleware
 app.use(
   cors({
     origin: config.FRONTEND_URL,
-    credentials: true
+    credentials: true // Allow cookies to be sent cross-origin
   })
 );
-app.use(helmet());
-app.use(urlencoded({extended: true}));
-app.use(cookieParser());
+app.use(helmet()); // Set various HTTP headers for security
 
-app.use(morgan('dev'));
+// 3. Logging
+app.use(morgan('dev')); // Request logging
+
+// 4. API Routes
 app.use('/api', routes);
 
-// Swagger API Documentation
+// 5. Swagger API Documentation (accessible at /api/docs)
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// 404 Handler
+// 6. 404 Handler for undefined routes
 app.use((req: Request, res: Response) => {
   ApiResponse.error(res, 'Resource not found', 404);
 });
 
-// Global Error Handler
+// 7. Global Error Handler (Must be last)
 app.use(errorMiddleware);
 
 export default app;

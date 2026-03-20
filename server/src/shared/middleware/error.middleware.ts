@@ -3,7 +3,7 @@ import {ApiResponse} from '../utils/api-response';
 import {logger} from '../lib/logger';
 import {HttpException} from '../exceptions/http-exception';
 
-export const errorMiddleware = (error: any, req: Request, res: Response, next: NextFunction) => {
+export const errorMiddleware = (error: any, req: Request, res: Response, _next: NextFunction) => {
   let statusCode = 500;
   let message = 'Internal Server Error';
   let errors = null;
@@ -29,3 +29,4 @@ export const errorMiddleware = (error: any, req: Request, res: Response, next: N
 
   ApiResponse.error(res, message, statusCode, errors);
 };
+

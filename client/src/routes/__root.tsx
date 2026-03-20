@@ -18,13 +18,13 @@ import { Toaster } from '#/shared/components/ui/sonner'
 import { useAuthStore } from '../shared/stores/auth.store'
 import { useEffect } from 'react'
 
-interface MyRouterContext {
+interface TMyRouterContext {
   queryClient: QueryClient
 }
 
 const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getItem('theme');var mode=(stored==='light'||stored==='dark'||stored==='auto')?stored:'auto';var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);if(mode==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',mode)}root.style.colorScheme=resolved;}catch(e){}})();`
 
-export const Route = createRootRouteWithContext<MyRouterContext>()({
+export const Route = createRootRouteWithContext<TMyRouterContext>()({
   head: () => ({
     meta: [
       {
@@ -101,7 +101,7 @@ function PendingComponent() {
   )
 }
 
-function ErrorComponent({ error }: { error: any }) {
+function ErrorComponent({ error }: { error: Error }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-slate-50">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 text-center space-y-6 animate-in fade-in zoom-in-95 duration-500">
@@ -116,12 +116,12 @@ function ErrorComponent({ error }: { error: any }) {
             Oops! Something went wrong
           </h1>
           <p className="text-slate-500 text-sm">
-            {error?.message ||
+            {error.message ||
               'An unexpected error occurred. Please try again later.'}
           </p>
         </div>
 
-        {process.env.NODE_ENV === 'development' && error?.stack && (
+        {process.env.NODE_ENV === 'development' && error.stack && (
           <div className="p-4 bg-slate-100 rounded-lg text-left overflow-auto max-h-40">
             <pre className="text-[10px] text-slate-700 font-mono italic">
               {error.stack}

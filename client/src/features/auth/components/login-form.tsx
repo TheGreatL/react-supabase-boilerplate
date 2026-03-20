@@ -46,7 +46,9 @@ export default function LoginForm() {
         navigate({ to: '/dashboard' })
       }, 1000)
     },
-    onError: (error: any) => {
+    onError: (
+      error: Error & { response?: { data?: { message?: string } } },
+    ) => {
       console.error('Login error full:', error)
       const message =
         error.response?.data?.message ||
@@ -76,8 +78,11 @@ export default function LoginForm() {
           <AlertCircleIcon className="h-4 w-4" />
           <AlertTitle>Failed to login</AlertTitle>
           <AlertDescription>
-            {(mutation.error as any)?.response?.data?.message ||
-              'Invalid credentials'}
+            {(
+              mutation.error as Error & {
+                response?: { data?: { message?: string } }
+              }
+            ).response?.data?.message || 'Invalid credentials'}
           </AlertDescription>
         </Alert>
       )}

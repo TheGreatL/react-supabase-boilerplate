@@ -9,3 +9,10 @@ export const loginSchema = z.object({
 })
 
 export type TLogin = z.infer<typeof loginSchema>
+
+export const registerSchema = loginSchema.extend({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+})
+
+export type TRegister = z.infer<typeof registerSchema>

@@ -24,3 +24,11 @@
 - **Axios Configuration**: Managed in `src/shared/api/api-config.ts`.
 - **Interceptors**: Automatically handles token injection and silent refresh logic (ignoring auth routes).
 - **Environment**: Managed via `src/env.ts` with strict Zod validation.
+
+## 📝 Naming Conventions & Typing
+
+To ensure consistency and type safety throughout the project:
+
+1. **Type/Interface Prefixing**: All custom types and interfaces MUST start with a capital `T` followed by an uppercase first letter (e.g., `TUser`, `TAuthResponse`).
+2. **Strict Typing**: Avoid using the `any` type at all costs. Use descriptive interfaces or `unknown` with type guards/assertions if the shape is truly dynamic.
+3. **File Naming**: Follow the `lowercase-with-hyphens.purpose.extension` format.
