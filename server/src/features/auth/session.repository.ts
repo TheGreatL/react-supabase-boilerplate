@@ -1,6 +1,5 @@
-import {Prisma, PrismaClient} from '@prisma/client';
-
-const prisma = new PrismaClient();
+import {Prisma} from '@prisma/client';
+import {prisma} from '../../shared/lib/prisma';
 
 export class SessionRepository {
   async create(data: {userId: string; refreshToken: string; expiresAt: Date}) {
