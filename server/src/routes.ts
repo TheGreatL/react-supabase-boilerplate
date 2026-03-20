@@ -13,6 +13,6 @@ const routes = Router();
 routes.use('/auth', authRoute);
 
 // 2. User related routes (Profile management, user retrieval)
-routes.use('/users', userRoute);
+routes.use('/user', userRoute);
 
 export default routes;
