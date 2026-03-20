@@ -119,7 +119,11 @@ export default class AuthController {
       return ApiResponse.error(res, 'Refresh token required', httpStatus.UNAUTHORIZED);
     }
 
-    const accessToken = await authService.refreshToken(refreshToken);
+    const {accessToken, refreshToken: newRefreshToken} = await authService.refreshToken(refreshToken);
+
+    // Rotation: Set the brand-new refresh token as the cookie
+    AuthController.setRefreshTokenCookie(res, newRefreshToken);
+
     return ApiResponse.success(res, {accessToken}, 'Token refreshed');
   });
 
@@ -134,8 +138,11 @@ export default class AuthController {
    *         description: Logged out successfully
    */
   static logout = asyncHandler(async (req: Request, res: Response) => {
+    const refreshToken = req.cookies.refreshToken;
+    if (refreshToken) {
+      await authService.logout(refreshToken);
+    }
     res.clearCookie('refreshToken');
-    await Promise.resolve();
     return ApiResponse.success(res, null, 'Logged out successfully');
   });
 

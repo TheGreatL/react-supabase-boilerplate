@@ -2,6 +2,15 @@ import axios from 'axios'
 import type { InternalAxiosRequestConfig } from 'axios'
 import { env } from '#/env'
 
+// In-memory storage for the access token to avoid localStorage attacks (XSS)
+let inMemoryAccessToken: string | null = null
+
+export const setAccessToken = (token: string | null) => {
+  inMemoryAccessToken = token
+}
+
+export const getAccessToken = () => inMemoryAccessToken
+
 const api = axios.create({
   baseURL: `${env.VITE_API_URL}/api`,
   withCredentials: true,
@@ -13,9 +22,8 @@ const api = axios.create({
 // Request interceptor for adding tokens if needed (though cookies are handled automatically)
 api.interceptors.request.use(
   (config) => {
-    // If you use Bearer tokens in headers instead of just cookies:
-    const token =
-      typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null
+    // Read from in-memory variable instead of localStorage
+    const token = inMemoryAccessToken
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -55,13 +63,14 @@ api.interceptors.response.use(
         )
 
         if (data.success) {
-          localStorage.setItem('accessToken', data.data.accessToken)
+          // Update in-memory token
+          setAccessToken(data.data.accessToken)
           originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`
           return axios(originalRequest)
         }
       } catch (refreshError) {
         // Broad logout or redirect to login
-        localStorage.removeItem('accessToken')
+        setAccessToken(null)
         if (typeof window !== 'undefined') {
           window.location.href = '/login'
         }

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { authService } from '../../features/auth/auth.service'
+import { setAccessToken } from '../api/api-config'
 
 interface TUser {
   id: string
@@ -17,7 +18,7 @@ interface TAuthState {
   setAuth: (user: TUser, accessToken: string) => void
   getMe: () => Promise<void>
   initialize: () => Promise<void>
-  logout: () => void
+  logout: () => Promise<void>
 }
 
 export const useAuthStore = create<TAuthState>()(
@@ -27,7 +28,7 @@ export const useAuthStore = create<TAuthState>()(
       isAuthenticated: false,
       setAuth: (user: TUser, accessToken: string) => {
         if (accessToken) {
-          localStorage.setItem('accessToken', accessToken)
+          setAccessToken(accessToken)
         }
         set({ user, isAuthenticated: true })
       },
@@ -39,23 +40,38 @@ export const useAuthStore = create<TAuthState>()(
           }
         } catch (error: unknown) {
           console.error('Failed to fetch user profile:', error)
-          // Don't logout automatically here to avoid infinite loops
+          // Interceptor will handle token refresh, no need to logout immediately
         }
       },
       initialize: async () => {
-        const token = localStorage.getItem('accessToken')
-        if (token) {
+        // Try fetching user profile if we believe we're authenticated.
+        // If we don't have an access token in memory yet, the api-config interceptor
+        // will implicitly use our http-only cookie to silent-refresh one!
+        if (get().isAuthenticated) {
           await get().getMe()
         }
       },
-      logout: () => {
-        localStorage.removeItem('accessToken')
+      logout: async () => {
+        setAccessToken(null)
         set({ user: null, isAuthenticated: false })
+        try {
+          // Call backend to destroy the session/refresh token cookie entirely
+          await authService.logout()
+        } catch (error: unknown) {
+          console.error('Logout request failed:', error)
+        }
       },
     }),
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
+      // IMPORTANT: Never persist the access token if it was added to the state.
+      // We only store insensitive info here.
+      partialize: (state) =>
+        ({
+          user: state.user,
+          isAuthenticated: state.isAuthenticated,
+        }) as TAuthState,
     },
   ),
 )
