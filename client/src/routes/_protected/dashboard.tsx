@@ -13,8 +13,8 @@ function DashboardComponent() {
   const logout = useAuthStore((state) => state.logout)
 
   return (
-    <div className="p-8 animate-in fade-in slide-in-from-top-4 duration-500">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="animate-in fade-in slide-in-from-top-4 p-8 duration-500">
+      <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-slate-900">
@@ -27,14 +27,14 @@ function DashboardComponent() {
           <Button onClick={logout}>Logout</Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
             <h3 className="text-sm font-medium text-slate-400">Account Type</h3>
             <p className="text-xl font-bold text-slate-900 uppercase">
               {user?.role}
             </p>
           </div>
-          <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm col-span-2">
+          <div className="col-span-2 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
             <h3 className="text-sm font-medium text-slate-400">
               Email Address
             </h3>

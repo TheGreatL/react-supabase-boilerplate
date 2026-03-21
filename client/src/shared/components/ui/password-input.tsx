@@ -13,7 +13,7 @@ function PasswordInput({ className, ...props }: React.ComponentProps<'input'>) {
   const [showPassword, setShowPassword] = React.useState(false)
 
   return (
-    <div className="relative group/password">
+    <div className="group/password relative">
       <Input
         type={showPassword ? 'text' : 'password'}
         className={cn('pr-10', className)}
@@ -22,7 +22,7 @@ function PasswordInput({ className, ...props }: React.ComponentProps<'input'>) {
       <button
         type="button"
         onClick={() => setShowPassword((prev) => !prev)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+        className="text-muted-foreground/50 hover:text-foreground focus-visible:ring-ring absolute top-1/2 right-3 -translate-y-1/2 rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         aria-label={showPassword ? 'Hide password' : 'Show password'}
       >
         {showPassword ? (

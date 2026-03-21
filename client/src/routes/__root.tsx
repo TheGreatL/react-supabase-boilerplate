@@ -67,7 +67,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body suppressHydrationWarning className="antialiased wrap-anywhere ">
+      <body suppressHydrationWarning className="wrap-anywhere antialiased">
         <TanStackQueryProvider>
           {/* <Header /> */}
           <Toaster richColors />

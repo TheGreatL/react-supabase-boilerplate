@@ -65,9 +65,9 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
+    <div className="animate-in fade-in slide-in-from-bottom-4 w-full max-w-md space-y-8 duration-700">
+      <div className="space-y-2 text-center">
+        <h1 className="bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
           Create an Account
         </h1>
         <p className="text-muted-foreground">
@@ -97,7 +97,7 @@ export default function RegisterForm() {
               First Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+              <User className="text-muted-foreground absolute top-3 left-3 z-10 h-4 w-4" />
               <Input
                 {...register('firstName')}
                 id="firstName"
@@ -106,7 +106,7 @@ export default function RegisterForm() {
               />
             </div>
             {errors.firstName && (
-              <p className="text-xs font-medium text-destructive">
+              <p className="text-destructive text-xs font-medium">
                 {errors.firstName.message}
               </p>
             )}
@@ -116,7 +116,7 @@ export default function RegisterForm() {
               Last Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+              <User className="text-muted-foreground absolute top-3 left-3 z-10 h-4 w-4" />
               <Input
                 {...register('lastName')}
                 id="lastName"
@@ -125,7 +125,7 @@ export default function RegisterForm() {
               />
             </div>
             {errors.lastName && (
-              <p className="text-xs font-medium text-destructive">
+              <p className="text-destructive text-xs font-medium">
                 {errors.lastName.message}
               </p>
             )}
@@ -137,7 +137,7 @@ export default function RegisterForm() {
             Email Address
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+            <Mail className="text-muted-foreground absolute top-3 left-3 z-10 h-4 w-4" />
             <Input
               {...register('email')}
               id="email"
@@ -147,7 +147,7 @@ export default function RegisterForm() {
             />
           </div>
           {errors.email && (
-            <p className="text-xs font-medium text-destructive">
+            <p className="text-destructive text-xs font-medium">
               {errors.email.message}
             </p>
           )}
@@ -158,7 +158,7 @@ export default function RegisterForm() {
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+            <Lock className="text-muted-foreground absolute top-3 left-3 z-10 h-4 w-4" />
             <PasswordInput
               {...register('password')}
               id="password"
@@ -167,7 +167,7 @@ export default function RegisterForm() {
             />
           </div>
           {errors.password && (
-            <p className="text-xs font-medium text-destructive">
+            <p className="text-destructive text-xs font-medium">
               {errors.password.message}
             </p>
           )}
@@ -176,7 +176,7 @@ export default function RegisterForm() {
         <button
           disabled={mutation.isPending}
           type="submit"
-          className="relative w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:opacity-70"
+          className="relative flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:opacity-70"
         >
           {mutation.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -190,11 +190,11 @@ export default function RegisterForm() {
       </form>
 
       <div className="text-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Already have an account?{' '}
           <button
             onClick={() => navigate({ to: '/login' })}
-            className="font-medium text-indigo-500 hover:text-indigo-600 transition-colors"
+            className="font-medium text-indigo-500 transition-colors hover:text-indigo-600"
           >
             Sign in instead
           </button>
