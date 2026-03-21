@@ -63,17 +63,27 @@ api.interceptors.response.use(
         )
 
         if (data.success) {
+          const newAccessToken = data.data.accessToken
+          console.log('🔄 Token refreshed successfully')
+
           // Update in-memory token
-          setAccessToken(data.data.accessToken)
-          originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`
-          return axios(originalRequest)
+          setAccessToken(newAccessToken)
+
+          // Update the original request with the NEW token
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+
+          // IMPORTANT: Use the 'api' instance to retry so it gets all interceptors
+          return api(originalRequest)
         }
       } catch (refreshError) {
-        // Broad logout or redirect to login
-        setAccessToken(null)
+        console.error('❌ Session refresh failed:', refreshError)
+
+        // Clear stale auth data from localStorage before redirecting
         if (typeof window !== 'undefined') {
+          localStorage.removeItem('auth-storage')
           window.location.href = '/login'
         }
+        setAccessToken(null)
         return Promise.reject(refreshError)
       }
     }

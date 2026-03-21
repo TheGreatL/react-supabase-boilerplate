@@ -13,6 +13,8 @@ import {
   AlertDescription,
   AlertTitle,
 } from '@/shared/components/ui/alert'
+import { Input } from '@/shared/components/ui/input'
+import { PasswordInput } from '@/shared/components/ui/password-input'
 
 export default function LoginForm() {
   const navigate = useNavigate()
@@ -99,13 +101,13 @@ export default function LoginForm() {
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <input
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+              <Input
                 {...register('email')}
                 id="email"
                 type="email"
                 placeholder="name@example.com"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+                className="pl-9"
               />
             </div>
             {errors.email && (
@@ -131,13 +133,12 @@ export default function LoginForm() {
               </a>
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <input
+              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+              <PasswordInput
                 {...register('password')}
                 id="password"
-                type="password"
                 placeholder="••••••••"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+                className="pl-9"
               />
             </div>
             {errors.password && (

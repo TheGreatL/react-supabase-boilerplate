@@ -1,5 +1,5 @@
 import api from '../../shared/api/api-config'
-import type { TLogin } from './auth.schema'
+import type { TLogin, TRegister } from './auth.schema'
 
 export const authService = {
   login: async (data: TLogin) => {

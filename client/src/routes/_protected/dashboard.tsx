@@ -1,29 +1,11 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { useAuthStore } from '../shared/stores/auth.store'
+import { createFileRoute } from '@tanstack/react-router'
+import { useAuthStore } from '@/shared/stores/auth.store'
+import { Button } from '@/shared/components/ui/button'
+import { LoadingDashboard } from '@/features/dashboard/components/loading-dashboard'
 
-export const Route = createFileRoute('/dashboard')({
-  beforeLoad: ({ location }) => {
-    const isAuthenticated = useAuthStore.getState().isAuthenticated
-    if (!isAuthenticated) {
-      throw redirect({
-        to: '/login',
-        search: {
-          redirect: location.href,
-        },
-      })
-    }
-  },
+export const Route = createFileRoute('/_protected/dashboard')({
   component: DashboardComponent,
-  pendingComponent: () => (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="flex flex-col items-center gap-2">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
-        <p className="text-sm font-medium text-slate-500">
-          Loading Dashboard...
-        </p>
-      </div>
-    </div>
-  ),
+  pendingComponent: LoadingDashboard,
 })
 
 function DashboardComponent() {
@@ -42,12 +24,7 @@ function DashboardComponent() {
               Welcome back, {user?.firstName} {user?.lastName}!
             </p>
           </div>
-          <button
-            onClick={logout}
-            className="rounded-xl bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100 transition-colors active:scale-95"
-          >
-            Logout
-          </button>
+          <Button onClick={logout}>Logout</Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -15,6 +15,8 @@ interface TUser {
 interface TAuthState {
   user: TUser | null
   isAuthenticated: boolean
+  hasHydrated: boolean
+  setHasHydrated: (status: boolean) => void
   setAuth: (user: TUser, accessToken: string) => void
   getMe: () => Promise<void>
   initialize: () => Promise<void>
@@ -26,10 +28,10 @@ export const useAuthStore = create<TAuthState>()(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
+      hasHydrated: false, // <-- manual flag
+      setHasHydrated: (status: boolean) => set({ hasHydrated: status }),
       setAuth: (user: TUser, accessToken: string) => {
-        if (accessToken) {
-          setAccessToken(accessToken)
-        }
+        if (accessToken) setAccessToken(accessToken)
         set({ user, isAuthenticated: true })
       },
       getMe: async () => {
@@ -38,15 +40,11 @@ export const useAuthStore = create<TAuthState>()(
           if (response.success) {
             set({ user: response.data })
           }
-        } catch (error: unknown) {
+        } catch (error) {
           console.error('Failed to fetch user profile:', error)
-          // Interceptor will handle token refresh, no need to logout immediately
         }
       },
       initialize: async () => {
-        // Try fetching user profile if we believe we're authenticated.
-        // If we don't have an access token in memory yet, the api-config interceptor
-        // will implicitly use our http-only cookie to silent-refresh one!
         if (get().isAuthenticated) {
           await get().getMe()
         }
@@ -55,9 +53,8 @@ export const useAuthStore = create<TAuthState>()(
         setAccessToken(null)
         set({ user: null, isAuthenticated: false })
         try {
-          // Call backend to destroy the session/refresh token cookie entirely
           await authService.logout()
-        } catch (error: unknown) {
+        } catch (error) {
           console.error('Logout request failed:', error)
         }
       },
@@ -65,13 +62,16 @@ export const useAuthStore = create<TAuthState>()(
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
-      // IMPORTANT: Never persist the access token if it was added to the state.
-      // We only store insensitive info here.
       partialize: (state) =>
         ({
           user: state.user,
           isAuthenticated: state.isAuthenticated,
         }) as TAuthState,
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.setHasHydrated(true)
+        }
+      },
     },
   ),
 )
