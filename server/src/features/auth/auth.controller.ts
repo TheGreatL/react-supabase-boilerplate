@@ -35,14 +35,14 @@ export default class AuthController {
    *       content:
    *         application/json:
    *           schema:
-   *             $ref: '#/components/schemas/LoginRequest'
+   *             $ref: '@/components/schemas/LoginRequest'
    *     responses:
    *       200:
    *         description: Login successful
    *         content:
    *           application/json:
    *             schema:
-   *               $ref: '#/components/schemas/AuthResponse'
+   *               $ref: '@/components/schemas/AuthResponse'
    *       401:
    *         description: Invalid credentials
    */
@@ -66,14 +66,14 @@ export default class AuthController {
    *       content:
    *         application/json:
    *           schema:
-   *             $ref: '#/components/schemas/RegisterRequest'
+   *             $ref: '@/components/schemas/RegisterRequest'
    *     responses:
    *       201:
    *         description: Registration successful
    *         content:
    *           application/json:
    *             schema:
-   *               $ref: '#/components/schemas/AuthResponse'
+   *               $ref: '@/components/schemas/AuthResponse'
    *       400:
    *         description: User already exists
    */
@@ -167,7 +167,7 @@ export default class AuthController {
    *                 message:
    *                   type: string
    *                 data:
-   *                   $ref: '#/components/schemas/User'
+   *                   $ref: '@/components/schemas/User'
    *       401:
    *         description: Unauthorized
    */

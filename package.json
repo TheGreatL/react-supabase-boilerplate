@@ -16,6 +16,7 @@
     "docker:studio": "docker exec -it boilerplate_api npm run db:studio",
     "docker:seed": "docker exec -it boilerplate_api npm run db:seed",
     "docker:reset": "docker exec -it boilerplate_api npm run db:reset",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "prepare": "husky"
   },
   "repository": {
@@ -35,7 +36,8 @@
   },
   "devDependencies": {
     "husky": "^9.1.7",
-    "lint-staged": "^16.3.4"
+    "lint-staged": "^16.3.4",
+    "prettier": "^3.8.1"
   },
   "lint-staged": {
     "client/src/**/*.{ts,tsx}": [

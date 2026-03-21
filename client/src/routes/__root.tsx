@@ -13,7 +13,7 @@ import TanStackQueryDevtools from '../shared/integrations/tanstack-query/devtool
 import appCss from '../shared/styles/global.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
-import { Toaster } from '#/shared/components/ui/sonner'
+import { Toaster } from '@/shared/components/ui/sonner'
 
 import { useAuthStore } from '../shared/stores/auth.store'
 import { useEffect } from 'react'

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { InternalAxiosRequestConfig } from 'axios'
-import { env } from '#/env'
+import { env } from '@/env'
 
 // In-memory storage for the access token to avoid localStorage attacks (XSS)
 let inMemoryAccessToken: string | null = null

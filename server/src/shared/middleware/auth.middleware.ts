@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import {TokenService} from '../services/token.service';
 import {ApiResponse} from '../utils/api-response';
 import {TAuthenticatedRequest} from '../types/auth.types';
+import rateLimit from 'express-rate-limit';
 
 /**
  * Gold Standard:
@@ -34,3 +35,13 @@ export const authMiddleware = async (req: TAuthenticatedRequest, res: Response, 
     return ApiResponse.error(res, 'Unauthorized - Invalid or expired token', httpStatus.UNAUTHORIZED);
   }
 };
+
+export const authAttemptLimiter = rateLimit({
+  windowMs: 1000 * 60 * 15, // 15 minutes
+  limit: 8,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  handler: (req, res) => {
+    ApiResponse.error(res, 'You reached the allowed login attempts. Please try again after 15 minutes.', 429);
+  }
+});

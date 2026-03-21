@@ -12,8 +12,9 @@ export class UserService {
   async getAllUsers(page = 1, limit = 10, search?: string): Promise<{data: User[]; total: number}> {
     const skip = (page - 1) * limit;
 
-    const where: Prisma.UserWhereInput = search
-      ? {
+    const where: Prisma.UserWhereInput =
+      search ?
+        {
           OR: [
             {email: {contains: search, mode: 'insensitive'}},
             {firstName: {contains: search, mode: 'insensitive'}},

@@ -44,7 +44,7 @@ export class UserController {
    *         content:
    *           application/json:
    *             schema:
-   *               $ref: '#/components/schemas/UserPaginatedResponse'
+   *               $ref: '@/components/schemas/UserPaginatedResponse'
    */
   static getAllUsers = asyncHandler(async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
@@ -77,7 +77,7 @@ export class UserController {
    *         content:
    *           application/json:
    *             schema:
-   *               $ref: '#/components/schemas/User'
+   *               $ref: '@/components/schemas/User'
    *       404:
    *         description: User not found
    */

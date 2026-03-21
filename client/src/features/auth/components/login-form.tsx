@@ -12,7 +12,7 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from '#/shared/components/ui/alert'
+} from '@/shared/components/ui/alert'
 
 export default function LoginForm() {
   const navigate = useNavigate()

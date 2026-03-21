@@ -1,7 +1,7 @@
+import {config} from './shared/config';
 import {createServer} from 'http';
 import app from './app';
-import {config} from './shared/config';
-import {SessionRepository} from './features/auth/session.repository';
+import {startSessionCleanupCron} from './shared/cron/session-cleanup.cron';
 
 /**
  * Gold Standard:
@@ -11,7 +11,6 @@ import {SessionRepository} from './features/auth/session.repository';
  */
 const server = createServer(app);
 const PORT = config.PORT;
-const sessionRepository = new SessionRepository();
 
 function startServer() {
   server.listen(PORT, () => {
@@ -19,18 +18,8 @@ function startServer() {
     console.log(`📝 Documentation available at http://localhost:${PORT}/api/docs`);
   });
 
-  // Background Job: Clean up expired sessions every hour to prevent table bloat
-  const ONE_HOUR = 60 * 60 * 1000;
-  setInterval(async () => {
-    try {
-      const result = await sessionRepository.deleteExpired();
-      if (result.count > 0) {
-        console.log(`🧹 Cleaned up ${result.count} expired session(s)`);
-      }
-    } catch (error) {
-      console.error('❌ Session cleanup failed:', error);
-    }
-  }, ONE_HOUR);
+  // Start background cron jobs
+  startSessionCleanupCron();
 }
 
 // Start the server
