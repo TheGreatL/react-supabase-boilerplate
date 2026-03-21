@@ -33,7 +33,7 @@ function ProtectedLayout() {
 
   // Prevent flashing unauthenticated content during SSR or while waiting for hydration/profile
   const isServer = typeof window === 'undefined'
-  
+
   if (isServer || !hasHydrated || !isAuthenticated || !isReady) {
     return <LoadingDashboard />
   }

@@ -54,7 +54,6 @@ export const Route = createRootRouteWithContext<TMyRouterContext>()({
   notFoundComponent: NotFoundScreen,
 })
 
-
 function RootDocument({ children }: { children: React.ReactNode }) {
   const initialize = useAuthStore((state) => state.initialize)
 

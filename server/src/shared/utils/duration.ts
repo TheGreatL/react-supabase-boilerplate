@@ -4,7 +4,7 @@
  */
 export function parseDurationToMs(duration: string): number {
   const match = duration.match(/^(\d+)([smhd]?)$/);
-  
+
   if (!match) {
     throw new Error(`Invalid duration format: ${duration}`);
   }
