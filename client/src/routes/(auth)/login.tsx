@@ -1,11 +1,31 @@
 import LoginForm from '@/features/auth/components/login-form'
 import { createFileRoute } from '@tanstack/react-router'
+import { z } from 'zod'
+import { useEffect, useRef } from 'react'
+import { toast } from 'sonner'
+
+const loginSearchSchema = z.object({
+  reason: z.string().optional(),
+})
 
 export const Route = createFileRoute('/(auth)/login')({
+  validateSearch: loginSearchSchema,
   component: LoginComponent,
 })
 
 function LoginComponent() {
+  const { reason } = Route.useSearch()
+  const hasShownToast = useRef(false)
+
+  useEffect(() => {
+    if (reason === 'expired' && !hasShownToast.current) {
+      toast.error('Your session has expired. Please log in again.', {
+        id: 'session-expired-toast',
+      })
+      hasShownToast.current = true
+    }
+  }, [reason])
+
   return (
     <div className="flex min-h-screen">
       {/* Left Side: Form */}

@@ -1,3 +1,4 @@
+import {config} from '../../shared/config';
 import {Request, Response} from 'express';
 import httpStatus from 'http-status';
 import {asyncHandler} from '../../shared/utils/async-handler';
@@ -5,6 +6,8 @@ import {ApiResponse} from '../../shared/utils/api-response';
 import {AuthService} from './auth.service';
 import {TAuthRequest, TLogin} from './auth.schema';
 import {TAuthenticatedRequest} from '../../shared/types/auth.types';
+
+import {parseDurationToMs} from '../../shared/utils/duration';
 
 const authService = new AuthService();
 
@@ -15,12 +18,12 @@ const authService = new AuthService();
  *   description: Authentication and token management
  */
 export default class AuthController {
-  private static setRefreshTokenCookie(res: Response, token: string) {
+  private static setRefreshTokenCookie(res: Response, token: string, maxAge?: number) {
     res.cookie('refreshToken', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days (should ideally match REFRESH_TOKEN_DURATION)
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+      maxAge: maxAge ?? parseDurationToMs(config.REFRESH_TOKEN_DURATION)
     });
   }
 
@@ -119,10 +122,13 @@ export default class AuthController {
       return ApiResponse.error(res, 'Refresh token required', httpStatus.UNAUTHORIZED);
     }
 
-    const {accessToken, refreshToken: newRefreshToken} = await authService.refreshToken(refreshToken);
+    const {accessToken, refreshToken: newRefreshToken, expiresAt} = await authService.refreshToken(refreshToken);
 
-    // Rotation: Set the brand-new refresh token as the cookie
-    AuthController.setRefreshTokenCookie(res, newRefreshToken);
+    // Calculate remaining maxAge for the cookie to match the absolute deadline
+    const remainingMs = Math.max(0, expiresAt.getTime() - Date.now());
+
+    // Rotation: Set the brand-new refresh token as the cookie with FIXED deadline
+    AuthController.setRefreshTokenCookie(res, newRefreshToken, remainingMs);
 
     return ApiResponse.success(res, {accessToken}, 'Token refreshed');
   });

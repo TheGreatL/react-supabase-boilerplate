@@ -1,25 +1,42 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '@/shared/stores/auth.store'
+import { useEffect, useState } from 'react'
+import { LoadingDashboard } from '@/features/dashboard/components/loading-dashboard'
 
 export const Route = createFileRoute('/_protected')({
-  beforeLoad: async ({ location }) => {
-    // Read the strictly latest state immediately. 
-    // Zustand's persist with localStorage is completely synchronous, so hydration is already finished.
-    const { isAuthenticated, initialize } = useAuthStore.getState()
-
-    if (!isAuthenticated) {
-      throw redirect({
-        to: '/login',
-        search: { redirect: location.href },
-      })
-    }
-
-    // Initialize user session (e.g. get profile info) as expected
-    await initialize()
-  },
   component: ProtectedLayout,
 })
 
 function ProtectedLayout() {
+  const { isAuthenticated, hasHydrated, initialize } = useAuthStore()
+  const navigate = useNavigate()
+  const [isReady, setIsReady] = useState(false)
+
+  useEffect(() => {
+    // 1. Wait for Zustand to finish loading from localStorage
+    if (!hasHydrated) return
+
+    // 2. If loaded but not authenticated, bounce to login
+    if (!isAuthenticated) {
+      navigate({
+        to: '/login',
+        // Optional: search: { redirect: window.location.pathname }
+      })
+      return
+    }
+
+    // 3. If authenticated, fetch user data to ensure session is still valid
+    initialize().finally(() => {
+      setIsReady(true)
+    })
+  }, [hasHydrated, isAuthenticated, initialize, navigate])
+
+  // Prevent flashing unauthenticated content during SSR or while waiting for hydration/profile
+  const isServer = typeof window === 'undefined'
+  
+  if (isServer || !hasHydrated || !isAuthenticated || !isReady) {
+    return <LoadingDashboard />
+  }
+
   return <Outlet />
 }

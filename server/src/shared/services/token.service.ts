@@ -27,9 +27,9 @@ export class TokenService {
   /**
    * Generates a new Refresh Token for the given payload.
    */
-  static async signRefreshToken(payload: TRefreshTokenPayload): Promise<string> {
+  static async signRefreshToken(payload: TRefreshTokenPayload, expiresIn?: string | number): Promise<string> {
     return (await signAsync(payload, config.REFRESH_TOKEN_SECRET, {
-      expiresIn: config.REFRESH_TOKEN_DURATION as string
+      expiresIn: expiresIn || (config.REFRESH_TOKEN_DURATION as string)
     })) as string;
   }
 

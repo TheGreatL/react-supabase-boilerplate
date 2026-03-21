@@ -1,3 +1,4 @@
+import {config} from '../../shared/config';
 import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
 import {UserRepository} from '../user/user.repository';
@@ -6,6 +7,8 @@ import {HttpException} from '../../shared/exceptions/http-exception';
 import {TokenService} from '../../shared/services/token.service';
 import {TJWTPayload, TRefreshTokenPayload, TTokenPair} from '../../shared/types/auth.types';
 import {TAuthRequest, TLogin} from './auth.schema';
+
+import {parseDurationToMs} from '../../shared/utils/duration';
 
 /**
  * Gold Standard:
@@ -26,9 +29,8 @@ export class AuthService {
   /**
    * Private helper to create a session record.
    */
-  private async createSession(userId: string, refreshToken: string) {
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days matching cookie maxAge
+  private async createSession(userId: string, refreshToken: string, fixedExpiresAt?: Date) {
+    const expiresAt = fixedExpiresAt || new Date(Date.now() + parseDurationToMs(config.REFRESH_TOKEN_DURATION));
 
     await this.sessionRepository.create({
       userId,
@@ -116,12 +118,9 @@ export class AuthService {
   }
 
   /**
-   * Issues a new token pair using a valid refresh token.
-   * Gold Standard: Implements Refresh Token Rotation — the old token is
-   * invalidated and a brand-new token pair is issued on every refresh.
-   * This limits the theft window to a single use of a stolen token.
+   * Refreshes the access token using a valid refresh token and rotates the refresh token.
    */
-  async refreshToken(refreshToken: string): Promise<TTokenPair> {
+  async refreshToken(refreshToken: string): Promise<TTokenPair & {expiresAt: Date}> {
     // 1. Database Check: Ensure the token hasn't been revoked/logged out
     const session = await this.sessionRepository.findByToken(refreshToken);
 
@@ -132,31 +131,35 @@ export class AuthService {
 
     try {
       // 2. JWT Validation
-      await TokenService.verifyRefreshToken(refreshToken);
+      const payload = await TokenService.verifyRefreshToken(refreshToken);
+      const user = await this.userRepository.findById(payload.id);
 
-      // 3. Build payload from session's user data (no extra DB call needed)
-      const accessPayload: TJWTPayload = {
-        id: session.user.id,
-        email: session.user.email,
-        role: session.user.role
-      };
+      if (!user) {
+        throw new Error();
+      }
 
-      const refreshPayload: TRefreshTokenPayload = {
-        id: session.user.id,
-        email: session.user.email
-      };
+      // 3. Absolute Expiry Management
+      // Calculate remaining time until the ORIGINAL session expires
+      const oldExpiresAt = new Date(session.expiresAt);
+      const remainingSeconds = Math.max(0, Math.floor((oldExpiresAt.getTime() - Date.now()) / 1000));
 
-      // 4. Rotation: Atomically delete old session and issue fresh tokens
-      const [newAccessToken, newRefreshToken] = await Promise.all([
-        TokenService.signAccessToken(accessPayload),
-        TokenService.signRefreshToken(refreshPayload),
-        this.sessionRepository.deleteByToken(refreshToken)
-      ]);
+      // 4. Token Rotation (Issue new tokens with the SAME absolute deadline)
+      const accessToken = await TokenService.signAccessToken({
+        id: user.id,
+        email: user.email,
+        role: user.role
+      });
 
-      // 5. Persist the new session
-      await this.createSession(session.user.id, newRefreshToken);
+      const newRefreshToken = await TokenService.signRefreshToken(
+        {id: String(user.id), email: user.email},
+        remainingSeconds // <-- Preserve the deadline in the new JWT
+      );
 
-      return {accessToken: newAccessToken, refreshToken: newRefreshToken};
+      // 5. Session Rotation (Replace old session with new one under the SAME deadline)
+      await this.sessionRepository.deleteByToken(refreshToken);
+      await this.createSession(user.id, newRefreshToken, oldExpiresAt);
+
+      return {accessToken, refreshToken: newRefreshToken, expiresAt: oldExpiresAt};
     } catch {
       // If JWT verification fails, cleanup database record
       await this.sessionRepository.deleteByToken(refreshToken);

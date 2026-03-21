@@ -33,6 +33,23 @@ api.interceptors.request.use(
 )
 
 // Response interceptor for handling token refresh
+let isRefreshing = false
+let failedQueue: Array<{
+  resolve: (token: string) => void
+  reject: (error: any) => void
+}> = []
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error)
+    } else {
+      prom.resolve(token as string)
+    }
+  })
+  failedQueue = []
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error: {
@@ -50,7 +67,21 @@ api.interceptors.response.use(
       !originalRequest._retry &&
       !isAuthRoute
     ) {
+      if (isRefreshing) {
+        // If already refreshing, wait for the new token
+        try {
+          const token = await new Promise<string>((resolve, reject) => {
+            failedQueue.push({ resolve, reject })
+          })
+          originalRequest.headers.Authorization = `Bearer ${token}`
+          return api(originalRequest)
+        } catch (err) {
+          return Promise.reject(err)
+        }
+      }
+
       originalRequest._retry = true
+      isRefreshing = true
 
       try {
         const { data } = await axios.post<{
@@ -69,22 +100,27 @@ api.interceptors.response.use(
           // Update in-memory token
           setAccessToken(newAccessToken)
 
+          // Process other requests in queue
+          processQueue(null, newAccessToken)
+
           // Update the original request with the NEW token
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
 
-          // IMPORTANT: Use the 'api' instance to retry so it gets all interceptors
           return api(originalRequest)
         }
       } catch (refreshError) {
         console.error('❌ Session refresh failed:', refreshError)
+        processQueue(refreshError, null)
 
         // Clear stale auth data from localStorage before redirecting
         if (typeof window !== 'undefined') {
           localStorage.removeItem('auth-storage')
-          window.location.href = '/login'
+          window.location.href = '/login?reason=expired'
         }
         setAccessToken(null)
         return Promise.reject(refreshError)
+      } finally {
+        isRefreshing = false
       }
     }
 
