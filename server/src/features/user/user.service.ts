@@ -1,6 +1,6 @@
 import {User, Prisma} from '@prisma/client';
 import {UserRepository} from './user.repository';
-import {HttpException} from '../../shared/exceptions/http-exception';
+import {NotFoundException} from '../../shared/exceptions/not-found-exception';
 
 export class UserService {
   private userRepository: UserRepository;
@@ -33,7 +33,7 @@ export class UserService {
   async getUserById(id: string): Promise<User> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new HttpException('User not found', 404);
+      throw new NotFoundException('User not found');
     }
     return user;
   }
