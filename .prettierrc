@@ -9,7 +9,8 @@
   "bracketSpacing": false,
   "bracketSameLine": true,
   "proseWrap": "always",
-  "endOfLine": "crlf",
+  "endOfLine": "auto",
   "experimentalTernaries": true,
-  "singleAttributePerLine": true
+  "singleAttributePerLine": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

@@ -1,20 +1,19 @@
-import { Request, Response, NextFunction } from "express";
-import { ZodSchema, ZodError } from "zod";
-import { ApiResponse } from "../utils/api-response";
+import {Request, Response, NextFunction} from 'express';
+import {ZodType} from 'zod';
+import httpStatus from 'http-status';
+import {ApiResponse} from '../utils/api-response';
 
-export function validateSchema(
-  schema: ZodSchema,
-  target: "body" | "query" | "params" = "body"
-) {
+export const validateSchema = (schema: ZodType) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req[target]);
+      schema.parse(req.body);
       next();
-    } catch (err) {
-      if (err instanceof ZodError) {
-        return ApiResponse.error(res, "Validation error", 400, err.issues);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'ZodError') {
+        const zodError = err as import('zod').ZodError;
+        return ApiResponse.error(res, 'Validation error', httpStatus.BAD_REQUEST, zodError.issues);
       }
       next(err);
     }
   };
-}
+};

@@ -1,6 +1,10 @@
 ---
 name: Plugin Settings
-description: This skill should be used when the user asks about "plugin settings", "store plugin configuration", "user-configurable plugin", ".local.md files", "plugin state files", "read YAML frontmatter", "per-project plugin settings", or wants to make plugin behavior configurable. Documents the .claude/plugin-name.local.md pattern for storing plugin-specific configuration with YAML frontmatter and markdown content.
+description:
+  This skill should be used when the user asks about "plugin settings", "store plugin configuration", "user-configurable
+  plugin", ".local.md files", "plugin state files", "read YAML frontmatter", "per-project plugin settings", or wants to
+  make plugin behavior configurable. Documents the .claude/plugin-name.local.md pattern for storing plugin-specific
+  configuration with YAML frontmatter and markdown content.
 version: 0.1.0
 ---
 
@@ -8,9 +12,12 @@ version: 0.1.0
 
 ## Overview
 
-Plugins can store user-configurable settings and state in `.claude/plugin-name.local.md` files within the project directory. This pattern uses YAML frontmatter for structured configuration and markdown content for prompts or additional context.
+Plugins can store user-configurable settings and state in `.claude/plugin-name.local.md` files within the project
+directory. This pattern uses YAML frontmatter for structured configuration and markdown content for prompts or
+additional context.
 
 **Key characteristics:**
+
 - File location: `.claude/plugin-name.local.md` in project root
 - Structure: YAML frontmatter + markdown body
 - Purpose: Per-project plugin configuration and state
@@ -27,12 +34,13 @@ enabled: true
 setting1: value1
 setting2: value2
 numeric_setting: 42
-list_setting: ["item1", "item2"]
+list_setting: ['item1', 'item2']
 ---
 
 # Additional Context
 
 This markdown body can contain:
+
 - Task descriptions
 - Additional instructions
 - Prompts to feed back to Claude
@@ -42,6 +50,7 @@ This markdown body can contain:
 ### Example: Plugin State File
 
 **.claude/my-plugin.local.md:**
+
 ```markdown
 ---
 enabled: true
@@ -53,8 +62,7 @@ coordinator_session: team-leader
 
 # Plugin Configuration
 
-This plugin is configured for standard validation mode.
-Contact @team-lead with questions.
+This plugin is configured for standard validation mode. Contact @team-lead with questions.
 ```
 
 ## Reading Settings Files
@@ -103,12 +111,13 @@ Commands can read settings files to customize behavior:
 ```markdown
 ---
 description: Process data with plugin
-allowed-tools: ["Read", "Bash"]
+allowed-tools: ['Read', 'Bash']
 ---
 
 # Process Command
 
 Steps:
+
 1. Check if settings exist at `.claude/my-plugin.local.md`
 2. Read configuration using Read tool
 3. Parse YAML frontmatter to extract settings
@@ -126,8 +135,9 @@ name: configured-agent
 description: Agent that adapts to project settings
 ---
 
-Check for plugin settings at `.claude/my-plugin.local.md`.
-If present, parse YAML frontmatter and adapt behavior according to:
+Check for plugin settings at `.claude/my-plugin.local.md`. If present, parse YAML frontmatter and adapt behavior
+according to:
+
 - enabled: Whether plugin is active
 - mode: Processing mode (strict, standard, lenient)
 - Additional configuration fields
@@ -145,17 +155,20 @@ FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$FILE")
 ### Read Individual Fields
 
 **String fields:**
+
 ```bash
 VALUE=$(echo "$FRONTMATTER" | grep '^field_name:' | sed 's/field_name: *//' | sed 's/^"\(.*\)"$/\1/')
 ```
 
 **Boolean fields:**
+
 ```bash
 ENABLED=$(echo "$FRONTMATTER" | grep '^enabled:' | sed 's/enabled: *//')
 # Compare: if [[ "$ENABLED" == "true" ]]; then
 ```
 
 **Numeric fields:**
+
 ```bash
 MAX=$(echo "$FRONTMATTER" | grep '^max_value:' | sed 's/max_value: *//')
 # Use: if [[ $MAX -gt 100 ]]; then
@@ -204,6 +217,7 @@ fi
 Store agent-specific state and configuration:
 
 **.claude/multi-agent-swarm.local.md:**
+
 ```markdown
 ---
 agent_name: auth-agent
@@ -211,7 +225,7 @@ task_number: 3.5
 pr_number: 1234
 coordinator_session: team-leader
 enabled: true
-dependencies: ["Task 3.4"]
+dependencies: ['Task 3.4']
 ---
 
 # Task Assignment
@@ -219,6 +233,7 @@ dependencies: ["Task 3.4"]
 Implement JWT authentication for the API.
 
 **Success Criteria:**
+
 - Authentication endpoints created
 - Tests passing
 - PR created and CI green
@@ -237,18 +252,18 @@ tmux send-keys -t "$COORDINATOR" "Agent $AGENT_NAME completed task" Enter
 ### Pattern 3: Configuration-Driven Behavior
 
 **.claude/my-plugin.local.md:**
+
 ```markdown
 ---
 validation_level: strict
 max_file_size: 1000000
-allowed_extensions: [".js", ".ts", ".tsx"]
+allowed_extensions: ['.js', '.ts', '.tsx']
 enable_logging: true
 ---
 
 # Validation Configuration
 
-Strict mode enabled for this project.
-All writes validated against security policies.
+Strict mode enabled for this project. All writes validated against security policies.
 ```
 
 Use in hooks or commands:
@@ -279,6 +294,7 @@ Commands can create settings files:
 # Setup Command
 
 Steps:
+
 1. Ask user for configuration preferences
 2. Create `.claude/my-plugin.local.md` with YAML frontmatter
 3. Set appropriate values based on user input
@@ -295,17 +311,15 @@ Provide template in plugin README:
 
 Create `.claude/my-plugin.local.md` in your project:
 
-\`\`\`markdown
----
-enabled: true
-mode: standard
-max_retries: 3
+## \`\`\`markdown
+
+enabled: true mode: standard max_retries: 3
+
 ---
 
 # Plugin Configuration
 
-Your settings are active.
-\`\`\`
+Your settings are active. \`\`\`
 
 After creating or editing, restart Claude Code for changes to take effect.
 ```
@@ -315,11 +329,13 @@ After creating or editing, restart Claude Code for changes to take effect.
 ### File Naming
 
 ✅ **DO:**
+
 - Use `.claude/plugin-name.local.md` format
 - Match plugin name exactly
 - Use `.local.md` suffix for user-local files
 
 ❌ **DON'T:**
+
 - Use different directory (not `.claude/`)
 - Use inconsistent naming
 - Use `.md` without `.local` (might be committed)
@@ -374,6 +390,7 @@ Document in your README:
 ## Changing Settings
 
 After editing `.claude/my-plugin.local.md`:
+
 1. Save the file
 2. Exit Claude Code
 3. Restart: `claude` or `cc`
@@ -417,6 +434,7 @@ fi
 ### Permissions
 
 Settings files should be:
+
 - Readable by user only (`chmod 600`)
 - Not committed to git
 - Not shared between users
@@ -426,6 +444,7 @@ Settings files should be:
 ### multi-agent-swarm Plugin
 
 **.claude/multi-agent-swarm.local.md:**
+
 ```markdown
 ---
 agent_name: auth-implementation
@@ -433,17 +452,17 @@ task_number: 3.5
 pr_number: 1234
 coordinator_session: team-leader
 enabled: true
-dependencies: ["Task 3.4"]
+dependencies: ['Task 3.4']
 additional_instructions: Use JWT tokens, not sessions
 ---
 
 # Task: Implement Authentication
 
-Build JWT-based authentication for the REST API.
-Coordinate with auth-agent on shared types.
+Build JWT-based authentication for the REST API. Coordinate with auth-agent on shared types.
 ```
 
 **Hook usage (agent-stop-notification.sh):**
+
 - Checks if file exists (line 15-18: quick exit if not)
 - Parses frontmatter to get coordinator_session, agent_name, enabled
 - Sends notifications to coordinator if enabled
@@ -452,18 +471,19 @@ Coordinate with auth-agent on shared types.
 ### ralph-wiggum Plugin
 
 **.claude/ralph-loop.local.md:**
+
 ```markdown
 ---
 iteration: 1
 max_iterations: 10
-completion_promise: "All tests passing and build successful"
+completion_promise: 'All tests passing and build successful'
 ---
 
-Fix all the linting errors in the project.
-Make sure tests pass after each fix.
+Fix all the linting errors in the project. Make sure tests pass after each fix.
 ```
 
 **Hook usage (stop-hook.sh):**
+
 - Checks if file exists (line 15-18: quick exit if not active)
 - Reads iteration count and max_iterations
 - Extracts completion_promise for loop termination

@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "strict": true,
     "outDir": "./dist",
-    "rootDir": "./"
+    "rootDir": "./",
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*", "prisma.config.ts", "prisma/**/*", "tests/**/*", "vitest.config.ts"],
   "exclude": ["node_modules", "dist", "generated"]

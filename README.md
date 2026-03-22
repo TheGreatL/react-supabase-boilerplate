@@ -1,6 +1,6 @@
 # React Node Boilerplate
 
-> A full-stack web application 
+> A full-stack web application
 
 ---
 
@@ -64,6 +64,39 @@ This starts everything: the database, the server, and the frontend — all at on
 
 ---
 
+## 🚀 Step-by-Step Setup Guide
+
+### 1. Initial Launch
+After cloning the repo, simply run:
+```bash
+npm run docker:dev
+```
+This will build and start all containers. The first time you run this, it may take a few minutes to download images and build the frontend/backend.
+
+### 2. Database Migrations & Seeding
+Once the containers are running, you need to set up your database tables and initial data.
+
+**Option A: From your Host Machine (Recommended during development)**
+You can run Prisma commands directly from your VS Code terminal (inside the `/server` folder):
+```bash
+cd server
+npm run db:migrate  # Applies schema changes
+npm run db:seed     # Adds test data
+```
+*Note: Ensure your `server/.env` uses `localhost:5432` for this to work.*
+
+> [!TIP]
+> **Port Conflicts:** If you already have PostgreSQL installed on your computer, you might get an error that port `5432` is already in use. To fix this, change `POSTGRES_PORT` in your root `.env` to `5433` and update the `DATABASE_URL` in `server/.env` to use `localhost:5433`.
+
+**Option B: From inside Docker**
+Use this if you don't want to install dependencies locally:
+```bash
+docker compose exec api npm run db:migrate
+docker compose exec api npm run db:seed
+```
+
+---
+
 ## 🗄️ Database Guide
 
 **View & manage your data** via pgAdmin at `http://localhost:5050`.
@@ -78,12 +111,15 @@ Once logged into pgAdmin, follow these steps to see your data:
 1.  **Right-click** on `Servers` > `Register` > `Server...`
 2.  **General Tab**: Name it something like `Boilerplate DB`
 3.  **Connection Tab**:
-    - **Host name/address**: `db` (⚠️ Important: Use the service name, not `localhost` or `postgres`)
+    - **Host name/address**: `db` (⚠️ Important: Use the Docker service name when connecting *from inside* pgAdmin)
     - **Port**: `5432` (⚠️ Important: Use the internal Docker port)
     - **Maintenance database**: `boilerplate_db` (or check your `.env`)
     - **Username**: `postgres`
     - **Password**: `postgres123` (or check your `.env`)
 4.  **Click Save**.
+
+> [!TIP]
+> **Connecting from your Host Machine:** If you use an external tool like TablePlus or DBeaver, use **`localhost`** as the host and **`5432`** as the port (or `5433` if you encountered a port conflict).
 
 **Seed your database** (add default test data):
 ```bash
@@ -155,30 +191,61 @@ The project includes a comprehensive testing suite. All tests are organized by f
 
 ## 👥 Working as a Team
 
-This project is set up for collaborative development. Here's what keeps everyone's code consistent.
+This project follows the **Gold Standard** for collaborative development to ensure a clean, readable, and trackable history.
 
-### 🌳 Git Branching Strategy
+### 📂 Primary Branches
 
-| Branch | Purpose |
-|---|---|
-| `main` | Production-ready code only — **never commit directly here** |
-| `test` | Integration branch — merge your feature here first |
-| `feat/your-feature-name` | Your individual feature work |
-| `fix/bug-description` | Bug fix branches |
-
-**Workflow:**
-```
-1. Pull latest test      →  git checkout test && git pull
-2. Create your branch  →  git checkout -b feat/my-feature
-3. Make your changes   →  (write code, commit often)
-4. Push your branch    →  git push origin feat/my-feature
-5. Open a Pull Request →  feat/my-feature → test
-```
-> **Rule:** Never push directly to `main` or `test`. Always go through a Pull Request.
+| Branch | Purpose | Description |
+|---|---|---|
+| `main` | **Production** | Highly stable code. Only merged from `test` after thorough verification. |
+| `test` | **Development / Testing** | Integration branch where features are combined and tested before production. |
 
 ---
 
-### 🎨 Automatic Code Formatting
+### 🌳 Branch Naming Strategy
+
+Always create a new branch for your work. Use the following prefix pattern: `type/description-slug`
+
+| Prefix | Use Case | Example |
+|---|---|---|
+| `feat/` | A new feature | `feat/google-login` |
+| `fix/` | A bug fix | `fix/header-overflow` |
+| `refactor/` | Code change that neither fixes a bug nor adds a feature | `refactor/auth-logic` |
+| `docs/` | Documentation only changes | `docs/update-readme` |
+| `style/` | Formatting, missing semi-colons, etc; no code change | `style/fix-indentation` |
+| `perf/` | A code change that improves performance | `perf/speed-up-queries` |
+| `test/` | Adding missing tests or correcting existing tests | `test/auth-service` |
+| `chore/` | Updating build tasks, package manager configs, etc | `chore/update-deps` |
+
+**Workflow:**
+1. **Pull latest test** → `git checkout test && git pull`
+2. **Create branch** → `git checkout -b feat/my-new-feature`
+3. **Work & Commit** → (See Commit Convention below)
+4. **Push & PR** → `git push origin feat/my-new-feature` then open a PR into `test`.
+
+---
+
+### 💬 Commit Message Convention
+
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. This allows for automated changelogs and easier history browsing.
+
+**Pattern:** `type(scope): description`
+
+- **Type**: Must be one of the prefixes from the table above (feat, fix, etc.).
+- **Scope**: (Optional) The module or feature being changed (e.g., auth, ui, db).
+- **Description**: A brief, imperative-style summary (e.g., "add validation", "fix crash").
+
+**Examples:**
+- `feat(api): add logout endpoint`
+- `fix(client): resolve button double-click issue`
+- `docs: fix typo in setup instructions`
+- `chore!: upgrade node version` (The `!` indicates a breaking change)
+
+---
+
+### 🎨 Automatic Code Quality
+
+This project enforces consistency on **3 levels**:
 
 This project enforces consistent formatting on **3 levels** so no one has to think about it:
 

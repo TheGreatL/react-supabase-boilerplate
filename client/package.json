@@ -2,9 +2,6 @@
   "name": "client",
   "private": true,
   "type": "module",
-  "imports": {
-    "#/*": "./src/*"
-  },
   "scripts": {
     "dev": "vite dev --port 5173",
     "build": "vite build",
@@ -72,6 +69,7 @@
     "eslint-plugin-import-x": "^4.6.1",
     "jsdom": "^28.1.0",
     "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^5.7.2",
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^5.1.4",

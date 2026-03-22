@@ -15,14 +15,15 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset --force",
-    "test": "vitest run",
-    "start:docker": "prisma generate && (until npx prisma db push; do echo 'Waiting for DB...'; sleep 2; done) && nodemon"
+    "start:docker": "prisma generate && (until npx prisma db push; do echo 'Waiting for DB...'; sleep 2; done) && nodemon",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.4.3",
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.1.1",
     "@types/bcrypt": "^6.0.0",
@@ -39,6 +40,7 @@
     "http-status": "^2.1.0",
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",
+    "node-cron": "^4.2.1",
     "pg": "^8.20.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
@@ -51,6 +53,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.3.5",
+    "@types/node-cron": "^3.0.11",
     "@types/pg": "^8.18.0",
     "@types/supertest": "^7.2.0",
     "@types/swagger-jsdoc": "^6.0.4",

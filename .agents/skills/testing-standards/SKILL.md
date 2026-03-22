@@ -1,19 +1,28 @@
 ---
 name: testing-standards
-description: This skill enforces robust, scalable testing methodologies for both the frontend and backend. Use it when writing unit or integration tests, setting up testing frameworks like Vitest, or verifying that features conform to the "Gold Standard".
+description:
+  This skill enforces robust, scalable testing methodologies for both the frontend and backend. Use it when writing unit
+  or integration tests, setting up testing frameworks like Vitest, or verifying that features conform to the "Gold
+  Standard".
 ---
 
 # Testing Standards Skill
 
 ## 🎯 Purpose
-This skill ensures that code is verified through rigorous, maintainable tests. It enforces the use of modern testing tools and methodologies to prevent regressions and validate behavior without writing fragile, implementation-coupled tests.
+
+This skill ensures that code is verified through rigorous, maintainable tests. It enforces the use of modern testing
+tools and methodologies to prevent regressions and validate behavior without writing fragile, implementation-coupled
+tests.
 
 ## 🏗️ Core Responsibilities
-- **Frontend Testing**: Focus on user interactions and accessibility roles, not implementation details or fragile HTML selectors.
+
+- **Frontend Testing**: Focus on user interactions and accessibility roles, not implementation details or fragile HTML
+  selectors.
 - **Backend Testing**: Focus on API contracts, middleware validation, and database abstraction.
 - **Test Isolation**: Ensure tests run independently and reliably without side-effects or database pollution.
 
 ## 📜 Key References
+
 - [Client Architecture](../../client/ARCHITECTURE.md)
 - [Server Architecture](../../server/ARCHITECTURE.md)
 

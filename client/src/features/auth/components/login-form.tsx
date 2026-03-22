@@ -12,7 +12,9 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from '#/shared/components/ui/alert'
+} from '@/shared/components/ui/alert'
+import { Input } from '@/shared/components/ui/input'
+import { PasswordInput } from '@/shared/components/ui/password-input'
 
 export default function LoginForm() {
   const navigate = useNavigate()
@@ -46,7 +48,9 @@ export default function LoginForm() {
         navigate({ to: '/dashboard' })
       }, 1000)
     },
-    onError: (error: any) => {
+    onError: (
+      error: Error & { response?: { data?: { message?: string } } },
+    ) => {
       console.error('Login error full:', error)
       const message =
         error.response?.data?.message ||
@@ -61,9 +65,9 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
+    <div className="animate-in fade-in slide-in-from-bottom-4 w-full max-w-md space-y-8 duration-700">
+      <div className="space-y-2 text-center">
+        <h1 className="bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
           Welcome Back
         </h1>
         <p className="text-muted-foreground">
@@ -76,8 +80,11 @@ export default function LoginForm() {
           <AlertCircleIcon className="h-4 w-4" />
           <AlertTitle>Failed to login</AlertTitle>
           <AlertDescription>
-            {(mutation.error as any)?.response?.data?.message ||
-              'Invalid credentials'}
+            {(
+              mutation.error as Error & {
+                response?: { data?: { message?: string } }
+              }
+            ).response?.data?.message || 'Invalid credentials'}
           </AlertDescription>
         </Alert>
       )}
@@ -89,22 +96,22 @@ export default function LoginForm() {
           <div className="space-y-2">
             <label
               htmlFor="email"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <input
+              <Mail className="text-muted-foreground absolute top-3 left-3 z-10 h-4 w-4" />
+              <Input
                 {...register('email')}
                 id="email"
                 type="email"
                 placeholder="name@example.com"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+                className="pl-9"
               />
             </div>
             {errors.email && (
-              <p className="text-xs font-medium text-destructive animate-in fade-in zoom-in-95">
+              <p className="text-destructive animate-in fade-in zoom-in-95 text-xs font-medium">
                 {errors.email.message}
               </p>
             )}
@@ -114,29 +121,28 @@ export default function LoginForm() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 Password
               </label>
               <a
                 href="#"
-                className="text-xs text-indigo-500 hover:text-indigo-600 transition-colors"
+                className="text-xs text-indigo-500 transition-colors hover:text-indigo-600"
               >
                 Forgot password?
               </a>
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <input
+              <Lock className="text-muted-foreground absolute top-3 left-3 z-10 h-4 w-4" />
+              <PasswordInput
                 {...register('password')}
                 id="password"
-                type="password"
                 placeholder="••••••••"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+                className="pl-9"
               />
             </div>
             {errors.password && (
-              <p className="text-xs font-medium text-destructive animate-in fade-in zoom-in-95">
+              <p className="text-destructive animate-in fade-in zoom-in-95 text-xs font-medium">
                 {errors.password.message}
               </p>
             )}
@@ -146,7 +152,7 @@ export default function LoginForm() {
         <button
           disabled={mutation.isPending}
           type="submit"
-          className="relative w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:opacity-70"
+          className="relative flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:opacity-70"
         >
           {mutation.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -160,11 +166,11 @@ export default function LoginForm() {
       </form>
 
       <div className="text-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Don&apos;t have an account?{' '}
           <button
             onClick={() => navigate({ to: '/register' })}
-            className="font-medium text-indigo-500 hover:text-indigo-600 transition-colors"
+            className="font-medium text-indigo-500 transition-colors hover:text-indigo-600"
           >
             Create an account
           </button>

@@ -1,13 +1,13 @@
 model User {
-    id        String    @id @default(uuid())
-    email     String    @unique
-    password  String
-    firstName String
-    lastName  String
-    avatar    String?   @default("test")
-    role      Role      @default(USER)
-    profile   Profile?
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt()
-    deletedAt DateTime?
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  firstName String
+  lastName  String
+  avatar    String?   @default("test")
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
+  deletedAt DateTime?
+  sessions  Session[]
 }
