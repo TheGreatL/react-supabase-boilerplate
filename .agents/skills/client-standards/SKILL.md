@@ -40,13 +40,13 @@ This skill focuses on building and maintaining a premium, high-performance web e
   - ALWAYS drive pagination, sorting, and filtering via URL Search Parameters using TanStack Router.
   - ALWAYS pass these URL parameters to TanStack Query hooks to trigger server-side processing.
 - **Accessibility (a11y)**:
-    - Use semantic HTML elements.
-    - Ensure proper contrast ratios and keyboard navigation support.
-    - Use descriptive `aria` labels where necessary.
+  - Use semantic HTML elements.
+  - Ensure proper contrast ratios and keyboard navigation support.
+  - Use descriptive `aria` labels where necessary.
 - **Testing**:
-    - ALWAYS write component/unit tests in `client/tests/` using **Vitest** and **React Testing Library**.
-    - Prioritize accessibility-based queries (`getByRole`) for reliability.
-    - Properly mock external hooks (TanStack Router/Query) to ensure tests remain isolated.
+  - ALWAYS write component/unit tests in `client/tests/` using **Vitest** and **React Testing Library**.
+  - Prioritize accessibility-based queries (`getByRole`) for reliability.
+  - Properly mock external hooks (TanStack Router/Query) to ensure tests remain isolated.
 - **Code Standards**:
   - Maintain type safety across all components and routes.
   - Keep state localized where possible; use global stores sparingly.

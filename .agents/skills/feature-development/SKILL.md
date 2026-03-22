@@ -1,6 +1,9 @@
 ---
 name: feature-development
-description: This is the MASTER ORCHESTRATOR skill. Use this skill whenever building a new "feature", "module", "API endpoint", or "full-stack page". It strictly enforces a 5-step process that guarantees all code aligns with the project's Gold Standards.
+description:
+  This is the MASTER ORCHESTRATOR skill. Use this skill whenever building a new "feature", "module", "API endpoint", or
+  "full-stack page". It strictly enforces a 5-step process that guarantees all code aligns with the project's Gold
+  Standards.
 ---
 
 # Feature Development Orchestrator Skill
@@ -57,9 +60,13 @@ follow the strict lowercase, hyphenated, and feature-based (`[domain].[purpose].
 6. Use `pendingComponent` for loading states to eliminate UI jank.
 
 ### Step 5: Testing & Verification
+
 1. Read `.agents/skills/testing-standards/SKILL.md`.
-  2. **Backend Tests**: Create new test files in `server/tests/[feature]/unit/[domain].test.ts` and `server/tests/[feature]/integration/[domain].test.ts` using Supertest/Mocks (explicitly importing `describe`, `it`, `expect` from `vitest`) to verify the new endpoint's success and error paths.
-  3. **Frontend Tests**: Create new component tests in `client/tests/[feature]/unit/[domain].test.tsx` (explicitly importing `describe`, `it`, `expect` from `vitest`) to verify key user interaction and UI state.
+2. **Backend Tests**: Create new test files in `server/tests/[feature]/unit/[domain].test.ts` and
+   `server/tests/[feature]/integration/[domain].test.ts` using Supertest/Mocks (explicitly importing `describe`, `it`,
+   `expect` from `vitest`) to verify the new endpoint's success and error paths.
+3. **Frontend Tests**: Create new component tests in `client/tests/[feature]/unit/[domain].test.tsx` (explicitly
+   importing `describe`, `it`, `expect` from `vitest`) to verify key user interaction and UI state.
 4. **E2E Tests**: (Optional for small features) Update or add an E2E spec in `tests-e2e/` for critical flows.
 5. **Run Verification**: Ensure all tests pass by running `npm run test` from the project root.
 

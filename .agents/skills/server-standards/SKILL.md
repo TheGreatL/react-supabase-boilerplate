@@ -43,11 +43,12 @@ This skill focuses on delivering a robust, scalable, and secure backend using th
   - NEVER return raw, unfiltered data dumps for the frontend to format. Validate and sanitize pagination parameters
     (`page`, `limit`) using Zod.
 - **API Documentation**:
-    - ALWAYS write Swagger JSDoc annotations (`/** @openapi ... */`) above new Routes/Controllers to ensure the `/api/docs` endpoint is automatically updated.
+  - ALWAYS write Swagger JSDoc annotations (`/** @openapi ... */`) above new Routes/Controllers to ensure the
+    `/api/docs` endpoint is automatically updated.
 - **Testing**:
-    - ALWAYS write API integration tests in `server/tests/` using **Supertest**.
-    - Ensure new endpoints return the correct `ApiResponse` structure and status codes.
-    - Mock expensive dependencies (like Prisma) for unit tests where appropriate using `vitest-mock-extended`.
+  - ALWAYS write API integration tests in `server/tests/` using **Supertest**.
+  - Ensure new endpoints return the correct `ApiResponse` structure and status codes.
+  - Mock expensive dependencies (like Prisma) for unit tests where appropriate using `vitest-mock-extended`.
 - **Industry Standards**:
   - Follow SOLID and DRY principles.
   - Maintain structured logging for observability.

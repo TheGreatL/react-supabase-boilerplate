@@ -1,7 +1,7 @@
 import {config} from './shared/config';
 import {createServer} from 'http';
 import app from './app';
-import {startSessionCleanupCron} from './shared/cron/session-cleanup.cron';
+import {startSessionCleanupCron} from './shared/lib/cron/session-cleanup.cron';
 
 /**
  * Gold Standard:

@@ -6,4 +6,3 @@ export class AlreadyExistException extends HttpException {
     super(message, httpStatus.CONFLICT);
   }
 }
-

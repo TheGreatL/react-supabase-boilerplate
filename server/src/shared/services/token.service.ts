@@ -5,8 +5,12 @@ import {TJWTPayload, TRefreshTokenPayload} from '../types/auth.types';
 
 // Promisifying jwt methods to support async/await
 // Using 'any' cast for the promisified function to avoid complex signature mismatch issues while keeping it safe for internal use
-const signAsync = promisify(jwt.sign as (payload: string | object | Buffer, secretOrPrivateKey: jwt.Secret, options?: jwt.SignOptions) => void);
-const verifyAsync = promisify(jwt.verify as (token: string, secretOrPublicKey: jwt.Secret, options?: jwt.VerifyOptions) => void);
+const signAsync = promisify(
+  jwt.sign as (payload: string | object | Buffer, secretOrPrivateKey: jwt.Secret, options?: jwt.SignOptions) => void
+);
+const verifyAsync = promisify(
+  jwt.verify as (token: string, secretOrPublicKey: jwt.Secret, options?: jwt.VerifyOptions) => void
+);
 
 /**
  * Gold Standard:

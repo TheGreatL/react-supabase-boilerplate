@@ -35,6 +35,7 @@ stack with a focus on type safety, professional architecture, and premium aesthe
 - **Error Handling**: Standardized via global `errorMiddleware` and specialized `HttpException` classes.
 
 ## 🧪 Testing Architecture
+
 - **Structure**: All tests follow a feature-based hierarchy: `tests/[feature]/[unit|integration]`.
 - **Unit & Integration**: Powered by **Vitest**.
   - **Client**: Located in `/client/tests/`, organized by feature and test type.
