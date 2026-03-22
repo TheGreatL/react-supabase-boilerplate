@@ -1,11 +1,12 @@
 import z from 'zod';
 import {registry} from '../../shared/lib/openapi-registry';
+import {paginatedResponseSchema} from '../../shared/schema/response.schema';
 
 export const userSchema = registry.register(
-  'User',
+  'CreateUserRequest',
   z.object({
-    id: z.string().uuid(),
-    email: z.string().email(),
+    id: z.uuid(),
+    email: z.email(),
     firstName: z.string(),
     lastName: z.string(),
     role: z.enum(['USER', 'ADMIN', 'SUPER_ADMIN']),
@@ -16,17 +17,7 @@ export const userSchema = registry.register(
 
 export const userPaginatedResponseSchema = registry.register(
   'UserPaginatedResponse',
-  z.object({
-    success: z.boolean(),
-    message: z.string(),
-    data: z.array(userSchema),
-    meta: z.object({
-      total: z.number(),
-      page: z.number(),
-      limit: z.number(),
-      totalPages: z.number(),
-      hasNextPage: z.boolean(),
-      hasPrevPage: z.boolean()
-    })
+  paginatedResponseSchema.extend({
+    data: z.array(userSchema)
   })
 );

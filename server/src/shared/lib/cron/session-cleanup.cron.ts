@@ -1,5 +1,5 @@
 import cron, {ScheduledTask} from 'node-cron';
-import {SessionRepository} from '../../features/auth/session.repository';
+import {SessionRepository} from '../../../features/auth/session.repository';
 
 const sessionRepository = new SessionRepository();
 
