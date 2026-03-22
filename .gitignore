@@ -49,3 +49,9 @@ __unconfig*
 .idea/
 # Note: .vscode/settings.json and .vscode/extensions.json ARE committed
 # so all team members get the same editor setup automatically.
+
+# ===========================
+# E2E (Playwright)
+# ===========================
+e2e/report/
+e2e/results/

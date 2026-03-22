@@ -113,7 +113,11 @@ After cloning the repo, make sure you do these things:
 
 ## 🧪 Testing
 
-The project includes a comprehensive testing suite. All tests are located outside of the `src` directories.
+The project includes a comprehensive testing suite. All tests are organized by feature and type (unit vs. integration) outside of the `src` directories.
+
+### Testing Hierarchy
+- **`tests/[feature]/unit`**: Discrete logic and component tests.
+- **`tests/[feature]/integration`**: API, database, and cross-component tests.
 
 ### Running Tests
 
@@ -123,6 +127,7 @@ The project includes a comprehensive testing suite. All tests are located outsid
 | `npm run test:client` | Runs frontend unit/component tests |
 | `npm run test:server` | Runs backend API/integration tests |
 | `npm run test:e2e` | Runs Playwright end-to-end tests (requires app to be running) |
+| `npx playwright show-report e2e/report` | Shows the E2E test report |
 
 ### Frameworks Used
 - **Vitest**: Fast unit test runner for both client and server.

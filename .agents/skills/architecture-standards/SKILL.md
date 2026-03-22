@@ -24,6 +24,7 @@ This skill ensures that the codebase remains clean, predictable, and scalable by
   - Do NOT dump domain-specific logic into global `src/components/`, `src/utils/`, or `src/controllers/` folders.
   - A feature folder should contain its own specific routing, state, components, or controller/service/repository logic.
 - **Shared Utilities**: ONLY use `src/shared/` for code that is truly agnostic and used across *multiple* features (e.g., global error handlers, UI primitives, generic API configuration).
+- **Testing Structure**: All tests MUST be located in the `tests/` directory of the `client` or `server`, following the `tests/[feature]/[unit|integration]` pattern.
 
 ### 2. File Naming Conventions
 - **Strict Lowercase**: ALL file and directory names MUST be entirely lowercase. (e.g., `userComponent.tsx` is forbidden; use `user-component.tsx`).

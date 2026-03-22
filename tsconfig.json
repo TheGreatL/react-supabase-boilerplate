@@ -7,8 +7,9 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": ["playwright.config.ts", "tests-e2e/**/*"],
+  "include": ["e2e/**/*"],
   "exclude": ["node_modules", "client", "server"]
 }

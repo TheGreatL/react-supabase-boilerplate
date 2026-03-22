@@ -18,19 +18,16 @@
     "test": "npm run test:client && npm run test:server",
     "test:client": "npm --prefix client run test",
     "test:server": "npm --prefix server run test",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "npx playwright test --config=e2e/playwright.config.ts",
     "prepare": "husky"
   },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
+  "url": "https://github.com/TheGreatL/react-supabase-boilerplate",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/TheGreatL/react-supabase-boilerplate/issues"
   },
   "homepage": "",
   "dependencies": {
