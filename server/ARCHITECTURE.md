@@ -57,3 +57,16 @@ This ensures the API is scalable and prevents performance issues as the data gro
 
 - Default: `page=1`, `limit=10`
 - Response includes `meta` with `total`, `totalPages`, `hasNextPage`, and `hasPrevPage`.
+
+## 🧪 Testing Architecture
+
+- **Structure**: All tests follow a feature-based hierarchy: `tests/[feature]/[unit|integration]`.
+- **Unit & Integration**: Powered by **Vitest**.
+  - **Server**: Located in `/server/tests/`, organized by feature and test type.
+- **Execution**: Unified scripts at the root level (`npm run test`, `npm run test:e2e`).
+
+## 🛡️ Security
+
+- **Authentication**: Dual-token system (Short-lived Access Token in headers + Long-lived Refresh Token in HTTP-only
+  cookies).
+- **Rate Limiting**: Brute-force protection on authentication routes (e.g., `authAttemptLimiter`).

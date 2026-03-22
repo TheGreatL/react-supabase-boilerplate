@@ -32,3 +32,10 @@ To ensure consistency and type safety throughout the project:
 1. **Type/Interface Prefixing**: All custom types and interfaces MUST start with a capital `T` followed by an uppercase first letter (e.g., `TUser`, `TAuthResponse`).
 2. **Strict Typing**: Avoid using the `any` type at all costs. Use descriptive interfaces or `unknown` with type guards/assertions if the shape is truly dynamic.
 3. **File Naming**: Follow the `lowercase-with-hyphens.purpose.extension` format.
+
+## 🧪 Testing Architecture
+
+- **Structure**: All tests follow a feature-based hierarchy: `tests/[feature]/[unit|integration]`.
+- **Unit & Integration**: Powered by **Vitest**.
+  - **Client**: Located in `/client/tests/`, organized by feature and test type.
+- **Execution**: Unified scripts at the root level (`npm run test`, `npm run test:e2e`).
