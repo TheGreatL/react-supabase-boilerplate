@@ -29,6 +29,14 @@ This is a "Gold Standard" monorepo designed as a generic full-stack boilerplate.
   ```
 - **Error Handling**: Standardized via global `errorMiddleware` and specialized `HttpException` classes.
 
+## 🧪 Testing Architecture
+- **Unit & Integration**: Powered by **Vitest**.
+  - **Client**: Located in `/client/tests`, uses React Testing Library and JSDoc.
+  - **Server**: Located in `/server/tests`, uses Supertest for API verification and `vitest-mock-extended` for Prisma.
+- **End-to-End (E2E)**: Powered by **Playwright**.
+  - Located in `/tests-e2e` at the root.
+- **Execution**: Unified scripts at the root level (`npm run test`, `npm run test:e2e`).
+
 ## 🛡️ Security
 - **Authentication**: Dual-token system (Short-lived Access Token in headers + Long-lived Refresh Token in HTTP-only cookies).
 - **Rate Limiting**: Brute-force protection on authentication routes (e.g., `authAttemptLimiter`).

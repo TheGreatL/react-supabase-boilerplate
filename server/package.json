@@ -15,6 +15,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset --force",
+    "test": "vitest run",
     "start:docker": "prisma generate && (until npx prisma db push; do echo 'Waiting for DB...'; sleep 2; done) && nodemon"
   },
   "keywords": [],
@@ -51,15 +52,19 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.3.5",
     "@types/pg": "^8.18.0",
+    "@types/supertest": "^7.2.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "dotenv": "^17.3.1",
     "eslint": "^10.0.3",
     "nodemon": "^3.1.14",
     "prisma": "^7.1.1",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "typescript-eslint": "^8.56.1",
+    "vitest": "^4.1.0",
+    "vitest-mock-extended": "^3.1.0"
   }
 }

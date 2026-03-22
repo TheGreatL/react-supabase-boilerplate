@@ -111,6 +111,27 @@ After cloning the repo, make sure you do these things:
 
 ---
 
+## 🧪 Testing
+
+The project includes a comprehensive testing suite. All tests are located outside of the `src` directories.
+
+### Running Tests
+
+| Command | Description |
+|---|---|
+| `npm run test` | Runs both client and server Vitest suites |
+| `npm run test:client` | Runs frontend unit/component tests |
+| `npm run test:server` | Runs backend API/integration tests |
+| `npm run test:e2e` | Runs Playwright end-to-end tests (requires app to be running) |
+
+### Frameworks Used
+- **Vitest**: Fast unit test runner for both client and server.
+- **Supertest**: For testing backend API endpoints.
+- **React Testing Library**: For testing frontend components.
+- **Playwright**: For cross-browser end-to-end testing.
+
+---
+
 ## 🔑 Environment Variables
 
 | Variable | Description |

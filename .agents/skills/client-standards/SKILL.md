@@ -37,6 +37,10 @@ This skill focuses on building and maintaining a premium, high-performance web e
     - Use semantic HTML elements.
     - Ensure proper contrast ratios and keyboard navigation support.
     - Use descriptive `aria` labels where necessary.
+- **Testing**:
+    - ALWAYS write component/unit tests in `client/tests/` using **Vitest** and **React Testing Library**.
+    - Prioritize accessibility-based queries (`getByRole`) for reliability.
+    - Properly mock external hooks (TanStack Router/Query) to ensure tests remain isolated.
 - **Code Standards**:
     - Maintain type safety across all components and routes.
     - Keep state localized where possible; use global stores sparingly.
