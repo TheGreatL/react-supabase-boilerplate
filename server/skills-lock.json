@@ -1,0 +1,610 @@
+{
+  "version": 1,
+  "skills": {
+    "Cloud Penetration Testing": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c5178bc4daff562b94d5affc561517c7f0ae98cffbc014d030c625bdbbfcdbec"
+    },
+    "Metasploit Framework": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "6f204a79e43ab0f9cbd369833f2fbd5ca5844ec9b425b5848700bda395ec30b3"
+    },
+    "address-github-comments": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "da8a48d32dded145540bd03db9e686a0c377d44ab4666a06e2418c004d9e9a34"
+    },
+    "agent-backend-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "759e7b36bdde99e8b72d33a77605a91cd727da09b8f0d6c391e742c217e73434"
+    },
+    "agent-code-guide": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "306891f4fda0186056068c22f761d92dc741d16cadc2017e5bb0138fdb78d7fa"
+    },
+    "agent-coding-standards": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "683d9450f9261bf4c66cf6a9cb8893ce4eea45677d0e6b95426f9569815c3f46"
+    },
+    "agent-continuous-learning": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "19cdc79d61edb1715353a011381fc77987cdcaa4cb4bcc4982f30f2169a438d9"
+    },
+    "agent-manager-skill": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "345a981867d43787d692b49fd635698ec9e2ace0ddf6361fd3780de2b154a298"
+    },
+    "agent-memory-systems": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "f9ac3c60ec0bf0b2ba4ecb0d1ac41da85e4a03ac52babb8899f1a246b7ea1082"
+    },
+    "agent-orchestration": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c74081a98cfb138b83565e7cb8c5b68fa2bba9e414a48e2d043f271a4c017e4c"
+    },
+    "agent-project-guidelines-example": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "70ce69b1e2dd0a939155abb51873f7669a0c65c517ea70523b1b0d4e32e9013f"
+    },
+    "agent-security-review": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "694a5cb2bcacae683f1589dff1eec914558c8dc631df3525583b96cbe699e5c2"
+    },
+    "agent-strategic-compact": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "edd7ea0b57721a6a2009bf9c2c5b3465748be6b4aca914d9fb7528f5be99a30d"
+    },
+    "agent-tool-builder": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "1c7020df63c0880695c0a58d956e6753b5be7c11d5c25b75a0fdae9608a05cdf"
+    },
+    "ai-engineer": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "7055641be025ba47ce5e4acf113241910b3ea6c7cd41b20919d535693f556e92"
+    },
+    "ai-product": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "655c8c7cca5c84f9f662e64df30d68a81d07ab10db0966f70b1e29c1bebb8fa1"
+    },
+    "ai-wrapper-product": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "0522a30265586668ed145815d6938ac877c29290802bd091e0c7ecb4355a186c"
+    },
+    "airflow-dag-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "d374c210623562e54f777b82171e9e5cf182f20dcd76a7ef9fac537d34b1c2fb"
+    },
+    "algolia-search": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "afdc5e1c49fba6c7e5c564e6b089216a1487c09050e43ed1cc9684e6ea2bb284"
+    },
+    "api-design-principles": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "eccacbabb8570697f51777f2df521bae6684fedb1354c6895f638dab3981a60b"
+    },
+    "api-documentation-generator": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "520e9d714f842012effe1813b125bfb3c8533adf2bb2a1dc63481adae841d55e"
+    },
+    "api-documenter": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c26291d40100eb76077cc3f68430009413b27e2d7cf2ee49cfb2428727822fb7"
+    },
+    "api-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a5e627101661c403bb3fa90c61ce7bf376ee6c509c45abc315192d9c641d5b93"
+    },
+    "api-security-best-practices": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "34d5c19101cad6c085208150d3ac8c6061fc7a797abe3f26605f71ac37150260"
+    },
+    "api-testing-observability-api-mock": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "1a7a7504a7f8971c2a3c63362b63453ee33162c0de3f428ba0e7855062c62b03"
+    },
+    "app-builder": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c8fdca467c8859e8dda5b4801ce6293533a4e69119053dd1ca2e173753fc15b8"
+    },
+    "app-store-optimization": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c42ef98fe3e17a2ea670746311501b3574a4494faace7351e34d4b6eb17c2b58"
+    },
+    "application-performance-performance-optimization": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "f0ceeabc23b24d96d1a7ee594d4465f00b75725c8b9a6870ad08296508e99ccd"
+    },
+    "architect-review": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "d0ceecac51daf4d5564ec0264d1a579c92f12e4fa3a3b624e1416ff9dcbce484"
+    },
+    "architecture": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "ae0efc4eb68d6ff38b061960b2a93550960d565f0e72dbe1b337d5df46bc60d0"
+    },
+    "architecture-decision-records": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "adccda77b7056786b354c94620234ca8ee9409adeaeb23b227208df4fc19f395"
+    },
+    "async-python-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "bdd735b31ab8438de7c1ac4eed4709880958b56cb3b0b02b320d3df93e1b0ccc"
+    },
+    "backend-architect": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "ab6e52661291e79cd16701ce8a9f51c78c0013d15e67727db88103947679f2e2"
+    },
+    "backend-dev-guidelines": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "bced0c2ca7fca51d39eb52d07bfd3a09e1bda39ef598a78c38ff4f52de6f050a"
+    },
+    "backend-development-feature-development": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "00ed1f52182de1762c27a273cb5761a3da77ef34ccb9bfa79008ff9fc640993d"
+    },
+    "backend-security-coder": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "71306d1a7cbbacf6470f59f1592b1aa6e7e6d5c12fc20b64a16d7ac7d603d719"
+    },
+    "backtesting-frameworks": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c3ff9416a872d616a11d7c5213cc734cac5f8ea7f8fc0dd30511d4f419a8b4e9"
+    },
+    "bash-linux": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "69446efac41a2a6efe8ba63f8b01cd370eb1fe289f120595e419b74e8b69dd88"
+    },
+    "bash-pro": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "077ad25367ae89171270e2c874ad553211392367179b2d5e3d3612ff8e8c2d92"
+    },
+    "canvas-design": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "90544cd6146adfb6068faf047dde5fc2eba092fec883b953a7112af372d14eee"
+    },
+    "changelog-automation": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "aae584b43b895253f955e97fbf38bbb22eb6c8f3ee9ad77130aa70c69d00e183"
+    },
+    "clean-code": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "b6585b9a853f714bc04b84822e8775f2060264e9a11a45517c3444e2045311a9"
+    },
+    "cloud-architect": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "9e5b70d600ecb8129fa03c48d205dba679f203b43da9b77137d35d72c06a997f"
+    },
+    "cloud-architect-master": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "f47406b4a165f13096ab755895f4c28d4bbe657d7df0b3aedea3c5a9e10ed493"
+    },
+    "code-documentation-code-explain": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "2e276c08577273a7cffdc6426a9411fabc08721519b45b644aa787c5baf81707"
+    },
+    "code-documentation-doc-generate": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "e0149a6eedd0c1459635bb4f54d22e9fed16979fb566de6f81acd6088538e518"
+    },
+    "code-refactoring-context-restore": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "637151706757e7db231b7e3012adda5709ec53755f22f379376dbd3a70c74214"
+    },
+    "code-refactoring-refactor-clean": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "87db0b2880f79579738cad756d33bde4f95cbb545ba520577f475d99744b3da5"
+    },
+    "code-refactoring-tech-debt": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "b94b3e7c23508d2ece8e40c359a9fd779145eb58d6807b3f05e5df67e419628d"
+    },
+    "code-review-ai-ai-review": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "405e9ca9813eb4cd74005abfd67f18a4fbcd3feef4dcda6f88a8b98937e8d2ac"
+    },
+    "code-review-checklist": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "b66a3eb92af6ab707d9d61fb0b7a152de827deacc2cb6bc57d98a0a9a23909f9"
+    },
+    "code-review-excellence": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "36e57bb673d4d37e21df945b390bb1c0d837321bfb4fef2c9c7ffe830318ebde"
+    },
+    "code-reviewer": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a83f8f55d961441ce4d806c419a4720c8bfc2764b5cb11ffcd4963385a57a922"
+    },
+    "codebase-cleanup-deps-audit": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "5d3963547418971e9266c048c6e3c47083cbe126f345dd04a23772a2baba33f1"
+    },
+    "codebase-cleanup-refactor-clean": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "ce177c141fd82b7880fcf57912c5346ffd2387ea620f4561becafec3fa90c03b"
+    },
+    "codebase-cleanup-tech-debt": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "3c3f08d51921aaab8ab23ae2d1677c80b4e1f4ea2a81f88e6866854e87bc58ea"
+    },
+    "codex-review": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a490c696a2c7673fe9c223e66b40bdaaecb5787fae07de56add84a7b9f510934"
+    },
+    "context-driven-development": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "18f192ba993732f3d3a48f525282def543355e33f3b621c9bf3d0ce916b873ae"
+    },
+    "context-management-context-restore": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "1d2cbf6249c8b01d9e8dac71dbac2619c1c34a4b4e641a152caffaeac6998829"
+    },
+    "context-management-context-save": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "dbaeec89ff2adcb556f15d5121bdcfbacabb6b8bdc8804dd42462f2254b24fef"
+    },
+    "context-manager": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "544e507cf463eca88b68611ec37f8440ae226ea1369281e9c1a9d3df4f97e3a6"
+    },
+    "context-window-management": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "ea90068c25914182deb68f769602544009b784d423923d6a0e61a25954439160"
+    },
+    "daily-news-report": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "119d0d45d8b751e4d4b2ab7d5698748acea2449fddf9c3506736c216b905899e"
+    },
+    "data-engineer": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "45abc9edf901b65c6f94ef81e8bb23c1d6082367ad903140a08b01291b270f6c"
+    },
+    "data-engineering-data-driven-feature": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "fc0baa2a14b2b4672161508895d978b14d23affdb77502945f40d6e6a4682728"
+    },
+    "data-engineering-data-pipeline": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "3cdb309341048ed4d212e32c72675d70de4b423b9d6ae6810e7acd386026b517"
+    },
+    "data-quality-frameworks": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "e4bd26bb8cb338a29406398f1762d16c724daaecfd21060a4594915e28d64b69"
+    },
+    "data-scientist": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "e01881d7a67fedc10e94f6086e702fdd19b872dfb0c867c36094de7b393ef5cf"
+    },
+    "data-storytelling": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "f7539fc45489b971ea8cb06db05b2b4ca8ac5362ca96e7914a7a19f9f303037f"
+    },
+    "database-admin": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "4b6caf171bcc92265a210897c3cda4e420ed56ea25a51e6380b033af646440aa"
+    },
+    "database-architect": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "219aec5a1406564ed288d48fb7a7759d210187712256e6ebe1c38ec5b66e2848"
+    },
+    "database-cloud-optimization-cost-optimize": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "4efc201ce8da19394a5b2920b398dc34eaf6e694993f1efc9ade39b9446e63b5"
+    },
+    "database-design": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c51eae041fabc1fee5f3be679564fb06b12c16d7f2d799ab024e3e52bf0e3d4e"
+    },
+    "database-migrations-migration-observability": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "4a85cad9761808799bb4bc6bacdb4d171f527ca136f42ab876005fb2db9b466b"
+    },
+    "database-migrations-sql-migrations": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "42ecb53b68ac317ad9839a9c5fe34b7f39ceb718538a5c8b309304a309d742c2"
+    },
+    "database-optimizer": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "daafb03711caea4278573ba75dd099d37cc89e2bb71b6c483763beec4365d8d8"
+    },
+    "dbt-transformation-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "c74dfd479ef8535a321779264928d0fdb4396cb1c1519ed714a814622fb9662e"
+    },
+    "debugger": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "5067ced0108068be6f42437664d677c7397324092a3a7febe2c6de919217a39b"
+    },
+    "debugging-strategies": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "3f98f603d83e7f631302e87454512eca99d534ec282b51b1689be242b3a5e97d"
+    },
+    "debugging-toolkit-smart-debug": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "0d956da37fab1c47f01cedae482dd4ae03b678b98aa90e49fe982aace74466aa"
+    },
+    "django-pro": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "6671bc1de11a37ceff0f9fed5fc4970df0f48ff3c5c381d71da0a9205355ed78"
+    },
+    "doc-coauthoring": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "840e54ac29f75716965d33a62356da858d8cf588ac0439782dec909c89ef37ff"
+    },
+    "docker-expert": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "55db23d2db48807af05972d496525c49a57eeefd241a26a82aa14a72e1b79f0d"
+    },
+    "docs-architect": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "3d25499d5847f3df1e97d69337ed318dac5403111e8626d9bdcb1095d6cf6caa"
+    },
+    "git-advanced-workflows": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "353d21c459f75db874789b9b3c2ebe54f09b551f153f6fb6b64c809387e12d02"
+    },
+    "git-collaboration-master": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "ab4ce5396019cffb7a414a5e70bd1f3acdb84fb879e8d72080ed27e445ab79b8"
+    },
+    "git-pr-workflows-git-workflow": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "7c183a395a5572b9881ae5e42474219c13b3b29928576fdecb391a93dadf7758"
+    },
+    "git-pr-workflows-onboard": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "318ec82e9216b951b3104db69b40ffe6e89a892a5bd56968b041256d938fe758"
+    },
+    "git-pr-workflows-pr-enhance": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "cba058c57a46fc5e43aa0a9e8ac5ed7b508548c2452aecb11c0b87a90d4490ea"
+    },
+    "javascript-pro": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "82237a60dbec159adac391d479e972f8e9548492702d58199ad139b06b2ca0f7"
+    },
+    "javascript-testing-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a03f50934b3f4980fd2d71d3bd0893db3c73d90a6f0d65e5babbd507afcff228"
+    },
+    "javascript-typescript-typescript-scaffold": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "e7ddec55c2082c92af857d70effe5f0de494d1cd375e5d9055066c6130d1ac0f"
+    },
+    "julia-pro": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "321a4717792c0e53c48dc5f8f9efdbddae4bddc6b47bb148cf31d24da3dee57f"
+    },
+    "market-sizing-analysis": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a3bdbb4d5cf79ee1c253823aa9f4a6f8a25822d0598a6023ce48c85125025c69"
+    },
+    "marketing-ideas": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "38f4d30a73f690555ac70612aa1d52b9b0fc7acc464e4c8bfd3e44a355be466b"
+    },
+    "marketing-psychology": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "f7904f1de85b3887d594745b43b3528dd66287b58883f65948b31a839aa71edd"
+    },
+    "mcp-builder": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "97599666ea04aa9bc7fcd177778a4d98ce286d619069bad47a0ad5ba72c4715d"
+    },
+    "memory-forensics": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a697e645f555770600af3684fb1d93e275c9df297f47fa4a812c226d7348479e"
+    },
+    "memory-safety-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "80e94cde665b183ea2f649369f7faead2f3ca96a3cf61ee82bfbfb467905cde6"
+    },
+    "mermaid-expert": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "86a37b7b9f8e8e2acc6453f7127d7476b6fe2e124928ec19bc7ef9edfc79d5d2"
+    },
+    "mlops-engineer": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "82b906b63d3caf60e489ed8efbf6e8d60cfddc0933899912061a2e24c3bcb945"
+    },
+    "mobile-design": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "1a69f2a24f981a8a27ba326a4d1bd8c19b62d414d4df44f1bac3aedd8ff5ebc3"
+    },
+    "mobile-developer": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "20f20b5fa51cd415ff8c876c8eee0490cc8c265905beb46bc9e1aa64d561e733"
+    },
+    "modern-web-architect": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "80220ca22ed454d58c72073a5cb4551e7cd515e252595976046a0370fd82c175"
+    },
+    "modern-web-performance": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "efad4f360cc0adbec4d88c805f8bccc445eae1fea24fc8b5298305ad76cef1f2"
+    },
+    "monorepo-architect": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a15a615705b41e4a868086efb8fbb9923f10cf8c6e44423d384787b2217a5cc1"
+    },
+    "monorepo-management": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "4f5d6e49350871f23397888aaa405185c1c6ded9e593dea39177ae845b454708"
+    },
+    "moodle-external-api-development": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "4ff71821c25c0a7df070f97278f02b997091f211f36b360f793a6640bc539379"
+    },
+    "nodejs-backend-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "909509a30dec1676e2bef1ce02d3e0fd392c0279162347cb4b0389b7b2bf7bd7"
+    },
+    "nodejs-best-practices": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a67ddeb05431fe776a49bfa47af95d8155fed44576bfd0ed5c5669178698b80a"
+    },
+    "nosql-expert": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "dab8e01427436201d33e8c037d55a641e42a8e219328c95d7e053b21d04658d8"
+    },
+    "nx-workspace-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "508668e8fed79070283b0e795ec7ced8f5b67175be9f7c497f021f7edf1ec5ed"
+    },
+    "observability-engineer": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "d94424150bc311eaa78035ddcfde2afdf626fdf697ca05750a7b8bbdd4a73669"
+    },
+    "observability-monitoring-monitor-setup": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "ce0ceed857fcbca5b15de81d94f52a8cdead65c7d482c5e8a155b567aeb64abf"
+    },
+    "observability-monitoring-slo-implement": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "81d65945aa4d39aac5fda11a060f599aa20cb8a8b2218125ed953ac72349442d"
+    },
+    "obsidian-clipper-template-creator": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "09113f4db8d40ee228eb8252e6551fdc5dd331e38af717b6ef27697a7351b49c"
+    },
+    "on-call-handoff-patterns": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "417fdb98803a65c466338bfa1c39fa4b3f9acd4ea8dc8357336c3dc7af362946"
+    },
+    "posix-shell-pro": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "7377edca5922bf239b850bf5c0732b1835dd31f93b57b13173a661ac63c8f753"
+    },
+    "postgres-mcp": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "92bf5142e9323635bd673d02b3890cf12f07b5e7def1fb5919029ba7c2708346"
+    },
+    "postgresql": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "a733a475467d6a9dd21d0081dc39c120bca5ecb4274a15a4f1d3d1e65c4e3ee2"
+    },
+    "prisma-expert": {
+      "source": "Dokhacgiakhoa/antigravity-ide",
+      "sourceType": "github",
+      "computedHash": "120ffd7773c0c33a3a2433b3ed2758ab7169bf3330caad6e3bee974264155919"
+    }
+  }
+}

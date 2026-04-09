@@ -1,1 +1,4 @@
 README.md
+.agents/*
+client/.agents/*
+server/.agents/*
