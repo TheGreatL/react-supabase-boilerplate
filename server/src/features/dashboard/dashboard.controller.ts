@@ -1,9 +1,9 @@
-import { Response } from 'express';
-import { asyncHandler } from '../../shared/utils/async-handler';
-import { ApiResponse } from '../../shared/utils/api-response';
-import { activityService } from '../../shared/services/activity.service';
-import { TAuthenticatedRequest } from '../../shared/types/auth.types';
-import { dashboardService } from './dashboard.service';
+import {Response} from 'express';
+import {asyncHandler} from '../../shared/utils/async-handler';
+import {ApiResponse} from '../../shared/utils/api-response';
+import {activityService} from '../../shared/services/activity.service';
+import {TAuthenticatedRequest} from '../../shared/types/auth.types';
+import {dashboardService} from './dashboard.service';
 
 export default class DashboardController {
   /**

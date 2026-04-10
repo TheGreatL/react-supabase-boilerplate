@@ -99,11 +99,9 @@ export default class AuthController {
     await activityService.recordActivity(user.id, ActivityType.REGISTER, 'New user registered');
 
     // Send Welcome Email (Fire and forget or await)
-    mailService.sendEmail(
-      user.email,
-      'Welcome to Boilerplate!',
-      WelcomeEmail({ name: `${user.firstName} ${user.lastName}` })
-    ).catch(err => console.error('Failed to send welcome email:', err));
+    mailService
+      .sendEmail(user.email, 'Welcome to Boilerplate!', WelcomeEmail({name: `${user.firstName} ${user.lastName}`}))
+      .catch((err) => console.error('Failed to send welcome email:', err));
 
     return ApiResponse.success(res, {accessToken, user}, 'Registration successful', httpStatus.CREATED);
   });

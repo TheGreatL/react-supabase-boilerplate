@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import {Request, Response, NextFunction} from 'express';
 import crypto from 'crypto';
 import httpStatus from 'http-status';
-import { ApiResponse } from '../utils/api-response';
+import {ApiResponse} from '../utils/api-response';
 
 /**
  * CSRF Protection Middleware (Double Submit Cookie Pattern)
- * 
+ *
  * 1. State-changing requests (POST, PUT, DELETE, PATCH) must include:
  *    - A 'X-CSRF-Token' header.
  *    - A matching 'csrf-token' cookie.
@@ -14,7 +14,7 @@ import { ApiResponse } from '../utils/api-response';
 export const csrfMiddleware = (req: Request, res: Response, next: NextFunction) => {
   // Methods that don't need CSRF protection
   const safeMethods = ['GET', 'HEAD', 'OPTIONS'];
-  
+
   if (safeMethods.includes(req.method)) {
     // Set a new CSRF token if one doesn't exist
     if (!req.cookies['csrf-token']) {
@@ -34,11 +34,7 @@ export const csrfMiddleware = (req: Request, res: Response, next: NextFunction) 
   const cookieToken = req.cookies['csrf-token'];
 
   if (!cookieToken || !headerToken || cookieToken !== headerToken) {
-    return ApiResponse.error(
-      res, 
-      'CSRF token validation failed', 
-      httpStatus.FORBIDDEN
-    );
+    return ApiResponse.error(res, 'CSRF token validation failed', httpStatus.FORBIDDEN);
   }
 
   next();

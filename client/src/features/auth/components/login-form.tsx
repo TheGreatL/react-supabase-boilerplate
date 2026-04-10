@@ -66,9 +66,7 @@ export default function LoginForm() {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 w-full max-w-md space-y-8 duration-700">
       <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold text-foreground">
-          Welcome Back
-        </h1>
+        <h1 className="text-foreground text-3xl font-bold">Welcome Back</h1>
         <p className="text-muted-foreground">
           Enter your credentials to access your account
         </p>
@@ -124,7 +122,7 @@ export default function LoginForm() {
               </label>
               <a
                 href="#"
-                className="text-xs text-primary transition-colors hover:text-primary/80"
+                className="text-primary hover:text-primary/80 text-xs transition-colors"
               >
                 Forgot password?
               </a>
@@ -149,7 +147,7 @@ export default function LoginForm() {
         <button
           disabled={mutation.isPending}
           type="submit"
-          className="relative flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-primary/30 active:scale-[0.98] disabled:opacity-70"
+          className="bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/90 hover:shadow-primary/30 relative flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-xl transition-all active:scale-[0.98] disabled:opacity-70"
         >
           {mutation.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -167,7 +165,7 @@ export default function LoginForm() {
           Don&apos;t have an account?{' '}
           <button
             onClick={() => navigate({ to: '/register' })}
-            className="font-medium text-primary transition-colors hover:text-primary/80"
+            className="text-primary hover:text-primary/80 font-medium transition-colors"
           >
             Create an account
           </button>

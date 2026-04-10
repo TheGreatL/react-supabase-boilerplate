@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma';
+import {prisma} from '../lib/prisma';
 
 export enum ActivityType {
   LOGIN = 'LOGIN',
@@ -37,7 +37,7 @@ export class ActivityService {
   async getRecentActivities(limit = 10) {
     return await prisma.activity.findMany({
       take: limit,
-      orderBy: { createdAt: 'desc' },
+      orderBy: {createdAt: 'desc'},
       include: {
         user: {
           select: {

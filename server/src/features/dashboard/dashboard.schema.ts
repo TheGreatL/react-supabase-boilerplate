@@ -1,7 +1,7 @@
-import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import {extendZodWithOpenApi} from '@asteasolutions/zod-to-openapi';
 import z from 'zod';
-import { registry } from '../../shared/lib/openapi-registry';
-import { successResponseSchema } from '../../shared/schema/response.schema';
+import {registry} from '../../shared/lib/openapi-registry';
+import {successResponseSchema} from '../../shared/schema/response.schema';
 
 extendZodWithOpenApi(z);
 

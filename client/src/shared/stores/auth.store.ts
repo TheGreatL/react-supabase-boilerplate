@@ -4,7 +4,6 @@ import { authService } from '../../features/auth/auth.service'
 import type { TUser } from '../../features/auth/auth.schema'
 import { setAccessToken } from '../api/api-config'
 
-
 interface TAuthState {
   user: TUser | null
   isAuthenticated: boolean

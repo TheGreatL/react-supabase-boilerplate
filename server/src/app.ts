@@ -27,17 +27,19 @@ app.use(urlencoded({extended: true})); // Parse URL-encoded bodies
 app.use(cookieParser()); // Parse cookies (used for refresh tokens & CSRF)
 
 // 2. Global Logging (Pino)
-app.use(pinoHttp({
-  logger,
-  serializers: {
-    req: (req) => ({
-      method: req.method,
-      url: req.url,
-      query: req.query,
-      params: req.params,
-    }),
-  },
-}));
+app.use(
+  pinoHttp({
+    logger,
+    serializers: {
+      req: (req) => ({
+        method: req.method,
+        url: req.url,
+        query: req.query,
+        params: req.params
+      })
+    }
+  })
+);
 
 // 3. Security Middleware
 app.use(

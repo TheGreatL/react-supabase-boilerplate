@@ -18,8 +18,8 @@
 - **`src/routes`**: File-based route definitions and layouts.
 - **`src/features`**: Vertical feature modules (e.g., `auth`, `user`). Each contains its own services, components, and schemas.
 - **`src/shared`**: Cross-cutting concerns (API client, constants, global stores, UI components, types).
-    - **`src/shared/api`**: Native Fetch wrapper and API configuration.
-    - **`src/shared/constants`**: Centralized `API_ENDPOINTS`, `CONFIG`, and `QUERY_KEYS`.
+  - **`src/shared/api`**: Native Fetch wrapper and API configuration.
+  - **`src/shared/constants`**: Centralized `API_ENDPOINTS`, `CONFIG`, and `QUERY_KEYS`.
 
 ## 📡 API Integration
 

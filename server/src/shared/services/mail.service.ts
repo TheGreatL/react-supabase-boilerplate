@@ -1,6 +1,6 @@
-import { Resend } from 'resend';
-import { config } from '../config';
-import { render } from '@react-email/render';
+import {Resend} from 'resend';
+import {config} from '../config';
+import {render} from '@react-email/render';
 import React from 'react';
 
 /**
@@ -20,23 +20,23 @@ export class MailService {
   async sendEmail(to: string, subject: string, template: React.ReactElement) {
     try {
       const html = await render(template);
-      
-      const { data, error } = await this.resend.emails.send({
+
+      const {data, error} = await this.resend.emails.send({
         from: config.EMAIL_FROM || 'onboarding@resend.dev',
         to,
         subject,
-        html,
+        html
       });
 
       if (error) {
         console.error('Resend Error:', error);
-        return { success: false, error };
+        return {success: false, error};
       }
 
-      return { success: true, data };
+      return {success: true, data};
     } catch (err) {
       console.error('Mail Service Error:', err);
-      return { success: false, error: err };
+      return {success: false, error: err};
     }
   }
 
