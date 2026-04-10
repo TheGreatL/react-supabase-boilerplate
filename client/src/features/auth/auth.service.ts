@@ -1,24 +1,21 @@
 import api from '../../shared/api/api-config'
-import type { TLogin, TRegister } from './auth.schema'
+import API_ENDPOINTS from '../../shared/constants/api-endpoints'
+import type { TLogin, TRegister, TAuthResponse, TUser } from './auth.schema'
 
 export const authService = {
   login: async (data: TLogin) => {
-    const response = await api.post('/auth/login', data)
-    return response.data
+    return await api.post<TAuthResponse>(API_ENDPOINTS.AUTH.LOGIN, data)
   },
 
   register: async (data: TRegister) => {
-    const response = await api.post('/auth/register', data)
-    return response.data
+    return await api.post<TAuthResponse>(API_ENDPOINTS.AUTH.REGISTER, data)
   },
 
   logout: async () => {
-    const response = await api.post('/auth/logout')
-    return response.data
+    return await api.post(API_ENDPOINTS.AUTH.LOGOUT)
   },
 
   getMe: async () => {
-    const response = await api.get('/auth/me')
-    return response.data
+    return await api.get<TUser>(API_ENDPOINTS.AUTH.ME)
   },
 }

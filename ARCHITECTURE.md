@@ -7,7 +7,7 @@ stack with a focus on type safety, professional architecture, and premium aesthe
 
 ## 📁 Monorepo Structure
 
-- **`/client`**: React + Vite frontend leveraging TanStack Router and Tailwind v4.
+- **`/client`**: React + Vite frontend leveraging TanStack Router, Tailwind v4, and a custom native **Fetch** client.
 - **`/server`**: Node.js Express backend using a Controller-Service-Repository pattern and Prisma ORM.
 - **`/prisma`**: Shared database schemas (managed within the server directory but accessible via root scripts).
 - **`docker-compose.yml`**: Orchestrates the DB (PostgreSQL), Admin (pgAdmin), API, and Client.
@@ -37,6 +37,7 @@ stack with a focus on type safety, professional architecture, and premium aesthe
 ## 🧪 Testing Architecture
 
 - **Structure**: All tests follow a feature-based hierarchy: `tests/[feature]/[unit|integration]`.
+- **Naming Convention**: Test files MUST follow the `[name].[unit|integration].test.[ts|tsx]` format.
 - **Unit & Integration**: Powered by **Vitest**.
   - **Client**: Located in `/client/tests/`, organized by feature and test type.
   - **Server**: Located in `/server/tests/`, organized by feature and test type.

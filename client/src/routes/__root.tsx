@@ -20,6 +20,7 @@ import { Toaster } from '@/shared/components/ui/sonner'
 
 import { useAuthStore } from '../shared/stores/auth.store'
 import { useEffect } from 'react'
+import CONFIG from '@/shared/constants/config'
 
 interface TMyRouterContext {
   queryClient: QueryClient
@@ -38,7 +39,7 @@ export const Route = createRootRouteWithContext<TMyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Boilerplate System',
+        title: CONFIG.TITLE,
       },
     ],
     links: [

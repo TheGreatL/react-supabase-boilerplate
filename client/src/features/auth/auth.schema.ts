@@ -16,3 +16,17 @@ export const registerSchema = loginSchema.extend({
 })
 
 export type TRegister = z.infer<typeof registerSchema>
+
+export interface TUser {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  role: string
+  avatar?: string
+}
+
+export interface TAuthResponse {
+  accessToken: string
+  user: TUser
+}

@@ -1,6 +1,6 @@
-import axios from 'axios'
-import type { InternalAxiosRequestConfig } from 'axios'
-import { env } from '@/env'
+import CONFIG from '@/shared/constants/config'
+import API_ENDPOINTS from '@/shared/constants/api-endpoints'
+import type { TApiResponse } from '../types/api.types'
 
 // In-memory storage for the access token to avoid localStorage attacks (XSS)
 let inMemoryAccessToken: string | null = null
@@ -11,28 +11,10 @@ export const setAccessToken = (token: string | null) => {
 
 export const getAccessToken = () => inMemoryAccessToken
 
-const api = axios.create({
-  baseURL: `${env.VITE_API_URL}/api`,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+type TRequestConfig = RequestInit & {
+  _retry?: boolean
+}
 
-// Request interceptor for adding tokens if needed (though cookies are handled automatically)
-api.interceptors.request.use(
-  (config) => {
-    // Read from in-memory variable instead of localStorage
-    const token = inMemoryAccessToken
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  (error: Error) => Promise.reject(error),
-)
-
-// Response interceptor for handling token refresh
 let isRefreshing = false
 let failedQueue: Array<{
   resolve: (token: string) => void
@@ -50,82 +32,136 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = []
 }
 
-api.interceptors.response.use(
-  (response) => response,
-  async (error: {
-    response?: { status: number }
-    config: InternalAxiosRequestConfig & { _retry?: boolean }
-  }) => {
-    const originalRequest = error.config
-    const isAuthRoute =
-      originalRequest.url?.includes('/auth/login') ||
-      originalRequest.url?.includes('/auth/register') ||
-      originalRequest.url?.includes('/auth/refresh')
+async function request<T>(
+  url: string,
+  config: TRequestConfig = {},
+): Promise<TApiResponse<T>> {
+  const fullUrl = url.startsWith('http') ? url : `${CONFIG.API_URL}/api${url}`
 
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !isAuthRoute
-    ) {
-      if (isRefreshing) {
-        // If already refreshing, wait for the new token
-        try {
-          const token = await new Promise<string>((resolve, reject) => {
+  const headers = new Headers(config.headers)
+  if (
+    !headers.has('Content-Type') &&
+    config.body &&
+    !(config.body instanceof FormData)
+  ) {
+    headers.set('Content-Type', 'application/json')
+  }
+
+  if (inMemoryAccessToken) {
+    headers.set('Authorization', `Bearer ${inMemoryAccessToken}`)
+  }
+
+  try {
+    const response = await fetch(fullUrl, {
+      ...config,
+      headers,
+      credentials: config.credentials || 'include',
+    })
+
+    // Handle 401 and Refresh Logic
+    if (response.status === 401 && !config._retry) {
+      const isAuthRoute =
+        url.includes(API_ENDPOINTS.AUTH.LOGIN) ||
+        url.includes(API_ENDPOINTS.AUTH.REGISTER) ||
+        url.includes(API_ENDPOINTS.AUTH.REFRESH)
+
+      if (!isAuthRoute) {
+        if (isRefreshing) {
+          await new Promise<string>((resolve, reject) => {
             failedQueue.push({ resolve, reject })
           })
-          originalRequest.headers.Authorization = `Bearer ${token}`
-          return api(originalRequest)
-        } catch (err) {
-          return Promise.reject(err)
+          // The request function will automatically pick up the new token from inMemoryAccessToken
+          return request<T>(url, { ...config, _retry: true })
         }
-      }
 
-      originalRequest._retry = true
-      isRefreshing = true
+        config._retry = true
+        isRefreshing = true
 
-      try {
-        const { data } = await axios.post<{
-          success: boolean
-          data: { accessToken: string }
-        }>(
-          `${env.VITE_API_URL}/api/auth/refresh`,
-          {},
-          { withCredentials: true },
-        )
+        try {
+          const refreshResponse = await fetch(
+            `${CONFIG.API_URL}/api${API_ENDPOINTS.AUTH.REFRESH}`,
+            {
+              method: 'POST',
+              credentials: 'include',
+            },
+          )
+          const refreshData = await refreshResponse.json()
 
-        if (data.success) {
-          const newAccessToken = data.data.accessToken
-          console.log('🔄 Token refreshed successfully')
-
-          // Update in-memory token
-          setAccessToken(newAccessToken)
-
-          // Process other requests in queue
-          processQueue(null, newAccessToken)
-
-          // Update the original request with the NEW token
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
-
-          return api(originalRequest)
+          if (refreshData.success && refreshData.data.accessToken) {
+            const newAccessToken = refreshData.data.accessToken
+            console.log('🔄 Token refreshed successfully (Fetch)')
+            setAccessToken(newAccessToken)
+            processQueue(null, newAccessToken)
+            return request<T>(url, { ...config, _retry: true })
+          } else {
+            throw new Error('Refresh failed')
+          }
+        } catch (refreshError) {
+          console.error('❌ Session refresh failed (Fetch):', refreshError)
+          processQueue(refreshError, null)
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('auth-storage')
+            window.location.href = '/login?reason=expired'
+          }
+          setAccessToken(null)
+          throw refreshError
+        } finally {
+          isRefreshing = false
         }
-      } catch (refreshError) {
-        console.error('❌ Session refresh failed:', refreshError)
-        processQueue(refreshError, null)
-
-        // Clear stale auth data from localStorage before redirecting
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('auth-storage')
-          window.location.href = '/login?reason=expired'
-        }
-        setAccessToken(null)
-        return Promise.reject(refreshError)
-      } finally {
-        isRefreshing = false
       }
     }
 
-    return Promise.reject(error)
-  },
-)
+    const data = await response.json().catch(() => ({}))
+
+    if (!response.ok) {
+      // Create an error object that loosely mirrors Axios error structure
+      const error: any = new Error(data.message || 'API Request Failed')
+      error.response = {
+        status: response.status,
+        data: data,
+      }
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    // If it's already a formatted error, rethrow it
+    if ((error as any).response) throw error
+
+    // Otherwise wrap it
+    const apiError: any = new Error((error as Error).message || 'Network Error')
+    apiError.response = { status: 0, data: { message: apiError.message } }
+    throw apiError
+  }
+}
+
+const api = {
+  get: <T>(url: string, config?: TRequestConfig) =>
+    request<T>(url, { ...config, method: 'GET' }),
+
+  post: <T>(url: string, data?: any, config?: TRequestConfig) =>
+    request<T>(url, {
+      ...config,
+      method: 'POST',
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    }),
+
+  put: <T>(url: string, data?: any, config?: TRequestConfig) =>
+    request<T>(url, {
+      ...config,
+      method: 'PUT',
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    }),
+
+  patch: <T>(url: string, data?: any, config?: TRequestConfig) =>
+    request<T>(url, {
+      ...config,
+      method: 'PATCH',
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    }),
+
+  delete: <T>(url: string, config?: TRequestConfig) =>
+    request<T>(url, { ...config, method: 'DELETE' }),
+}
 
 export default api

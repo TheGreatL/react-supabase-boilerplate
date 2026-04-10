@@ -47,11 +47,9 @@ export default function RegisterForm() {
 
       setTimeout(() => {
         navigate({ to: '/dashboard' })
-      }, 1000)
+      }, 300)
     },
-    onError: (
-      error: Error & { response?: { data?: { message?: string } } },
-    ) => {
+    onError: (error: any) => {
       const message =
         error.response?.data?.message ||
         error.message ||
@@ -80,11 +78,8 @@ export default function RegisterForm() {
           <AlertCircleIcon className="h-4 w-4" />
           <AlertTitle>Registration failed</AlertTitle>
           <AlertDescription>
-            {(
-              mutation.error as Error & {
-                response?: { data?: { message?: string } }
-              }
-            ).response?.data?.message ||
+            {mutation.error?.response?.data?.message ||
+              mutation.error?.message ||
               'Something went wrong. Please try again.'}
           </AlertDescription>
         </Alert>

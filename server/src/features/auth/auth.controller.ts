@@ -51,11 +51,11 @@ export default class AuthController {
    */
   static login = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body as TLogin;
-    const {accessToken, refreshToken} = await authService.login(data);
+    const {accessToken, refreshToken, user} = await authService.login(data);
 
     AuthController.setRefreshTokenCookie(res, refreshToken);
 
-    return ApiResponse.success(res, {accessToken}, 'Login successful');
+    return ApiResponse.success(res, {accessToken, user}, 'Login successful');
   });
 
   /**
@@ -82,11 +82,11 @@ export default class AuthController {
    */
   static register = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body as TAuthRequest;
-    const {accessToken, refreshToken} = await authService.register(data);
+    const {accessToken, refreshToken, user} = await authService.register(data);
 
     AuthController.setRefreshTokenCookie(res, refreshToken);
 
-    return ApiResponse.success(res, {accessToken}, 'Registration successful', httpStatus.CREATED);
+    return ApiResponse.success(res, {accessToken, user}, 'Registration successful', httpStatus.CREATED);
   });
 
   /**

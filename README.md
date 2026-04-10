@@ -147,11 +147,10 @@ After cloning the repo, make sure you do these things:
 
 ---
 
-## 🧪 Testing
+The project includes a comprehensive testing suite. All tests are organized by feature and type (unit vs. integration) in root `tests/` directories.
 
-The project includes a comprehensive testing suite. All tests are organized by feature and type (unit vs. integration) outside of the `src` directories.
-
-### Testing Hierarchy
+### Testing Hierarchy & Standards
+- **Naming**: All test files MUST follow the `[name].[unit|integration].test.ts` format.
 - **`tests/[feature]/unit`**: Discrete logic and component tests.
 - **`tests/[feature]/integration`**: API, database, and cross-component tests.
 
@@ -258,4 +257,9 @@ This project enforces consistent formatting on **3 levels** so no one has to thi
 > **First-time setup:** When you open the project, VS Code will show a popup — **"Install Recommended Extensions?"** — click **Install All**. This installs Prettier, ESLint, Prisma, Tailwind, and GitLens automatically.
 
 After installing extensions, saving any file will auto-format it. You never need to run Prettier manually.
+
+---
+
+## 🤖 AI Assistance
+This project includes a `CLAUDE.md` in the root. AI coding assistants (like Claude Code, Cursor, or ChatGPT) MUST read this file to adhere to the project's "Gold Standard" architecture and coding patterns.
 

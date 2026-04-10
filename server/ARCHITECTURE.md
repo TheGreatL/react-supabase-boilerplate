@@ -61,6 +61,7 @@ This ensures the API is scalable and prevents performance issues as the data gro
 ## 🧪 Testing Architecture
 
 - **Structure**: All tests follow a feature-based hierarchy: `tests/[feature]/[unit|integration]`.
+- **Naming Convention**: Test files MUST follow the `[name].[unit|integration].test.ts` format.
 - **Unit & Integration**: Powered by **Vitest**.
   - **Server**: Located in `/server/tests/`, organized by feature and test type.
 - **Execution**: Unified scripts at the root level (`npm run test`, `npm run test:e2e`).

@@ -11,7 +11,7 @@ describe('cn utility', () => {
   })
 
   it('handles conditional classes', () => {
-    const result = cn('base', 'is-true', 'is-false')
+    const result = cn('base', { 'is-true': true, 'is-false': false })
     expect(result).toBe('base is-true')
   })
 

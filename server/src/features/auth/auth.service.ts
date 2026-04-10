@@ -5,6 +5,7 @@ import {UserRepository} from '../user/user.repository';
 import {SessionRepository} from './session.repository';
 import {HttpException} from '../../shared/exceptions/http-exception';
 import {TokenService} from '../../shared/services/token.service';
+import {User} from '@prisma/client';
 import {TJWTPayload, TRefreshTokenPayload, TTokenPair} from '../../shared/types/auth.types';
 import {TAuthRequest, TLogin} from './auth.schema';
 
@@ -43,7 +44,7 @@ export class AuthService {
    * Authenticates a user with email and password.
    * Gold Standard: Password comparison is done using bcrypt.
    */
-  async login(data: TLogin): Promise<TTokenPair> {
+  async login(data: TLogin): Promise<TTokenPair & {user: Omit<User, 'password'>}> {
     const user = await this.userRepository.findByEmail(data.email);
 
     if (!user || !(await bcrypt.compare(data.password, user.password))) {
@@ -72,14 +73,15 @@ export class AuthService {
     // 4. Persistence: Store the refresh token in the Session table
     await this.createSession(user.id, refreshToken);
 
-    return {accessToken, refreshToken};
+    const {password: _, ...userWithoutPassword} = user;
+    return {accessToken, refreshToken, user: userWithoutPassword};
   }
 
   /**
    * Registers a new user.
    * Gold Standard: Hashes the password before storing and generates tokens immediately.
    */
-  async register(data: TAuthRequest): Promise<TTokenPair> {
+  async register(data: TAuthRequest): Promise<TTokenPair & {user: Omit<User, 'password'>}> {
     const existingUser = await this.userRepository.findByEmail(data.email);
     if (existingUser) {
       throw new HttpException('User already exists', httpStatus.BAD_REQUEST);
@@ -114,7 +116,8 @@ export class AuthService {
     // 4. Persistence: Store the refresh token in the Session table
     await this.createSession(user.id, refreshToken);
 
-    return {accessToken, refreshToken};
+    const {password: _, ...userWithoutPassword} = user;
+    return {accessToken, refreshToken, user: userWithoutPassword};
   }
 
   /**

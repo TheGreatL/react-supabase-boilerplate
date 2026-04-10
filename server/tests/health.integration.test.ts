@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import request from 'supertest';
-import app from '../app';
+import app from '../src/app';
 
 describe('Server Health Check', () => {
   it('should return 404 for unknown routes', async () => {

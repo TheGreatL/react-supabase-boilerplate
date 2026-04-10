@@ -1,16 +1,9 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { authService } from '../../features/auth/auth.service'
+import type { TUser } from '../../features/auth/auth.schema'
 import { setAccessToken } from '../api/api-config'
 
-interface TUser {
-  id: string
-  email: string
-  firstName: string
-  lastName: string
-  role: string
-  avatar?: string
-}
 
 interface TAuthState {
   user: TUser | null
@@ -37,9 +30,7 @@ export const useAuthStore = create<TAuthState>()(
       getMe: async () => {
         try {
           const response = await authService.getMe()
-          if (response.success) {
-            set({ user: response.data })
-          }
+          set({ user: response.data })
         } catch (error) {
           console.error('Failed to fetch user profile:', error)
         }

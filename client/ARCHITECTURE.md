@@ -17,12 +17,15 @@
 
 - **`src/routes`**: File-based route definitions and layouts.
 - **`src/features`**: Vertical feature modules (e.g., `auth`, `user`). Each contains its own services, components, and schemas.
-- **`src/shared`**: Cross-cutting concerns (API config, global stores, UI components, types).
+- **`src/shared`**: Cross-cutting concerns (API client, constants, global stores, UI components, types).
+    - **`src/shared/api`**: Native Fetch wrapper and API configuration.
+    - **`src/shared/constants`**: Centralized `API_ENDPOINTS`, `CONFIG`, and `QUERY_KEYS`.
 
 ## 📡 API Integration
 
-- **Axios Configuration**: Managed in `src/shared/api/api-config.ts`.
-- **Interceptors**: Automatically handles token injection and silent refresh logic (ignoring auth routes).
+- **Fetch Client**: Managed in `src/shared/api/api-config.ts`. This is a custom wrapper around the native `fetch` API.
+- **Interceptors**: Manually handles `Authorization` bearer token injection and automated silent refresh logic (ignoring auth routes).
+- **Standards**: All API responses follow the `ApiResponse` structure from the server.
 - **Environment**: Managed via `src/env.ts` with strict Zod validation.
 
 ## 📝 Naming Conventions & Typing
@@ -36,6 +39,7 @@ To ensure consistency and type safety throughout the project:
 ## 🧪 Testing Architecture
 
 - **Structure**: All tests follow a feature-based hierarchy: `tests/[feature]/[unit|integration]`.
+- **Naming Convention**: Test files MUST follow the `[name].[unit|integration].test.[ts|tsx]` format.
 - **Unit & Integration**: Powered by **Vitest**.
   - **Client**: Located in `/client/tests/`, organized by feature and test type.
 - **Execution**: Unified scripts at the root level (`npm run test`, `npm run test:e2e`).

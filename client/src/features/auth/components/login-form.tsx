@@ -31,6 +31,7 @@ export default function LoginForm() {
   const mutation = useMutation({
     mutationFn: (data: TLogin) => authService.login(data),
     onSuccess: async (response) => {
+      console.log('Login response:', response.data)
       // 1. Set basic auth data
       setAuth(response.data.user, response.data.accessToken)
 
@@ -46,11 +47,9 @@ export default function LoginForm() {
 
       setTimeout(() => {
         navigate({ to: '/dashboard' })
-      }, 1000)
+      }, 300)
     },
-    onError: (
-      error: Error & { response?: { data?: { message?: string } } },
-    ) => {
+    onError: (error: any) => {
       console.error('Login error full:', error)
       const message =
         error.response?.data?.message ||
@@ -80,11 +79,9 @@ export default function LoginForm() {
           <AlertCircleIcon className="h-4 w-4" />
           <AlertTitle>Failed to login</AlertTitle>
           <AlertDescription>
-            {(
-              mutation.error as Error & {
-                response?: { data?: { message?: string } }
-              }
-            ).response?.data?.message || 'Invalid credentials'}
+            {mutation.error?.response?.data?.message ||
+              mutation.error?.message ||
+              'Invalid credentials'}
           </AlertDescription>
         </Alert>
       )}

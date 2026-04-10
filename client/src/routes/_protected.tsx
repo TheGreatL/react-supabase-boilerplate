@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_protected')({
 })
 
 function ProtectedLayout() {
-  const { isAuthenticated, hasHydrated, initialize } = useAuthStore()
+  const { isAuthenticated, hasHydrated, initialize, user } = useAuthStore()
   const navigate = useNavigate()
   const [isReady, setIsReady] = useState(false)
 
@@ -17,7 +17,7 @@ function ProtectedLayout() {
     if (!hasHydrated) return
 
     // 2. If loaded but not authenticated, bounce to login
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !user) {
       navigate({
         to: '/login',
         // Optional: search: { redirect: window.location.pathname }
