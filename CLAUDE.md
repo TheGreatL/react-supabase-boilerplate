@@ -34,3 +34,16 @@ This file contains the "Gold Standard" rules for this repository. All AI assista
 - **Root**: `npm run dev` (Full stack), `npm run test` (All tests).
 - **Client**: `npm run dev` in `/client`.
 - **Server**: `npm run dev` in `/server`, `prisma generate`, `prisma migrate dev`.
+
+## 🎨 UI Development Standards (NEW)
+- **Colors**: Use semantic Tailwind classes (`text-foreground`, `bg-primary`, `border-border`).
+- **Layout**: **ALWAYS** use the `container` class for page layouting to ensure consistent centering and padding.
+- **Typography**: 
+    - **NO** `tracking-*` classes (letter-spacing).
+    - **NO** `font-black` class (use `font-bold` or `font-extrabold` instead).
+    - **LIMIT** `uppercase` class (reserved for small labels and accents only).
+- **Units & Sizing**: 
+    - **NEVER** use pixel values (`px`) in components or utilities.
+    - **ALWAYS** use `rem` or standard Tailwind utility classes (e.g., `p-4`, `w-25`, `min-w-32`).
+    - Standard border radius: `0.1875rem` (3px) or `rounded` token.
+- **Hardcoding**: NEVER use static hex, RGB, or custom OKLCH values directly in components.

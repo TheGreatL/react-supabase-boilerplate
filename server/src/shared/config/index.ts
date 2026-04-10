@@ -10,7 +10,8 @@ const envSchema = z.object({
   REFRESH_TOKEN_SECRET: z.string(),
   REFRESH_TOKEN_DURATION: z.string().default('7d'),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
-  RESEND_API_KEY: z.string().optional()
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().default('onboarding@resend.dev')
 });
 
 const _env = envSchema.safeParse(process.env);

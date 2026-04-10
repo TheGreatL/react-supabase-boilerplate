@@ -66,7 +66,7 @@ export default function LoginForm() {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 w-full max-w-md space-y-8 duration-700">
       <div className="space-y-2 text-center">
-        <h1 className="bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+        <h1 className="text-3xl font-bold text-foreground">
           Welcome Back
         </h1>
         <p className="text-muted-foreground">
@@ -124,7 +124,7 @@ export default function LoginForm() {
               </label>
               <a
                 href="#"
-                className="text-xs text-indigo-500 transition-colors hover:text-indigo-600"
+                className="text-xs text-primary transition-colors hover:text-primary/80"
               >
                 Forgot password?
               </a>
@@ -149,7 +149,7 @@ export default function LoginForm() {
         <button
           disabled={mutation.isPending}
           type="submit"
-          className="relative flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl shadow-indigo-500/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:opacity-70"
+          className="relative flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-primary/30 active:scale-[0.98] disabled:opacity-70"
         >
           {mutation.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -167,7 +167,7 @@ export default function LoginForm() {
           Don&apos;t have an account?{' '}
           <button
             onClick={() => navigate({ to: '/register' })}
-            className="font-medium text-indigo-500 transition-colors hover:text-indigo-600"
+            className="font-medium text-primary transition-colors hover:text-primary/80"
           >
             Create an account
           </button>

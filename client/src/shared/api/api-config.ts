@@ -11,6 +11,17 @@ export const setAccessToken = (token: string | null) => {
 
 export const getAccessToken = () => inMemoryAccessToken
 
+/**
+ * Helper to get a cookie value by name
+ */
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop()?.split(';').shift()
+  return undefined
+}
+
 type TRequestConfig = RequestInit & {
   _retry?: boolean
 }
@@ -45,6 +56,14 @@ async function request<T>(
     !(config.body instanceof FormData)
   ) {
     headers.set('Content-Type', 'application/json')
+  }
+
+  // Handle CSRF Token for stat-changing methods
+  if (config.method && !['GET', 'HEAD', 'OPTIONS'].includes(config.method)) {
+    const csrfToken = getCookie('csrf-token')
+    if (csrfToken) {
+      headers.set('X-CSRF-Token', csrfToken)
+    }
   }
 
   if (inMemoryAccessToken) {
@@ -83,6 +102,9 @@ async function request<T>(
             {
               method: 'POST',
               credentials: 'include',
+              headers: {
+                'X-CSRF-Token': getCookie('csrf-token') || '',
+              },
             },
           )
           const refreshData = await refreshResponse.json()

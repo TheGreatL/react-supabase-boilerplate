@@ -1,16 +1,22 @@
-export const logger = {
-  info: (message: string, ...meta: unknown[]) => {
-    console.log(`[INFO] ${new Date().toISOString()}: ${message}`, ...meta);
-  },
-  error: (message: string, ...meta: unknown[]) => {
-    console.error(`[ERROR] ${new Date().toISOString()}: ${message}`, ...meta);
-  },
-  warn: (message: string, ...meta: unknown[]) => {
-    console.warn(`[WARN] ${new Date().toISOString()}: ${message}`, ...meta);
-  },
-  debug: (message: string, ...meta: unknown[]) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.debug(`[DEBUG] ${new Date().toISOString()}: ${message}`, ...meta);
-    }
-  }
-};
+import pino from 'pino';
+import { config } from '../config';
+
+/**
+ * Gold Standard:
+ * Pino is used for structured logging.
+ * In development, it uses 'pino-pretty' for readability.
+ * In production, it logs JSON for high-performance ingestion.
+ */
+export const logger = pino({
+  level: config.NODE_ENV === 'development' ? 'debug' : 'info',
+  transport: config.NODE_ENV === 'development' 
+    ? {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          ignore: 'pid,hostname',
+          translateTime: 'SYS:standard'
+        }
+      }
+    : undefined
+});

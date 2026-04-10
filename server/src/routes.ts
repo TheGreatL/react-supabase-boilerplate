@@ -15,4 +15,8 @@ routes.use('/auth', authRoute);
 // 2. User related routes (Profile management, user retrieval)
 routes.use('/user', userRoute);
 
+// 3. Dashboard routes (Stats, Activity)
+import dashboardRoute from './features/dashboard/dashboard.route';
+routes.use('/dashboard', dashboardRoute);
+
 export default routes;

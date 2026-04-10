@@ -242,7 +242,35 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 
 ---
 
-### 🎨 Automatic Code Quality
+### 🏗️ Architecture & Standards
+
+This project follows a strict **Gold Standard** architecture to ensure scalability and developer efficiency.
+
+### Backend (Node.js + Express)
+We follow a **Controller-Service-Repository** pattern:
+- **Controllers**: Handle HTTP requests/responses and input validation.
+- **Services**: Contain business logic and coordinate between multiple repositories.
+- **Repositories**: Handle all database interactions (Prisma). Services MUST NOT talk to the database directly.
+
+### Frontend (React + Tailwind v4)
+We adhere to high-performance and accessible UI standards:
+- **Routing**: File-based routing via **TanStack Router**.
+- **State Management**: **Zustand** for local/auth state, **TanStack Query** for server state.
+- **Styling**: Tailwind CSS v4 with specialized design tokens in `global.css`.
+
+#### 🎨 "Gold Standard" Frontend Rules:
+- **Layout**: **ALWAYS** use the `container` class for page layouting to ensure consistent centering and padding.
+- **Anti-patterns (FORBIDDEN)**:
+    - **NO** arbitrary pixel values (`px`). Use `rem` or standard Tailwind tokens (e.g., `p-4`, `w-32`).
+    - **NO** `tracking-*` classes (letter-spacing).
+    - **NO** `font-black` class (use `font-bold` instead).
+    - **LIMIT** `uppercase` class to small accents and labels.
+- **Aesthetics**: Use the semantic OKLCH color scale from `global.css` (e.g., `text-foreground`, `bg-primary`).
+
+---
+
+## 🎨 Automatic Code Quality
+...
 
 This project enforces consistency on **3 levels**:
 

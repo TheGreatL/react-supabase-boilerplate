@@ -10,4 +10,5 @@ model User {
   updatedAt DateTime  @updatedAt()
   deletedAt DateTime?
   sessions  Session[]
+  activities Activity[]
 }

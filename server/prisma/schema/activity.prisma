@@ -1,0 +1,15 @@
+/**
+ * Activity Schema
+ * Tracks user actions for dashboard widgets and audit logs.
+ */
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // e.g., "LOGIN", "REGISTER", "PROFILE_UPDATE"
+  action    String   // e.g., "User logged in", "Profile updated"
+  metadata  Json?    // Additional context (IP, OS, etc.)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}

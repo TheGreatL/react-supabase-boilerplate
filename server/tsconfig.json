@@ -10,7 +10,8 @@
     "strict": true,
     "outDir": "./dist",
     "rootDir": "./",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*", "prisma.config.ts", "prisma/**/*", "tests/**/*", "vitest.config.ts"],
   "exclude": ["node_modules", "dist", "generated"]
