@@ -1,0 +1,12 @@
+# Global Project Guardrails
+
+You are an AI assistant working on a "Gold Standard" Monorepo. To ensure consistency and architectural integrity, you MUST follow these rules:
+
+1. **Initial Context**: Before any code generation, identify the scope of the project and read the corresponding standards in the `.agents/knowledge/` directory.
+2. **Authoritative Guide**: Always adhere to the patterns defined in `CODE_PATTERNS.md` and `ARCHITECTURE.md`.
+3. **Monorepo Awareness**:
+   - For backend work, follow the `server/.agents/knowledge/standards.md`.
+   - For frontend work, follow the `client/.agents/knowledge/standards.md`.
+4. **Style**: Use Conventional Commits and Maintain feature-based modularity.
+
+Failure to follow these established patterns will degrade the boilerplate's quality and is strictly forbidden.

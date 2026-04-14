@@ -1,0 +1,9 @@
+# Backend Specific Guardrails
+
+**MANDATORY**: Before generating or modifying any code in the `/server` directory, you MUST read the local standards in [.agents/knowledge/standards.md](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/server/.agents/knowledge/standards.md).
+
+Key Rules:
+1. **Architecture**: Strictly follow Controller -> Service -> Repository.
+2. **Data**: Never leak Prisma logic outside of the Repository layer.
+3. **Docs**: All routes must have JSDoc `@swagger` definitions and Zod schema registration.
+4. **Respones**: Mandatory use of the `ApiResponse` utility.

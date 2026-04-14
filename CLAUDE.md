@@ -1,5 +1,13 @@
 # CLAUDE.md — Project Standards & AI Guardrails
 
+> [!IMPORTANT]
+> **MANDATORY INITIAL INSTRUCTION FOR ALL AGENTS:**
+> Before performing any task, creating any file, or refactoring any code, YOU MUST read the authoritative guides in the knowledge base:
+> - **Architecture Spec**: [.agents/knowledge/architecture.md](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/.agents/knowledge/architecture.md)
+> - **Code Pattern Guide**: [.agents/knowledge/code-patterns.md](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/.agents/knowledge/code-patterns.md)
+>
+> Failure to adhere to the patterns defined in these documents (e.g., Controller-Service-Repository, Tailwind v4 no-px policy) is unacceptable.
+
 This file contains the "Gold Standard" rules for this repository. All AI assistants MUST adhere to these patterns.
 
 ## 🧪 Testing Standards (CRITICAL)

@@ -20,8 +20,8 @@ folder structure and uniform, lowercase file naming conventions.
 
 ## 📜 Key References
 
-- [Client Architecture](../../client/ARCHITECTURE.md)
-- [Server Architecture](../../server/ARCHITECTURE.md)
+- **Core Architecture**: [.agents/knowledge/architecture.md](../knowledge/architecture.md)
+- **Code Pattern Guide**: [.agents/knowledge/code-patterns.md](../knowledge/code-patterns.md)
 
 ## 🛠️ Architecture Rules
 
@@ -70,8 +70,11 @@ folder structure and uniform, lowercase file naming conventions.
   - **Correct**: `TJWTPayload`, `TAuthResponse`
   - **Incorrect**: `JWTPayload`, `AuthResponse`
 
-#### 5. Strict Typing
+#### 5. Strict Typing & Patterns
 
 - **No `any`**: The use of `any` is strictly forbidden.
-  - Use specific interfaces, types, or `Record<string, unknown>`.
-  - If a type is truly unknown, use `unknown` and perform type checking before access.
+- **CSR Pattern**: All server features MUST follow Controller -> Service -> Repository layers.
+- **Tailwind v4**: 
+  - NO arbitrary pixels (`px`). Use `rem`.
+  - ALWAYS use `container` for page layouts.
+  - NO `tracking-*` or `font-black`.

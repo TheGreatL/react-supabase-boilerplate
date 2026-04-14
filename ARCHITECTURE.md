@@ -1,52 +1,27 @@
 # Project Architecture
 
-## 🚀 Overview
+This document provides a high-level overview of the project's architecture. For the **authoritative, machine-readable source of truth** used by AI agents, please refer to the internal knowledge base.
 
-This is a "Gold Standard" monorepo designed as a generic full-stack boilerplate. It leverages a modern, containerized
-stack with a focus on type safety, professional architecture, and premium aesthetics.
+> [!TIP]
+> **Authoritative Sources of Truth (for Agents):**
+> - **Global**: [.agents/knowledge/architecture.md](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/.agents/knowledge/architecture.md)
+> - **Server Local**: [server/.agents/knowledge/standards.md](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/server/.agents/knowledge/standards.md)
+> - **Client Local**: [client/.agents/knowledge/standards.md](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/client/.agents/knowledge/standards.md)
 
-## 📁 Monorepo Structure
+---
 
-- **`/client`**: React + Vite frontend leveraging TanStack Router, Tailwind v4, and a custom native **Fetch** client.
-- **`/server`**: Node.js Express backend using a Controller-Service-Repository pattern and Prisma ORM.
-- **`/prisma`**: Shared database schemas (managed within the server directory but accessible via root scripts).
-- **`docker-compose.yml`**: Orchestrates the DB (PostgreSQL), Admin (pgAdmin), API, and Client.
+## 🏗️ High-Level Design
+This boilerplate follows a **"Gold Standard"** monorepo structure designed for production-scale React and Node.js applications.
 
-## 🛠️ Tech Stack
+### Key Pillars:
+- **Scalability**: Feature-based modularity in both client and server.
+- **Type Safety**: End-to-end TypeScript with Zod validation.
+- **DevOps**: Fully containerized local development with Docker.
+- **UX**: Premium, high-fidelity UI standards enforced at the primitive level.
 
-- **Database**: PostgreSQL 15
-- **Backend**: Express, Prisma, JWT, Zod
-- **Frontend**: React, TanStack Router/Query, Zustand, Tailwind CSS v4, Lucide-React
-- **Tools**: Docker, pgAdmin, ESLint, Prettier
+### Infrastructure:
+- **Monorepo Management**: Root `package.json` scripts for cross-project orchestration.
+- **Database**: PostgreSQL with Prisma ORM and built-in Soft Delete support.
+- **CI/CD**: Pre-configured GitHub Actions for linting, testing, and builds.
 
-## 📡 Communication Pattern
-
-- **Base URL**: `http://localhost:3001/api`
-- **Response Format**: Managed by the `ApiResponse` utility on the server.
-  ```json
-  {
-    "success": true,
-    "message": "...",
-    "data": { ... },
-    "errors": null,
-    "statusCode": 200
-  }
-  ```
-- **Error Handling**: Standardized via global `errorMiddleware` and specialized `HttpException` classes.
-
-## 🧪 Testing Architecture
-
-- **Structure**: All tests follow a feature-based hierarchy: `tests/[feature]/[unit|integration]`.
-- **Naming Convention**: Test files MUST follow the `[name].[unit|integration].test.[ts|tsx]` format.
-- **Unit & Integration**: Powered by **Vitest**.
-  - **Client**: Located in `/client/tests/`, organized by feature and test type.
-  - **Server**: Located in `/server/tests/`, organized by feature and test type.
-- **End-to-End (E2E)**: Powered by **Playwright**.
-  - Located in `/e2e/tests` at the root.
-- **Execution**: Unified scripts at the root level (`npm run test`, `npm run test:e2e`).
-
-## 🛡️ Security
-
-- **Authentication**: Dual-token system (Short-lived Access Token in headers + Long-lived Refresh Token in HTTP-only
-  cookies).
-- **Rate Limiting**: Brute-force protection on authentication routes (e.g., `authAttemptLimiter`).
+For more detailed technical specs, see the [Monorepo Documentation](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/.agents/knowledge/architecture.md).

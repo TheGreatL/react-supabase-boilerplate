@@ -1,3 +1,12 @@
+# Frontend Specific Guardrails
+
+**MANDATORY**: Before generating or modifying any code in the `/client` directory, you MUST read the local standards in [.agents/knowledge/standards.md](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/client/.agents/knowledge/standards.md).
+
+Key Rules:
+1. **Tailwind v4**: No arbitrary pixels. Use `rem` or tokens.
+2. **Layout**: Always use `container` class for page wrappers.
+3. **Data**: Use TanStack Query for server state and the custom `fetch` client.
+
 # shadcn instructions
 
 Use the latest version of Shadcn to install new components, like this command to add a button component:

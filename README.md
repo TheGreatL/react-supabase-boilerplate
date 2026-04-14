@@ -244,7 +244,7 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 
 ### 🏗️ Architecture & Standards
 
-This project follows a strict **Gold Standard** architecture to ensure scalability and developer efficiency.
+This project follows a strict **Gold Standard** architecture to ensure scalability and developer efficiency. For detailed implementation guidance, refer to the [Code Pattern Guide](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/CODE_PATTERNS.md).
 
 ### Backend (Node.js + Express)
 We follow a **Controller-Service-Repository** pattern:
