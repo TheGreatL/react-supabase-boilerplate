@@ -3,7 +3,7 @@ const API_ENDPOINTS = {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
     REFRESH: '/auth/refresh',
-    LOGOUT: '/auth/logout'
+    LOGOUT: '/auth/logout',
     LOGOUT: '/auth/logout',
     ME: '/auth/me',
     CSRF: '/auth/csrf',
