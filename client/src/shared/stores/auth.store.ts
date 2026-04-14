@@ -37,6 +37,12 @@ export const useAuthStore = create<TAuthState>()(
       initialize: async () => {
         if (get().isAuthenticated) {
           await get().getMe()
+        } else {
+          try {
+            await authService.initCsrf()
+          } catch (error) {
+            console.error('Failed to initialize CSRF token:', error)
+          }
         }
       },
       logout: async () => {

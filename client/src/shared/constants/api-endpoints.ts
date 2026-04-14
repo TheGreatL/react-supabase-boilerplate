@@ -5,6 +5,7 @@ const API_ENDPOINTS = {
     REFRESH: '/auth/refresh',
     LOGOUT: '/auth/logout',
     ME: '/auth/me',
+    CSRF: '/auth/csrf',
   },
   USER: {
     ID: '/users/:userId',

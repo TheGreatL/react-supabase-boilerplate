@@ -1,4 +1,4 @@
-import { Kysely, sql } from 'kysely';
+import {type Kysely, sql} from 'kysely';
 
 export async function up(db: Kysely<any>): Promise<void> {
   // 1. Create Role Enum
@@ -23,9 +23,7 @@ export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('Session')
     .addColumn('id', 'text', (col) => col.primaryKey())
-    .addColumn('userId', 'text', (col) => 
-      col.notNull().references('User.id').onDelete('cascade').onUpdate('cascade')
-    )
+    .addColumn('userId', 'text', (col) => col.notNull().references('User.id').onDelete('cascade').onUpdate('cascade'))
     .addColumn('refreshToken', 'text', (col) => col.notNull().unique())
     .addColumn('expiresAt', 'timestamp', (col) => col.notNull())
     .addColumn('lastLogin', 'timestamp')
@@ -38,9 +36,7 @@ export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('Activity')
     .addColumn('id', 'text', (col) => col.primaryKey())
-    .addColumn('userId', 'text', (col) => 
-      col.notNull().references('User.id').onDelete('cascade')
-    )
+    .addColumn('userId', 'text', (col) => col.notNull().references('User.id').onDelete('cascade'))
     .addColumn('type', 'text', (col) => col.notNull())
     .addColumn('action', 'text', (col) => col.notNull())
     .addColumn('metadata', 'jsonb')
@@ -48,11 +44,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 
   // 5. Create Indexes
-  await db.schema
-    .createIndex('Activity_userId_idx')
-    .on('Activity')
-    .column('userId')
-    .execute();
+  await db.schema.createIndex('Activity_userId_idx').on('Activity').column('userId').execute();
 }
 
 export async function down(db: Kysely<any>): Promise<void> {

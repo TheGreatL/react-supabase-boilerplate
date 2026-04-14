@@ -13,6 +13,6 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx"
   },
-  "include": ["src/**/*", "prisma.config.ts", "prisma/**/*", "tests/**/*", "vitest.config.ts"],
+  "include": ["src/**/*", "kysely.config.ts", "scripts/**/*", "migrations/**/*", "tests/**/*", "vitest.config.ts"],
   "exclude": ["node_modules", "dist", "generated"]
 }

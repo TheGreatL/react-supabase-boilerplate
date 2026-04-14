@@ -18,4 +18,8 @@ export const authService = {
   getMe: async () => {
     return await api.get<TUser>(API_ENDPOINTS.AUTH.ME)
   },
+
+  initCsrf: async () => {
+    return await api.get(API_ENDPOINTS.AUTH.CSRF)
+  },
 }
