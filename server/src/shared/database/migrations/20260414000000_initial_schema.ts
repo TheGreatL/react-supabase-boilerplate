@@ -1,6 +1,7 @@
 import {type Kysely, sql} from 'kysely';
+import {DB} from '../db.types';
 
-export async function up(db: Kysely<any>): Promise<void> {
+export async function up(db: Kysely<DB>): Promise<void> {
   // 1. Create Role Enum
   await sql`CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN')`.execute(db);
 
@@ -47,7 +48,7 @@ export async function up(db: Kysely<any>): Promise<void> {
   await db.schema.createIndex('Activity_userId_idx').on('Activity').column('userId').execute();
 }
 
-export async function down(db: Kysely<any>): Promise<void> {
+export async function down(db: Kysely<DB>): Promise<void> {
   await db.schema.dropIndex('Activity_userId_idx').execute();
   await db.schema.dropTable('Activity').execute();
   await db.schema.dropTable('Session').execute();

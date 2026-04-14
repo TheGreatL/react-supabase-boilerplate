@@ -2,7 +2,7 @@ import {Kysely, PostgresDialect} from 'kysely';
 import {Pool} from 'pg';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-import {DB} from '../src/shared/types/db';
+import {DB} from './db.types';
 
 dotenv.config();
 

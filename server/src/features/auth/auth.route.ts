@@ -4,6 +4,7 @@ import {validateSchema} from '../../shared/middleware/schema-validate.middleware
 import {loginSchema, authSchema} from './auth.schema';
 import {authMiddleware, authAttemptLimiter} from '../../shared/middleware/auth.middleware';
 import {ApiResponse} from '../../shared/utils/api-response';
+import {csrfInitLimiter} from '../../shared/middleware/global.middleware';
 
 const route = Router();
 
@@ -17,7 +18,7 @@ route.get('/me', authMiddleware, AuthController.getMe);
  * CSRF Initialization Endpoint
  * Public GET endpoint used by the frontend to obtain a CSRF token cookie on startup.
  */
-route.get('/csrf', (req, res) => {
+route.get('/csrf', csrfInitLimiter, (req, res) => {
   return ApiResponse.success(res, {initialized: true});
 });
 

@@ -1,6 +1,6 @@
-import { Kysely, PostgresDialect } from 'kysely';
-import { Pool } from 'pg';
-import { DB } from '../types/db';
+import {Kysely, PostgresDialect} from 'kysely';
+import {Pool} from 'pg';
+import {DB} from './db.types';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,9 +15,9 @@ export const db = new Kysely<DB>({
     pool: new Pool({
       connectionString: process.env.DATABASE_URL,
       // Maximum number of clients in the pool
-      max: 10,
-    }),
-  }),
+      max: 10
+    })
+  })
 });
 
 /**
@@ -26,5 +26,5 @@ export const db = new Kysely<DB>({
 export const TABLES = {
   USER: 'User',
   SESSION: 'Session',
-  ACTIVITY: 'Activity',
+  ACTIVITY: 'Activity'
 } as const;

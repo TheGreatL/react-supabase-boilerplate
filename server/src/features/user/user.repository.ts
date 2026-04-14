@@ -1,25 +1,17 @@
-import { db } from '../../shared/lib/db';
-import { User } from '../../shared/types/db';
-import { active } from '../../shared/lib/db-utils';
-import { Insertable, Updateable, Selectable } from 'kysely';
+import {db} from '../../shared/database/db';
+import {User} from '../../shared/database/db.types';
+import {active} from '../../shared/lib/db-utils';
+import {Insertable, Updateable, Selectable} from 'kysely';
 
 export class UserRepository {
   async findById(id: string): Promise<Selectable<User> | null> {
-    return (await db
-      .selectFrom('User')
-      .selectAll()
-      .where('id', '=', id)
-      .where(active)
-      .executeTakeFirst()) || null;
+    return (await db.selectFrom('User').selectAll().where('id', '=', id).where(active).executeTakeFirst()) || null;
   }
 
   async findByEmail(email: string): Promise<Selectable<User> | null> {
-    return (await db
-      .selectFrom('User')
-      .selectAll()
-      .where('email', '=', email)
-      .where(active)
-      .executeTakeFirst()) || null;
+    return (
+      (await db.selectFrom('User').selectAll().where('email', '=', email).where(active).executeTakeFirst()) || null
+    );
   }
 
   async findAll(skip?: number, take?: number, search?: string): Promise<Selectable<User>[]> {
@@ -27,11 +19,13 @@ export class UserRepository {
 
     if (search) {
       const searchTerm = `%${search}%`;
-      query = query.where((eb) => eb.or([
-        eb('email', 'ilike', searchTerm),
-        eb('firstName', 'ilike', searchTerm),
-        eb('lastName', 'ilike', searchTerm)
-      ]));
+      query = query.where((eb) =>
+        eb.or([
+          eb('email', 'ilike', searchTerm),
+          eb('firstName', 'ilike', searchTerm),
+          eb('lastName', 'ilike', searchTerm)
+        ])
+      );
     }
 
     if (skip !== undefined) query = query.offset(skip);
@@ -41,18 +35,17 @@ export class UserRepository {
   }
 
   async count(search?: string): Promise<number> {
-    let query = db
-      .selectFrom('User')
-      .select(db.fn.count<number>('id').as('count'))
-      .where(active);
+    let query = db.selectFrom('User').select(db.fn.count<number>('id').as('count')).where(active);
 
     if (search) {
       const searchTerm = `%${search}%`;
-      query = query.where((eb) => eb.or([
-        eb('email', 'ilike', searchTerm),
-        eb('firstName', 'ilike', searchTerm),
-        eb('lastName', 'ilike', searchTerm)
-      ]));
+      query = query.where((eb) =>
+        eb.or([
+          eb('email', 'ilike', searchTerm),
+          eb('firstName', 'ilike', searchTerm),
+          eb('lastName', 'ilike', searchTerm)
+        ])
+      );
     }
 
     const result = await query.executeTakeFirst();
@@ -69,7 +62,7 @@ export class UserRepository {
       .where('id', '=', id)
       .returningAll()
       .executeTakeFirstOrThrow();
-    
+
     return result;
   }
 
@@ -82,7 +75,7 @@ export class UserRepository {
       })
       .returningAll()
       .executeTakeFirstOrThrow();
-    
+
     return result;
   }
 }

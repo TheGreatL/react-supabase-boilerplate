@@ -10,9 +10,9 @@ import {errorMiddleware} from './shared/middleware/error.middleware';
 import {ApiResponse} from './shared/utils/api-response';
 import swaggerUi from 'swagger-ui-express';
 import {swaggerSpec} from './shared/lib/swagger';
-import {rateLimit} from 'express-rate-limit';
 import {logger} from './shared/lib/logger';
 import {csrfMiddleware} from './shared/middleware/csrf.middleware';
+import {globalLimiter} from './shared/middleware/global.middleware';
 
 /**
  * Gold Standard:
@@ -51,14 +51,6 @@ app.use(
 app.use(helmet()); // Set various HTTP headers for security
 app.use(csrfMiddleware); // Prevent Cross-Site Request Forgery
 
-// 4. Rate Limiting
-const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per window
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: 'Too many requests from this IP, please try again after 15 minutes'
-});
 app.use('/api', globalLimiter);
 
 // 5. API Routes

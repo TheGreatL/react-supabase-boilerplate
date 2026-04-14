@@ -1,4 +1,4 @@
-import { db } from '../lib/db';
+import {db} from '../database/db';
 
 export enum ActivityType {
   LOGIN = 'LOGIN',
@@ -42,18 +42,14 @@ export class ActivityService {
       .selectFrom('Activity')
       .innerJoin('User', 'User.id', 'Activity.userId')
       .selectAll('Activity')
-      .select([
-        'User.firstName as user_firstName',
-        'User.lastName as user_lastName',
-        'User.email as user_email'
-      ])
+      .select(['User.firstName as user_firstName', 'User.lastName as user_lastName', 'User.email as user_email'])
       .orderBy('Activity.createdAt', 'desc')
       .limit(limit)
       .execute();
 
     // Map to nested structure for compatibility
-    return results.map(row => {
-      const { user_firstName, user_lastName, user_email, ...activity } = row;
+    return results.map((row) => {
+      const {user_firstName, user_lastName, user_email, ...activity} = row;
       return {
         ...activity,
         user: {

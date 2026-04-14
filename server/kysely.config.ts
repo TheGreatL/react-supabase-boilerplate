@@ -14,9 +14,9 @@ export default defineConfig({
     }),
   }),
   migrations: {
-    migrationFolder: 'migrations',
+    migrationFolder: 'src/shared/database/migrations',
   },
   codegen: {
-    outType: 'src/shared/types/db.ts',
+    outType: 'src/shared/database/db.types.ts',
   },
 });

@@ -26,7 +26,6 @@ export const authResponseSchema = registry.register(
   successResponseSchema.extend({
     data: z.object({
       accessToken: z.string(),
-      refreshToken: z.string(),
       user: z.object({
         id: z.string(),
         email: z.string().email(),
@@ -38,5 +37,85 @@ export const authResponseSchema = registry.register(
   })
 );
 
+export const csrfResponseSchema = registry.register(
+  'CsrfResponse',
+  successResponseSchema.extend({
+    data: z.object({initialized: z.boolean()})
+  })
+);
+
 export type TLogin = z.infer<typeof loginSchema>;
 export type TAuthRequest = z.infer<typeof authSchema>;
+export type TAuthResponse = z.infer<typeof authResponseSchema>;
+
+// --- OpenAPI Path Registrations ---
+registry.registerPath({
+  method: 'post',
+  path: '/auth/login',
+  tags: ['Auth'],
+  summary: 'Login to the application',
+  request: {
+    body: {content: {'application/json': {schema: loginSchema}}}
+  },
+  responses: {
+    200: {description: 'Login successful', content: {'application/json': {schema: authResponseSchema}}},
+    401: {description: 'Invalid credentials'}
+  }
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/auth/register',
+  tags: ['Auth'],
+  summary: 'Register a new user',
+  request: {
+    body: {content: {'application/json': {schema: authSchema}}}
+  },
+  responses: {
+    201: {description: 'Registration successful', content: {'application/json': {schema: authResponseSchema}}},
+    400: {description: 'User already exists'}
+  }
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/auth/refresh',
+  tags: ['Auth'],
+  summary: 'Refresh access token (uses httpOnly refreshToken cookie)',
+  responses: {
+    200: {description: 'Token refreshed', content: {'application/json': {schema: successResponseSchema.extend({data: z.object({accessToken: z.string()})})}}},
+    401: {description: 'Refresh token required or invalid'}
+  }
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/auth/logout',
+  tags: ['Auth'],
+  summary: 'Logout from the application',
+  responses: {
+    200: {description: 'Logged out successfully'}
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/auth/me',
+  tags: ['Auth'],
+  summary: 'Get current authenticated user profile',
+  security: [{bearerAuth: []}],
+  responses: {
+    200: {description: 'User profile retrieved'},
+    401: {description: 'Unauthorized'}
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/auth/csrf',
+  tags: ['Auth'],
+  summary: 'Initialize CSRF token cookie (call on app startup)',
+  responses: {
+    200: {description: 'CSRF token set', content: {'application/json': {schema: csrfResponseSchema}}}
+  }
+});

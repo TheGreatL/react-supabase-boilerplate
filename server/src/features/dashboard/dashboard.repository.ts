@@ -1,5 +1,5 @@
-import { db } from '../../shared/lib/db';
-import { active } from '../../shared/lib/db-utils';
+import {db} from '../../shared/database/db';
+import {active} from '../../shared/lib/db-utils';
 
 export class DashboardRepository {
   /**
@@ -11,7 +11,7 @@ export class DashboardRepository {
       .select(db.fn.count<number>('id').as('count'))
       .where(active)
       .executeTakeFirst();
-    
+
     return Number(result?.count || 0);
   }
 
@@ -19,11 +19,8 @@ export class DashboardRepository {
    * Get total number of activities
    */
   async getActivityCount(): Promise<number> {
-    const result = await db
-      .selectFrom('Activity')
-      .select(db.fn.count<number>('id').as('count'))
-      .executeTakeFirst();
-    
+    const result = await db.selectFrom('Activity').select(db.fn.count<number>('id').as('count')).executeTakeFirst();
+
     return Number(result?.count || 0);
   }
 
