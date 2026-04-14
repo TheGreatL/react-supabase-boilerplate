@@ -8,14 +8,15 @@ stack with a focus on type safety, professional architecture, and premium aesthe
 ## 📁 Monorepo Structure
 
 - **`/client`**: React + Vite frontend leveraging TanStack Router, Tailwind v4, and a custom native **Fetch** client.
-- **`/server`**: Node.js Express backend using a Controller-Service-Repository pattern and Prisma ORM.
-- **`/prisma`**: Shared database schemas (managed within the server directory but accessible via root scripts).
+- **`/server`**: Node.js Express backend using a Controller-Service-Repository pattern and **Kysely** query builder.
+- **`migrations`**: SQL/TypeScript migrations for database schema management (managed by `kysely-ctl`).
 - **`docker-compose.yml`**: Orchestrates the DB (PostgreSQL), Admin (pgAdmin), API, and Client.
 
 ## 🛠️ Tech Stack
 
 - **Database**: PostgreSQL 15
-- **Backend**: Express, Prisma, JWT, Zod
+- **Backend**: Express, **Kysely**, JWT, Zod
+- **Type Safety**: TypeScript, `kysely-codegen`
 - **Frontend**: React, TanStack Router/Query, Zustand, Tailwind CSS v4, Lucide-React
 - **Tools**: Docker, pgAdmin, ESLint, Prettier
 

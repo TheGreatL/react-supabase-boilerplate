@@ -10,7 +10,8 @@ This guide defines the standardized development patterns for this boilerplate. D
 - **Primary Tool**: `docker-compose.yml`.
 - **Management**: Interaction with Docker should happen via root-level `npm` scripts:
   - `npm run dev`: Starts the whole stack in development mode.
-  - `npm run db:migrate`: Syncs schemas to the DB.
+  - `npm run db:migrate`: Syncs schemas to the DB (Kysely).
+  - `npm run db:generate`: Generates TypeScript types from the DB (Kysely).
   - `npm run db:seed`: Populates test data.
 
 ### Environment Configuration
@@ -42,17 +43,19 @@ All features MUST be organized into these three layers:
 
 3. **Repositories (`*.repository.ts`)**
    - **Role**: Pure data access.
-   - **Pattern**: Direct `PrismaClient` calls.
-   - **Constraint**: No business logic. Simple CRUD operations.
+   - **Pattern**: Direct **Kysely** query builder calls using the global `db` client.
+   - **Constraint**: No business logic. Simple CRUD operations using `active` filter for soft-deletes.
 
 ### Validation & Documentation
 - **Zod**: Every endpoint must have a Zod schema (`*.schema.ts`) for input validation.
 - **OpenAPI**: Routes must be decorated with `@swagger` JSDoc comments.
 - **Registration**: Register every Zod schema in the `OpenAPIRegistry` for accurate documentation.
 
-### Database (Prisma)
-- **Soft Delete**: The `prisma` client is extended to handle `deletedAt` automatically. Use `includeDeleted: true` in queries if you need to bypass it.
-- **Migrations**: Always use `prisma migrate dev` for schema changes.
+### Database (Kysely)
+- **Soft Delete**: Use the `active` helper from `@/shared/lib/db-utils` in repository queries.
+  - Example: `.where(active)`
+- **Type Safety**: Leverage `Selectable<User>`, `Insertable<User>`, and `Updateable<User>` types from the generated `DB` interface.
+- **Migrations**: Always use `kysely-ctl` for schema changes.
 
 ---
 
@@ -77,9 +80,6 @@ All features MUST be organized into these three layers:
 ### Styling (Tailwind v4)
 - **Zero-Pixel Policy**: NEVER use arbitrary pixel values like `p-[5px]`. Use Tailwind tokens or `rem`.
 - **Layout**: Every page MUST start with a `<div className="container">` (or equivalent) for consistent spacing.
-- **Typography**: 
-  - NO `tracking-*` or `font-black`.
-  - LIMIT `uppercase`.
 
 ---
 

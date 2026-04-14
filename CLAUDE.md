@@ -33,7 +33,7 @@ This file contains the "Gold Standard" rules for this repository. All AI assista
 ### Server (Express + Node.js)
 
 - **Pattern**: Controller-Service-Repository separation.
-- **Data**: Prisma ORM (Services MUST NOT call prisma directly; use Repositories).
+- **Data**: Kysely Query Builder (Services MUST NOT call DB directly; use Repositories).
 - **Responses**: Always use the `ApiResponse` utility for standardized JSON.
 - **Error Handling**: Use the global `errorMiddleware` and `HttpException` classes.
 
@@ -47,7 +47,7 @@ This file contains the "Gold Standard" rules for this repository. All AI assista
 
 - **Root**: `npm run dev` (Full stack), `npm run test` (All tests).
 - **Client**: `npm run dev` in `/client`.
-- **Server**: `npm run dev` in `/server`, `prisma generate`, `prisma migrate dev`.
+- **Server**: `npm run dev` in `/server`, `npm run db:generate`, `npm run db:migrate`.
 
 ## 🎨 UI Development Standards (NEW)
 

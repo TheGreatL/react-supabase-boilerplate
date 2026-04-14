@@ -21,7 +21,7 @@ This boilerplate follows a **"Gold Standard"** monorepo structure designed for p
 
 ### Infrastructure:
 - **Monorepo Management**: Root `package.json` scripts for cross-project orchestration.
-- **Database**: PostgreSQL with Prisma ORM and built-in Soft Delete support.
+- **Database**: PostgreSQL with Kysely Query Builder and built-in Soft Delete support.
 - **CI/CD**: Pre-configured GitHub Actions for linting, testing, and builds.
 
 For more detailed technical specs, see the [Monorepo Documentation](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/.agents/knowledge/architecture.md).

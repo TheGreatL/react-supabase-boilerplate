@@ -35,10 +35,7 @@ Thumbs.db
 .wrangler/
 __unconfig*
 
-# ===========================
-# Database (Prisma)
-# ===========================
-/server/generated/prisma
+
 
 # ===========================
 # IDE settings

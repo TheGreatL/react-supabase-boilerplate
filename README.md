@@ -23,7 +23,7 @@ Everything runs inside **Docker** — a tool that packages all the services toge
 | **pgAdmin** | A visual tool to browse and manage your database through a browser |
 | **Node.js / Express** | Runs the backend server that handles API requests |
 | **React / Vite** | Powers the frontend — the website UI |
-| **Prisma** | Manages the database tables and lets the server talk to the database |
+| **Kysely** | Manages the database tables and lets the server talk to the database with full type safety |
 
 ---
 
@@ -77,10 +77,11 @@ This will build and start all containers. The first time you run this, it may ta
 Once the containers are running, you need to set up your database tables and initial data.
 
 **Option A: From your Host Machine (Recommended during development)**
-You can run Prisma commands directly from your VS Code terminal (inside the `/server` folder):
+You can run database commands directly from your VS Code terminal (inside the `/server` folder):
 ```bash
 cd server
 npm run db:migrate  # Applies schema changes
+npm run db:generate # Generates TypeScript types from the DB
 npm run db:seed     # Adds test data
 ```
 *Note: Ensure your `server/.env` uses `localhost:5432` for this to work.*
@@ -250,7 +251,7 @@ This project follows a strict **Gold Standard** architecture to ensure scalabili
 We follow a **Controller-Service-Repository** pattern:
 - **Controllers**: Handle HTTP requests/responses and input validation.
 - **Services**: Contain business logic and coordinate between multiple repositories.
-- **Repositories**: Handle all database interactions (Prisma). Services MUST NOT talk to the database directly.
+- **Repositories**: Handle all database interactions (Kysely). Services MUST NOT talk to the database directly.
 
 ### Frontend (React + Tailwind v4)
 We adhere to high-performance and accessible UI standards:
@@ -282,7 +283,7 @@ This project enforces consistent formatting on **3 levels** so no one has to thi
 | **2 — On Commit** | Husky + lint-staged | Every time you run `git commit` |
 | **3 — Editor Setup** | `.vscode/extensions.json` | VS Code prompts you to install everything when you open the project |
 
-> **First-time setup:** When you open the project, VS Code will show a popup — **"Install Recommended Extensions?"** — click **Install All**. This installs Prettier, ESLint, Prisma, Tailwind, and GitLens automatically.
+> **First-time setup:** When you open the project, VS Code will show a popup — **"Install Recommended Extensions?"** — click **Install All**. This installs Prettier, ESLint, Tailwind, and GitLens automatically.
 
 After installing extensions, saving any file will auto-format it. You never need to run Prettier manually.
 
