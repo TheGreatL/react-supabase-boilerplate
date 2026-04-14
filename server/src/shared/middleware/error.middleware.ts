@@ -21,15 +21,15 @@ export const errorMiddleware = (error: any, req: Request, res: Response, _next: 
     message = 'Validation Error';
     errors = error.errors;
   }
-  // 3. Handle Prisma Known Request Errors
-  else if (error.code && error.clientVersion) {
-    // This is a heuristic for Prisma errors to avoid importing PrismaClientKnownRequestError directly in middleware
+  // 3. Handle Database Errors (Generic or PG codes)
+  else if (error.code && typeof error.code === 'string') {
     statusCode = httpStatus.BAD_REQUEST;
     message = 'Database operation failed';
     if (config.NODE_ENV === 'development') {
       errors = {
         code: error.code,
-        meta: error.meta,
+        detail: error.detail,
+        table: error.table,
         message: error.message
       };
     }
@@ -40,11 +40,14 @@ export const errorMiddleware = (error: any, req: Request, res: Response, _next: 
   }
 
   // Log the error with stack trace in development
-  logger.error(`${req.method} ${req.path} - ${statusCode} - ${message}`, {
-    stack: config.NODE_ENV === 'development' ? error.stack : undefined,
-    errors,
-    originalError: config.NODE_ENV === 'development' ? error : undefined
-  });
+  logger.error(
+    {
+      stack: config.NODE_ENV === 'development' ? error.stack : undefined,
+      errors,
+      originalError: config.NODE_ENV === 'development' ? error : undefined
+    },
+    `${req.method} ${req.path} - ${statusCode} - ${message}`
+  );
 
   // Re-format internal server error message in production to avoid leaking details
   if (config.NODE_ENV === 'production' && statusCode === httpStatus.INTERNAL_SERVER_ERROR) {

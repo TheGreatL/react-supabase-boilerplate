@@ -15,8 +15,9 @@ export function startSessionCleanupCron(): ScheduledTask {
   return cron.schedule('0 * * * *', async () => {
     try {
       const result = await sessionRepository.deleteExpired();
-      if (result.count > 0) {
-        console.log(`🧹 Cleaned up ${result.count} expired session(s)`);
+      const numDeleted = result.reduce((acc, r) => acc + Number(r.numDeletedRows), 0);
+      if (numDeleted > 0) {
+        console.log(`🧹 Cleaned up ${numDeleted} expired session(s)`);
       }
     } catch (error) {
       console.error('❌ Session cleanup failed:', error);

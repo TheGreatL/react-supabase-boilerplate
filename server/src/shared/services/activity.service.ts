@@ -1,4 +1,4 @@
-import {prisma} from '../lib/prisma';
+import { db } from '../lib/db';
 
 export enum ActivityType {
   LOGIN = 'LOGIN',
@@ -9,7 +9,7 @@ export enum ActivityType {
 
 /**
  * Activity Service
- * Handles recording user interactions in the database.
+ * Handles recording user interactions in the database using Kysely.
  */
 export class ActivityService {
   /**
@@ -17,14 +17,17 @@ export class ActivityService {
    */
   async recordActivity(userId: string, type: ActivityType, action: string, metadata?: any) {
     try {
-      return await prisma.activity.create({
-        data: {
+      return await db
+        .insertInto('Activity')
+        .values({
+          id: crypto.randomUUID(),
           userId,
           type,
           action,
           metadata: metadata || {}
-        }
-      });
+        })
+        .returningAll()
+        .executeTakeFirst();
     } catch (error) {
       console.error('Failed to record activity:', error);
       // We don't throw here to avoid failing the main request if logging fails
@@ -35,18 +38,30 @@ export class ActivityService {
    * Get recent activities for dashboard
    */
   async getRecentActivities(limit = 10) {
-    return await prisma.activity.findMany({
-      take: limit,
-      orderBy: {createdAt: 'desc'},
-      include: {
+    const results = await db
+      .selectFrom('Activity')
+      .innerJoin('User', 'User.id', 'Activity.userId')
+      .selectAll('Activity')
+      .select([
+        'User.firstName as user_firstName',
+        'User.lastName as user_lastName',
+        'User.email as user_email'
+      ])
+      .orderBy('Activity.createdAt', 'desc')
+      .limit(limit)
+      .execute();
+
+    // Map to nested structure for compatibility
+    return results.map(row => {
+      const { user_firstName, user_lastName, user_email, ...activity } = row;
+      return {
+        ...activity,
         user: {
-          select: {
-            firstName: true,
-            lastName: true,
-            email: true
-          }
+          firstName: user_firstName,
+          lastName: user_lastName,
+          email: user_email
         }
-      }
+      };
     });
   }
 }

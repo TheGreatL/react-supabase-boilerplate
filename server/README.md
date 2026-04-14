@@ -19,7 +19,7 @@ This is the **backend server**. It's not something users see directly — it run
 |---|---|
 | **Node.js** | The runtime that lets us run JavaScript on the server |
 | **Express** | A lightweight framework for building the API routes |
-| **Prisma** | Talks to the database — lets us define tables and query data using code |
+| **Kysely** | Talks to the database — lets us define tables and query data with full type safety |
 | **PostgreSQL** | The actual database where all data is stored |
 | **Zod** | Validates incoming data — ensures the server never processes garbage input |
 | **JWT (JSON Web Tokens)** | Issues secure login tokens (like a digital ID card) |
@@ -46,7 +46,7 @@ src/
 └── shared/
     ├── middleware/     # Global reusable middlware (auth guard, error handler)
     ├── utils/          # Helpers (ApiResponse, asyncHandler)
-    └── lib/            # Library configs (Prisma client, Swagger, Logger)
+    └── lib/            # Library configs (Kysely client, Swagger, Logger)
 ```
 
 **The flow of every request:**
@@ -69,11 +69,10 @@ You'll see an interactive page listing all available API endpoints where you can
 
 | Command | What it does | Run in Docker? |
 |---|---|---|
-| `npm run db:generate` | Re-generates Prisma client | `docker compose exec api npm run db:generate` |
+| `npm run db:generate` | Re-generates TypeScript types | `docker compose exec api npm run db:generate` |
 | `npm run db:migrate` | Applies schema changes | `docker compose exec api npm run db:migrate` |
 | `npm run db:seed` | Fills default test data | `docker compose exec api npm run db:seed` |
-| `npm run db:studio` | Opens visual browser | (Run on host terminal) |
-| `npm run db:reset` | **⚠️ Wiped database** | `docker compose exec api npm run db:reset` |
+| `npm run db:reset` | **⚠️ Wipe database** | `docker compose exec api npm run db:reset` |
 
 > [!IMPORTANT]
 > To run these commands from your **host terminal**, ensure your `.env` is set to `localhost:5432`. If you have a local Postgres conflict, use `localhost:5433` instead. If running **via Docker exec**, it uses the internal network automatically.

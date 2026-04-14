@@ -931,6 +931,11 @@
       "sourceType": "github",
       "computedHash": "51857b97ab7542309d5fa585e1ea2127f371289984c12ebdccb1ec5b983cbacf"
     },
+    "kysely": {
+      "source": "Mindrally/skills",
+      "sourceType": "github",
+      "computedHash": "12b2cba0b6f48c2f30268293929171b825d3ea6b73872fb175bf0c72ac9b48fd"
+    },
     "langchain-architecture": {
       "source": "Dokhacgiakhoa/antigravity-ide",
       "sourceType": "github",

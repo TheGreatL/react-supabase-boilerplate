@@ -1,40 +1,88 @@
-import {Prisma, User} from '@prisma/client';
-import {prisma} from '../../shared/lib/prisma';
+import { db } from '../../shared/lib/db';
+import { User } from '../../shared/types/db';
+import { active } from '../../shared/lib/db-utils';
+import { Insertable, Updateable, Selectable } from 'kysely';
+
 export class UserRepository {
-  async findById(id: string): Promise<User | null> {
-    return await prisma.user.findUnique({
-      where: {id}
-    });
+  async findById(id: string): Promise<Selectable<User> | null> {
+    return (await db
+      .selectFrom('User')
+      .selectAll()
+      .where('id', '=', id)
+      .where(active)
+      .executeTakeFirst()) || null;
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    return await prisma.user.findUnique({
-      where: {email}
-    });
+  async findByEmail(email: string): Promise<Selectable<User> | null> {
+    return (await db
+      .selectFrom('User')
+      .selectAll()
+      .where('email', '=', email)
+      .where(active)
+      .executeTakeFirst()) || null;
   }
 
-  async findAll(skip?: number, take?: number, where?: Prisma.UserWhereInput): Promise<User[]> {
-    return await prisma.user.findMany({
-      skip,
-      take,
-      where
-    });
+  async findAll(skip?: number, take?: number, search?: string): Promise<Selectable<User>[]> {
+    let query = db.selectFrom('User').selectAll().where(active);
+
+    if (search) {
+      const searchTerm = `%${search}%`;
+      query = query.where((eb) => eb.or([
+        eb('email', 'ilike', searchTerm),
+        eb('firstName', 'ilike', searchTerm),
+        eb('lastName', 'ilike', searchTerm)
+      ]));
+    }
+
+    if (skip !== undefined) query = query.offset(skip);
+    if (take !== undefined) query = query.limit(take);
+
+    return await query.execute();
   }
 
-  async count(where?: Prisma.UserWhereInput): Promise<number> {
-    return await prisma.user.count({where});
+  async count(search?: string): Promise<number> {
+    let query = db
+      .selectFrom('User')
+      .select(db.fn.count<number>('id').as('count'))
+      .where(active);
+
+    if (search) {
+      const searchTerm = `%${search}%`;
+      query = query.where((eb) => eb.or([
+        eb('email', 'ilike', searchTerm),
+        eb('firstName', 'ilike', searchTerm),
+        eb('lastName', 'ilike', searchTerm)
+      ]));
+    }
+
+    const result = await query.executeTakeFirst();
+    return Number(result?.count || 0);
   }
 
-  async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
-    return await prisma.user.update({
-      where: {id},
-      data
-    });
+  async update(id: string, data: Updateable<User>): Promise<Selectable<User>> {
+    const result = await db
+      .updateTable('User')
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirstOrThrow();
+    
+    return result;
   }
 
-  async create(data: Prisma.UserCreateInput): Promise<User> {
-    return await prisma.user.create({
-      data
-    });
+  async create(data: Insertable<User>): Promise<Selectable<User>> {
+    const result = await db
+      .insertInto('User')
+      .values({
+        ...data,
+        updatedAt: new Date()
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+    
+    return result;
   }
 }

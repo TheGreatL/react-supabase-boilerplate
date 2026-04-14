@@ -1,22 +1,20 @@
-import {config} from '../../shared/config';
+import { config } from '../../shared/config';
 import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
-import {UserRepository} from '../user/user.repository';
-import {SessionRepository} from './session.repository';
-import {HttpException} from '../../shared/exceptions/http-exception';
-import {TokenService} from '../../shared/services/token.service';
-import {User} from '@prisma/client';
-import {TJWTPayload, TRefreshTokenPayload, TTokenPair} from '../../shared/types/auth.types';
-import {TAuthRequest, TLogin} from './auth.schema';
-
-import {parseDurationToMs} from '../../shared/utils/duration';
+import { UserRepository } from '../user/user.repository';
+import { SessionRepository } from './session.repository';
+import { HttpException } from '../../shared/exceptions/http-exception';
+import { TokenService } from '../../shared/services/token.service';
+import { User } from '../../shared/types/db';
+import { TJWTPayload, TRefreshTokenPayload, TTokenPair } from '../../shared/types/auth.types';
+import { TAuthRequest, TLogin } from './auth.schema';
+import { parseDurationToMs } from '../../shared/utils/duration';
+import { Selectable } from 'kysely';
 
 /**
  * Gold Standard:
- * AuthService handles all core authentication business logic, including
- * registration, login, and token management. It delegates token operations
- * to TokenService and interacts with UserRepository for data persistence.
- * Now enhanced with SessionRepository for token revocation and tracking.
+ * AuthService handles all core authentication business logic using Kysely.
+ * enhanced with SessionRepository for token revocation and tracking.
  */
 export class AuthService {
   private userRepository: UserRepository;
@@ -42,9 +40,8 @@ export class AuthService {
 
   /**
    * Authenticates a user with email and password.
-   * Gold Standard: Password comparison is done using bcrypt.
    */
-  async login(data: TLogin): Promise<TTokenPair & {user: Omit<User, 'password'>}> {
+  async login(data: TLogin): Promise<TTokenPair & { user: Omit<Selectable<User>, 'password'> }> {
     const user = await this.userRepository.findByEmail(data.email);
 
     if (!user || !(await bcrypt.compare(data.password, user.password))) {
@@ -64,24 +61,23 @@ export class AuthService {
       email: user.email
     };
 
-    // 3. Generate Tokens asynchronously using TokenService
+    // 3. Generate Tokens
     const [accessToken, refreshToken] = await Promise.all([
       TokenService.signAccessToken(payload),
       TokenService.signRefreshToken(refreshPayload)
     ]);
 
-    // 4. Persistence: Store the refresh token in the Session table
+    // 4. Persistence
     await this.createSession(user.id, refreshToken);
 
-    const {password: _, ...userWithoutPassword} = user;
-    return {accessToken, refreshToken, user: userWithoutPassword};
+    const { password: _, ...userWithoutPassword } = user;
+    return { accessToken, refreshToken, user: userWithoutPassword };
   }
 
   /**
    * Registers a new user.
-   * Gold Standard: Hashes the password before storing and generates tokens immediately.
    */
-  async register(data: TAuthRequest): Promise<TTokenPair & {user: Omit<User, 'password'>}> {
+  async register(data: TAuthRequest): Promise<TTokenPair & { user: Omit<Selectable<User>, 'password'> }> {
     const existingUser = await this.userRepository.findByEmail(data.email);
     if (existingUser) {
       throw new HttpException('User already exists', httpStatus.BAD_REQUEST);
@@ -90,11 +86,13 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     const user = await this.userRepository.create({
+      id: crypto.randomUUID(),
       email: data.email,
       password: hashedPassword,
       firstName: data.firstName,
       lastName: data.lastName,
-      role: 'USER'
+      role: 'USER',
+      updatedAt: new Date()
     });
 
     const payload: TJWTPayload = {
@@ -113,18 +111,16 @@ export class AuthService {
       TokenService.signRefreshToken(refreshPayload)
     ]);
 
-    // 4. Persistence: Store the refresh token in the Session table
     await this.createSession(user.id, refreshToken);
 
-    const {password: _, ...userWithoutPassword} = user;
-    return {accessToken, refreshToken, user: userWithoutPassword};
+    const { password: _, ...userWithoutPassword } = user;
+    return { accessToken, refreshToken, user: userWithoutPassword };
   }
 
   /**
-   * Refreshes the access token using a valid refresh token and rotates the refresh token.
+   * Refreshes the access token.
    */
-  async refreshToken(refreshToken: string): Promise<TTokenPair & {expiresAt: Date}> {
-    // 1. Database Check: Ensure the token hasn't been revoked/logged out
+  async refreshToken(refreshToken: string): Promise<TTokenPair & { expiresAt: Date }> {
     const session = await this.sessionRepository.findByToken(refreshToken);
 
     if (!session || session.expiresAt < new Date()) {
@@ -133,7 +129,6 @@ export class AuthService {
     }
 
     try {
-      // 2. JWT Validation
       const payload = await TokenService.verifyRefreshToken(refreshToken);
       const user = await this.userRepository.findById(payload.id);
 
@@ -141,12 +136,9 @@ export class AuthService {
         throw new Error();
       }
 
-      // 3. Absolute Expiry Management
-      // Calculate remaining time until the ORIGINAL session expires
       const oldExpiresAt = new Date(session.expiresAt);
       const remainingSeconds = Math.max(0, Math.floor((oldExpiresAt.getTime() - Date.now()) / 1000));
 
-      // 4. Token Rotation (Issue new tokens with the SAME absolute deadline)
       const accessToken = await TokenService.signAccessToken({
         id: user.id,
         email: user.email,
@@ -154,17 +146,15 @@ export class AuthService {
       });
 
       const newRefreshToken = await TokenService.signRefreshToken(
-        {id: String(user.id), email: user.email},
-        remainingSeconds // <-- Preserve the deadline in the new JWT
+        { id: String(user.id), email: user.email },
+        remainingSeconds
       );
 
-      // 5. Session Rotation (Replace old session with new one under the SAME deadline)
       await this.sessionRepository.deleteByToken(refreshToken);
       await this.createSession(user.id, newRefreshToken, oldExpiresAt);
 
-      return {accessToken, refreshToken: newRefreshToken, expiresAt: oldExpiresAt};
+      return { accessToken, refreshToken: newRefreshToken, expiresAt: oldExpiresAt };
     } catch {
-      // If JWT verification fails, cleanup database record
       await this.sessionRepository.deleteByToken(refreshToken);
       throw new HttpException('Invalid refresh token', httpStatus.UNAUTHORIZED);
     }
@@ -177,7 +167,7 @@ export class AuthService {
     try {
       await this.sessionRepository.deleteByToken(refreshToken);
     } catch {
-      // Ignore if session already deleted
+      // Ignore
     }
   }
 }

@@ -1,5 +1,5 @@
-import {Role} from '@prisma/client';
-import {Request} from 'express';
+import { Role } from './db';
+import { Request } from 'express';
 
 /**
  * Payload stored within identifying JWT tokens

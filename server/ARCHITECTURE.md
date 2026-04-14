@@ -7,7 +7,7 @@ This project follows a strict separation of concerns to ensure maintainability a
 1. **Routes**: Define endpoints and apply middleware (Auth, Rate Limiting, Validation).
 2. **Controllers**: Handle HTTP-specific logic, extract input, and call Services.
 3. **Services**: Contain the core business logic. They are framework-agnostic.
-4. **Repositories**: Interact directly with Prisma for data persistence.
+4. **Repositories**: Interact directly with **Kysely** for data persistence.
 
 ## 🛡️ "Gold Standard" Middleware
 
@@ -16,11 +16,11 @@ This project follows a strict separation of concerns to ensure maintainability a
 - **`validateSchema`**: Uses Zod to validate request bodies before they reach the controller.
 - **`authMiddleware`**: Verifies JWTs and attaches the authenticated user to the request.
 
-## 💾 Database & Prisma
+## 💾 Database & Kysely
 
-- **Multi-File Schema**: Schemas are split for organization (e.g., `user.prisma`, `profile.prisma`).
-- **Driver Adapters**: Uses `@prisma/adapter-pg` with a connection pool for robust Docker performance.
-- **Seeding**: Managed via `prisma/seed.ts` with structured, role-based user data.
+- **Migrations**: Fully versioned SQL/TypeScript migrations managed by `kysely-ctl`.
+- **Dialect**: Uses Kysely's `PostgresDialect` with a native `pg` connection pool.
+- **Seeding**: Managed via `scripts/seed.ts` with structured, role-based user data.
 
 ## 📡 API Response Structure
 
@@ -46,9 +46,7 @@ To ensure consistency and type safety throughout the project:
 
 ### 1. Single Source of Truth (Repository Pattern)
 
-Services MUST NOT interact with `prisma` directly. All data access must go through **Repositories**. This ensures a
-single source of truth for queries and makes it easier to change the data source (e.g., from Prisma to another ORM)
-without affecting business logic.
+Services MUST NOT interact with the database (`db`) directly. All data access must go through **Repositories**. This ensures a single source of truth for queries and makes it easier to change the data layer if needed without affecting business logic.
 
 ### 2. Mandatory Pagination
 
