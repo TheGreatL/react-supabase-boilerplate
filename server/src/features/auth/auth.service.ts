@@ -5,10 +5,13 @@ import { UserRepository } from '../user/user.repository';
 import { SessionRepository } from './session.repository';
 import { HttpException } from '../../shared/exceptions/http-exception';
 import { TokenService } from '../../shared/services/token.service';
-import { User } from '../../shared/types/db';
+import { TUser } from '../../shared/database/db.types';
 import { TJWTPayload, TRefreshTokenPayload, TTokenPair } from '../../shared/types/auth.types';
 import { TAuthRequest, TLogin } from './auth.schema';
 import { parseDurationToMs } from '../../shared/utils/duration';
+import {WelcomeEmail} from '../../shared/templates/welcome-email';
+import { activityService, ActivityType } from '../../shared/services/activity.service';
+import { mailService } from '../../shared/services/mail.service';
 import { Selectable } from 'kysely';
 
 /**
@@ -32,16 +35,18 @@ export class AuthService {
     const expiresAt = fixedExpiresAt || new Date(Date.now() + parseDurationToMs(config.REFRESH_TOKEN_DURATION));
 
     await this.sessionRepository.create({
+      id: crypto.randomUUID(),
       userId,
       refreshToken,
-      expiresAt
+      expiresAt,
+      updatedAt: new Date()
     });
   }
 
   /**
    * Authenticates a user with email and password.
    */
-  async login(data: TLogin): Promise<TTokenPair & { user: Omit<Selectable<User>, 'password'> }> {
+  async login(data: TLogin): Promise<TTokenPair & { user: Omit<Selectable<TUser>, 'password'> }> {
     const user = await this.userRepository.findByEmail(data.email);
 
     if (!user || !(await bcrypt.compare(data.password, user.password))) {
@@ -69,6 +74,9 @@ export class AuthService {
 
     // 4. Persistence
     await this.createSession(user.id, refreshToken);
+    
+    // Log Activity
+    await activityService.recordActivity(user.id, ActivityType.LOGIN, 'User logged in successfully');
 
     const { password: _, ...userWithoutPassword } = user;
     return { accessToken, refreshToken, user: userWithoutPassword };
@@ -77,7 +85,7 @@ export class AuthService {
   /**
    * Registers a new user.
    */
-  async register(data: TAuthRequest): Promise<TTokenPair & { user: Omit<Selectable<User>, 'password'> }> {
+  async register(data: TAuthRequest): Promise<TTokenPair & { user: Omit<Selectable<TUser>, 'password'> }> {
     const existingUser = await this.userRepository.findByEmail(data.email);
     if (existingUser) {
       throw new HttpException('User already exists', httpStatus.BAD_REQUEST);
@@ -112,6 +120,14 @@ export class AuthService {
     ]);
 
     await this.createSession(user.id, refreshToken);
+
+    // Log Activity
+    await activityService.recordActivity(user.id, ActivityType.REGISTER, 'New user registered');
+
+    // Send Welcome Email (Fire and forget)
+    mailService
+      .sendEmail(user.email, 'Welcome to Boilerplate!', WelcomeEmail({name: `${user.firstName} ${user.lastName}`}))
+      .catch((err) => console.error('Failed to send welcome email:', err));
 
     const { password: _, ...userWithoutPassword } = user;
     return { accessToken, refreshToken, user: userWithoutPassword };
@@ -163,9 +179,12 @@ export class AuthService {
   /**
    * Revokes a session (Logout).
    */
-  async logout(refreshToken: string): Promise<void> {
+  async logout(refreshToken: string, userId?: string): Promise<void> {
     try {
       await this.sessionRepository.deleteByToken(refreshToken);
+      if (userId) {
+        await activityService.recordActivity(userId, ActivityType.LOGOUT, 'User logged out');
+      }
     } catch {
       // Ignore
     }

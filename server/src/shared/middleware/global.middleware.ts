@@ -13,3 +13,12 @@ export const csrfInitLimiter = rateLimit({
   max: 20,
   message: 'Too many CSRF init requests, please try again later'
 });
+
+// Stricter limiter for authentication attempts
+export const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 10 authentication requests per window
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many authentication attempts, please try again after 15 minutes'
+});

@@ -1,4 +1,4 @@
-import { Role } from './db';
+import { TRole } from '../database/db.types';
 import { Request } from 'express';
 
 /**
@@ -7,7 +7,7 @@ import { Request } from 'express';
 export interface TJWTPayload {
   id: string;
   email: string;
-  role: Role;
+  role: TRole;
 }
 
 /**

@@ -1,4 +1,4 @@
-import { User } from './db';
+import { TUser } from '../database/db.types';
 import { Selectable } from 'kysely';
 
 /**
@@ -8,4 +8,4 @@ import { Selectable } from 'kysely';
 
 // TUserWithProfile is removed as Profile model is not yet implemented
 
-export type TUserBasic = Pick<Selectable<User>, 'id' | 'email' | 'firstName' | 'lastName' | 'role'>;
+export type TUserBasic = Pick<Selectable<TUser>, 'id' | 'email' | 'firstName' | 'lastName' | 'role'>;

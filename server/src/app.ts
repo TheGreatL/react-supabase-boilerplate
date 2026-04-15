@@ -1,6 +1,7 @@
 import express, {json, urlencoded, type Request, type Response} from 'express';
 import routes from './routes';
 import helmet from 'helmet';
+import compression from 'compression';
 import cors from 'cors';
 import httpStatus from 'http-status';
 import cookieParser from 'cookie-parser';
@@ -49,6 +50,7 @@ app.use(
   })
 );
 app.use(helmet()); // Set various HTTP headers for security
+app.use(compression()); // Compress all response bodies
 app.use(csrfMiddleware); // Prevent Cross-Site Request Forgery
 
 app.use('/api', globalLimiter);

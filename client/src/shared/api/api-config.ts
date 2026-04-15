@@ -122,7 +122,9 @@ async function request<T>(
           console.error('❌ Session refresh failed (Fetch):', refreshError)
           processQueue(refreshError, null)
           if (typeof window !== 'undefined') {
-            localStorage.removeItem('auth-storage')
+            // Delegate cleanup to the auth store — it owns session state
+            const {useAuthStore} = await import('../stores/auth.store')
+            useAuthStore.getState().logout()
             window.location.href = '/login?reason=expired'
           }
           setAccessToken(null)

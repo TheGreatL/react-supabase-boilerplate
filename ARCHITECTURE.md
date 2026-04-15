@@ -10,6 +10,19 @@ This document provides a high-level overview of the project's architecture. For 
 
 ---
 
+## 🧪 Quality & Verification
+
+We maintain a high bar for stability through a multi-layered testing strategy that strictly mirrors the source directory structure.
+
+- **Mirrored Test Structure**: All tests are located in a `tests/` directory at the project root that replicates the `src/` feature structure.
+- **Backend Verification**: Unit tests for services and integration tests for API contract validation.
+- **Frontend Verification**: Accessibility-driven component tests using Vitest and React Testing Library.
+- **End-to-End**: Critical user journeys verified via Playwright.
+
+For the full specification of testing patterns, see the [Testing Guide](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/TESTING.md).
+
+---
+
 ## 🏗️ High-Level Design
 This boilerplate follows a **"Gold Standard"** monorepo structure designed for production-scale React and Node.js applications.
 

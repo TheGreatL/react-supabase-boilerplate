@@ -1,35 +1,31 @@
 import {db} from '../../shared/database/db';
-import {User} from '../../shared/database/db.types';
+import {TUser} from '../../shared/database/db.types';
 import {active} from '../../shared/lib/db-utils';
 import {Insertable, Updateable, Selectable} from 'kysely';
 
 export class UserRepository {
-  async findById(id: string): Promise<Selectable<User> | null> {
+  async findById(id: string): Promise<Selectable<TUser> | null> {
     return (await db.selectFrom('User').selectAll().where('id', '=', id).where(active).executeTakeFirst()) || null;
   }
 
-  async findByEmail(email: string): Promise<Selectable<User> | null> {
+  async findByEmail(email: string): Promise<Selectable<TUser> | null> {
     return (
       (await db.selectFrom('User').selectAll().where('email', '=', email).where(active).executeTakeFirst()) || null
     );
   }
 
-  async findAll(skip?: number, take?: number, search?: string): Promise<Selectable<User>[]> {
-    let query = db.selectFrom('User').selectAll().where(active);
+  async findAll(skip: number, limit: number, search?: string): Promise<Selectable<TUser>[]> {
+    let query = db.selectFrom('User').selectAll().where(active).offset(skip).limit(limit);
 
     if (search) {
-      const searchTerm = `%${search}%`;
       query = query.where((eb) =>
         eb.or([
-          eb('email', 'ilike', searchTerm),
-          eb('firstName', 'ilike', searchTerm),
-          eb('lastName', 'ilike', searchTerm)
+          eb('firstName', 'ilike', `%${search}%`),
+          eb('lastName', 'ilike', `%${search}%`),
+          eb('email', 'ilike', `%${search}%`)
         ])
       );
     }
-
-    if (skip !== undefined) query = query.offset(skip);
-    if (take !== undefined) query = query.limit(take);
 
     return await query.execute();
   }
@@ -38,22 +34,32 @@ export class UserRepository {
     let query = db.selectFrom('User').select(db.fn.count<number>('id').as('count')).where(active);
 
     if (search) {
-      const searchTerm = `%${search}%`;
       query = query.where((eb) =>
         eb.or([
-          eb('email', 'ilike', searchTerm),
-          eb('firstName', 'ilike', searchTerm),
-          eb('lastName', 'ilike', searchTerm)
+          eb('firstName', 'ilike', `%${search}%`),
+          eb('lastName', 'ilike', `%${search}%`),
+          eb('email', 'ilike', `%${search}%`)
         ])
       );
     }
 
     const result = await query.executeTakeFirst();
-    return Number(result?.count || 0);
+    return Number(result?.count) || 0;
   }
 
-  async update(id: string, data: Updateable<User>): Promise<Selectable<User>> {
-    const result = await db
+  async create(data: Insertable<TUser>): Promise<Selectable<TUser>> {
+    return await db
+      .insertInto('User')
+      .values({
+        ...data,
+        updatedAt: new Date()
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+  }
+
+  async update(id: string, data: Updateable<TUser>): Promise<Selectable<TUser>> {
+    return await db
       .updateTable('User')
       .set({
         ...data,
@@ -62,20 +68,5 @@ export class UserRepository {
       .where('id', '=', id)
       .returningAll()
       .executeTakeFirstOrThrow();
-
-    return result;
-  }
-
-  async create(data: Insertable<User>): Promise<Selectable<User>> {
-    const result = await db
-      .insertInto('User')
-      .values({
-        ...data,
-        updatedAt: new Date()
-      })
-      .returningAll()
-      .executeTakeFirstOrThrow();
-
-    return result;
   }
 }

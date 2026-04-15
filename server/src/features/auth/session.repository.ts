@@ -1,17 +1,16 @@
 import {db} from '../../shared/database/db';
-import {Session, User} from '../../shared/types/db';
+import {TSession, TUser} from '../../shared/database/db.types';
 import {active} from '../../shared/lib/db-utils';
-import {Insertable, Selectable} from 'kysely';
+import {Insertable, Selectable, Updateable} from 'kysely';
+
 
 export class SessionRepository {
-  async create(data: {userId: string; refreshToken: string; expiresAt: Date}) {
+  async create(data: Insertable<TSession>): Promise<Selectable<TSession>> {
     return await db
       .insertInto('Session')
       .values({
-        id: crypto.randomUUID(),
-        userId: data.userId,
-        refreshToken: data.refreshToken,
-        expiresAt: data.expiresAt,
+        ...data,
+        id: data.id || crypto.randomUUID(),
         lastLogin: new Date(),
         updatedAt: new Date()
       })
@@ -19,7 +18,7 @@ export class SessionRepository {
       .executeTakeFirstOrThrow();
   }
 
-  async findByToken(refreshToken: string) {
+  async findByToken(refreshToken: string): Promise<(Selectable<TSession> & { user: Selectable<TUser> }) | null> {
     const result = await db
       .selectFrom('Session')
       .innerJoin('User', 'User.id', 'Session.userId')
@@ -36,7 +35,7 @@ export class SessionRepository {
         'User.deletedAt as user_deletedAt'
       ])
       .where('Session.refreshToken', '=', refreshToken)
-      .where('Session.deletedAt', 'is', null)
+      .where(active)
       .executeTakeFirst();
 
     if (!result) return null;
@@ -56,7 +55,7 @@ export class SessionRepository {
     } = result;
 
     return {
-      ...session,
+      ...(session as Selectable<TSession>),
       user: {
         id: user_id,
         email: user_email,
@@ -67,7 +66,7 @@ export class SessionRepository {
         createdAt: user_createdAt,
         updatedAt: user_updatedAt,
         deletedAt: user_deletedAt
-      }
+      } as Selectable<TUser>
     };
   }
 
@@ -87,5 +86,17 @@ export class SessionRepository {
 
   async deleteAllUserSessions(userId: string) {
     return await db.updateTable('Session').set({deletedAt: new Date()}).where('userId', '=', userId).execute();
+  }
+
+  async update(id: string, data: Updateable<TSession>): Promise<Selectable<TSession>> {
+    return await db
+      .updateTable('Session')
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirstOrThrow();
   }
 }

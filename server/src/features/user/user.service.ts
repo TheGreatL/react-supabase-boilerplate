@@ -1,8 +1,14 @@
 import { UserRepository } from './user.repository';
 import { NotFoundException } from '../../shared/exceptions/not-found-exception';
-import { User } from '../../shared/types/db';
+import { activityService, ActivityType } from '../../shared/services/activity.service';
+import { TUser } from '../../shared/database/db.types';
 import { Selectable, Updateable } from 'kysely';
 
+/**
+ * Gold Standard:
+ * UserService handles business logic for user management.
+ * Integrated with ActivityService for audit logging.
+ */
 export class UserService {
   private userRepository: UserRepository;
 
@@ -10,7 +16,7 @@ export class UserService {
     this.userRepository = new UserRepository();
   }
 
-  async getAllUsers(page = 1, limit = 10, search?: string): Promise<{ data: Selectable<User>[]; total: number }> {
+  async getAllUsers(page = 1, limit = 10, search?: string): Promise<{ data: Selectable<TUser>[]; total: number }> {
     const skip = (page - 1) * limit;
 
     const [data, total] = await Promise.all([
@@ -20,7 +26,7 @@ export class UserService {
     return { data, total };
   }
 
-  async getUserById(id: string): Promise<Selectable<User>> {
+  async getUserById(id: string): Promise<Selectable<TUser>> {
     const user = await this.userRepository.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -28,8 +34,13 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: string, data: Updateable<User>): Promise<Selectable<User>> {
+  async updateUser(id: string, data: Updateable<TUser>): Promise<Selectable<TUser>> {
     await this.getUserById(id); // Ensure exists
-    return this.userRepository.update(id, data);
+    const user = await this.userRepository.update(id, data);
+    
+    // Log Activity
+    await activityService.recordActivity(id, ActivityType.PROFILE_UPDATE, 'User profile updated');
+    
+    return user;
   }
 }

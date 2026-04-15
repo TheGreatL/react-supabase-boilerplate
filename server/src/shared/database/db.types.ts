@@ -21,11 +21,11 @@ export type JsonPrimitive = boolean | number | string | null;
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
-export type Role = "ADMIN" | "USER";
+export type TRole = "ADMIN" | "USER";
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-export interface Activity {
+export interface TActivity {
   action: string;
   createdAt: Generated<Timestamp>;
   id: string;
@@ -34,7 +34,7 @@ export interface Activity {
   userId: string;
 }
 
-export interface Session {
+export interface TSession {
   createdAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
   expiresAt: Timestamp;
@@ -45,7 +45,7 @@ export interface Session {
   userId: string;
 }
 
-export interface User {
+export interface TUser {
   avatar: Generated<string | null>;
   createdAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
@@ -54,12 +54,12 @@ export interface User {
   id: string;
   lastName: string;
   password: string;
-  role: Generated<Role>;
+  role: Generated<TRole>;
   updatedAt: Timestamp;
 }
 
 export interface DB {
-  Activity: Activity;
-  Session: Session;
-  User: User;
+  Activity: TActivity;
+  Session: TSession;
+  User: TUser;
 }

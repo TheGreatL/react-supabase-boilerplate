@@ -6,9 +6,9 @@ This guide covers the specialized Kysely setup used in this project.
 Instead of a heavyweight ORM, we use **Kysely**, a type-safe SQL query builder for Node.js. It provides absolute control over SQL while maintaining 100% type safety.
 
 ## 📁 Key Files
-- `src/shared/lib/db.ts`: The global Kysely instance.
+- `src/shared/database/db.ts`: The global Kysely instance.
 - `src/shared/lib/db-utils.ts`: Shared helpers (soft-delete, active filters).
-- `src/shared/types/db.ts`: Auto-generated types from the live DB schema.
+- `src/shared/database/db.types.ts`: Auto-generated types from the live DB schema.
 - `migrations/`: TypeScript migration files.
 
 ## 🔄 Workflow
@@ -22,18 +22,18 @@ We use `kysely-ctl` for migrations.
 ### 2. Type Generation
 Every time the schema changes, you MUST update the TypeScript interfaces.
 - **Command**: `npm run db:generate`
-- **Output**: `src/shared/types/db.ts`
+- **Output**: `src/shared/database/db.types.ts`
 
 ## 🧩 Common Patterns
 
 ### Repository Layer
-Always inject `db` from `@/shared/lib/db`.
+Always import `db` from `../../shared/database/db`.
 
 ```typescript
-import { db } from '@/shared/lib/db';
-import { active } from '@/shared/lib/db-utils';
+import { db } from '../../shared/database/db';
+import { active } from '../../shared/lib/db-utils';
 import { Selectable } from 'kysely';
-import { User } from '@/shared/types/db';
+import { User } from '../../shared/database/db.types';
 
 export class UserRepository {
   async findById(id: string) {
