@@ -1,5 +1,6 @@
 import express, {json, urlencoded, type Request, type Response} from 'express';
 import routes from './routes';
+import path from 'path';
 import helmet from 'helmet';
 import compression from 'compression';
 import cors from 'cors';
@@ -51,6 +52,10 @@ app.use(
 );
 app.use(helmet()); // Set various HTTP headers for security
 app.use(compression()); // Compress all response bodies
+
+// Serve uploads as static files in development
+app.use('/uploads', express.static(path.join(process.cwd(), config.UPLOAD_DIR)));
+
 app.use(csrfMiddleware); // Prevent Cross-Site Request Forgery
 
 app.use('/api', globalLimiter);

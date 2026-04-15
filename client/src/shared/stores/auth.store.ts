@@ -1,8 +1,10 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { setAccessToken } from '../api/api-config'
 import { authService } from '../../features/auth/auth.service'
 import type { TUser } from '../../features/auth/auth.schema'
-import { setAccessToken } from '../api/api-config'
+
+export type { TUser }
 
 interface TAuthState {
   user: TUser | null
@@ -12,6 +14,7 @@ interface TAuthState {
   setAuth: (user: TUser, accessToken: string) => void
   getMe: () => Promise<void>
   initialize: () => Promise<void>
+  updateUser: (user: Partial<TUser>) => void
   logout: () => Promise<void>
 }
 
@@ -35,14 +38,20 @@ export const useAuthStore = create<TAuthState>()(
         }
       },
       initialize: async () => {
+        try {
+          await authService.initCsrf()
+        } catch (error) {
+          console.error('Failed to initialize CSRF token:', error)
+        }
+
         if (get().isAuthenticated) {
           await get().getMe()
-        } else {
-          try {
-            await authService.initCsrf()
-          } catch (error) {
-            console.error('Failed to initialize CSRF token:', error)
-          }
+        }
+      },
+      updateUser: (userData: Partial<TUser>) => {
+        const currentUser = get().user
+        if (currentUser) {
+          set({ user: { ...currentUser, ...userData } })
         }
       },
       logout: async () => {

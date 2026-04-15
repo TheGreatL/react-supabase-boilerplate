@@ -1,6 +1,5 @@
 import {db} from '../../shared/database/db';
 import {TSession, TUser} from '../../shared/database/db.types';
-import {active} from '../../shared/lib/db-utils';
 import {Insertable, Selectable, Updateable} from 'kysely';
 
 
@@ -35,7 +34,7 @@ export class SessionRepository {
         'User.deletedAt as user_deletedAt'
       ])
       .where('Session.refreshToken', '=', refreshToken)
-      .where(active)
+      .where('Session.deletedAt', 'is', null)
       .executeTakeFirst();
 
     if (!result) return null;

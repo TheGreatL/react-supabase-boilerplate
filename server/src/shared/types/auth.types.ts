@@ -8,6 +8,7 @@ export interface TJWTPayload {
   id: string;
   email: string;
   role: TRole;
+  avatar: string | null;
 }
 
 /**

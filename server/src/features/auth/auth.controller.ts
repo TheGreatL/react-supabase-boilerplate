@@ -54,6 +54,13 @@ export default class AuthController {
 
     const {accessToken, refreshToken: newRefreshToken, expiresAt} = await authService.refreshToken(refreshToken);
 
+    // Diagnostics: Check for clock skew
+    console.log('[Auth] Refresh successful:', {
+      now: new Date().toISOString(),
+      sessionExpiresAt: expiresAt.toISOString(),
+      remainingMs: expiresAt.getTime() - Date.now(),
+    });
+
     // Calculate remaining maxAge for the cookie to match the absolute deadline
     const remainingMs = Math.max(0, expiresAt.getTime() - Date.now());
 
@@ -75,7 +82,10 @@ export default class AuthController {
   });
 
   static getMe = asyncHandler(async (req: TAuthenticatedRequest, res: Response) => {
-    await Promise.resolve();
-    return ApiResponse.success(res, req.user, 'User profile retrieved');
+    const userService = new (await import('../user/user.service')).UserService();
+    if (!req.user) return ApiResponse.error(res, 'Unauthenticated', httpStatus.UNAUTHORIZED);
+    
+    const user = await userService.getUserById(req.user.id);
+    return ApiResponse.success(res, user, 'User profile retrieved');
   });
 }

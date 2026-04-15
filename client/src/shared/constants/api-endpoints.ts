@@ -9,6 +9,8 @@ const API_ENDPOINTS = {
   },
   USER: {
     ID: '/users/:userId',
+    PROFILE: '/user/profile',
+    PROFILE_AVATAR: '/user/profile/avatar',
   },
 }
 export default API_ENDPOINTS

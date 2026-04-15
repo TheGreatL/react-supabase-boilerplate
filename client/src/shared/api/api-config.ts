@@ -47,7 +47,7 @@ async function request<T>(
   url: string,
   config: TRequestConfig = {},
 ): Promise<TApiResponse<T>> {
-  const fullUrl = url.startsWith('http') ? url : `${CONFIG.API_URL}/api${url}`
+  const fullUrl = url.startsWith('http') ? url : `${CONFIG.API_URL}${url}`
 
   const headers = new Headers(config.headers)
   if (
@@ -98,7 +98,7 @@ async function request<T>(
 
         try {
           const refreshResponse = await fetch(
-            `${CONFIG.API_URL}/api${API_ENDPOINTS.AUTH.REFRESH}`,
+            `${CONFIG.API_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
             {
               method: 'POST',
               credentials: 'include',
@@ -107,7 +107,13 @@ async function request<T>(
               },
             },
           )
-          const refreshData = await refreshResponse.json()
+          let refreshData: any
+          try {
+            const text = await refreshResponse.text()
+            refreshData = JSON.parse(text)
+          } catch (e) {
+            throw new Error(`Invalid JSON response from refresh: ${refreshResponse.status}`)
+          }
 
           if (refreshData.success && refreshData.data.accessToken) {
             const newAccessToken = refreshData.data.accessToken
@@ -119,7 +125,10 @@ async function request<T>(
             throw new Error('Refresh failed')
           }
         } catch (refreshError) {
-          console.error('❌ Session refresh failed (Fetch):', refreshError)
+          console.error('❌ Session refresh failed (Fetch). Full error detail:', {
+            message: (refreshError as Error).message,
+            error: refreshError,
+          })
           processQueue(refreshError, null)
           if (typeof window !== 'undefined') {
             // Delegate cleanup to the auth store — it owns session state

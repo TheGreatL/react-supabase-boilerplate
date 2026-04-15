@@ -22,7 +22,7 @@ export const csrfMiddleware = (req: Request, res: Response, next: NextFunction) 
       res.cookie('csrf-token', token, {
         httpOnly: false, // Must be accessible by client JS to read and send back in header
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
         path: '/'
       });
     }

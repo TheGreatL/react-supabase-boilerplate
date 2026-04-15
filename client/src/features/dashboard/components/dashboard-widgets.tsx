@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { dashboardService } from '../dashboard.service'
+import QUERY_KEYS from '@/shared/constants/query-keys'
 import {
   Card,
   CardHeader,
@@ -13,7 +14,7 @@ import { Badge } from '@/shared/components/ui/badge'
  */
 export const StatsWidget = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ['dashboard-stats'],
+    queryKey: [QUERY_KEYS.dashboardStats],
     queryFn: () => dashboardService.getStats(),
   })
 
@@ -72,7 +73,7 @@ const StatCard = ({
  */
 export const ActivityWidget = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ['dashboard-activities'],
+    queryKey: [QUERY_KEYS.dashboardActivities],
     queryFn: () => dashboardService.getActivities(),
   })
 

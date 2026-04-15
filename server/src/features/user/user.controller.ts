@@ -2,6 +2,9 @@ import {Request, Response} from 'express';
 import {asyncHandler} from '../../shared/utils/async-handler';
 import {ApiResponse} from '../../shared/utils/api-response';
 import {UserService} from './user.service';
+import {TAuthenticatedRequest} from '../../shared/types/auth.types';
+import {BadRequestException} from '../../shared/exceptions';
+import httpStatus from 'http-status';
 
 const userService = new UserService();
 
@@ -84,5 +87,64 @@ export class UserController {
   static getUserById = asyncHandler(async (req: Request, res: Response) => {
     const user = await userService.getUserById(req.params.id as string);
     return ApiResponse.success(res, user, 'User retrieved successfully');
+  });
+
+  /**
+   * @swagger
+   * /user/profile:
+   *   patch:
+   *     summary: Update current user profile
+   *     tags: [Users]
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               firstName:
+   *                 type: string
+   *               lastName:
+   *                 type: string
+   *     responses:
+   *       200:
+   *         description: Profile updated
+   */
+  static updateProfile = asyncHandler(async (req: TAuthenticatedRequest, res: Response) => {
+    if (!req.user) throw new BadRequestException('User not authenticated');
+    const user = await userService.updateUser(req.user.id, req.body);
+    return ApiResponse.success(res, user, 'Profile updated successfully');
+  });
+
+  /**
+   * @swagger
+   * /user/profile/avatar:
+   *   patch:
+   *     summary: Update current user avatar
+   *     tags: [Users]
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               avatar:
+   *                 type: string
+   *                 format: binary
+   *     responses:
+   *       200:
+   *         description: Avatar updated
+   */
+  static updateAvatar = asyncHandler(async (req: TAuthenticatedRequest, res: Response) => {
+    if (!req.user) throw new BadRequestException('User not authenticated');
+    if (!req.file) {
+      throw new BadRequestException('No avatar image provided');
+    }
+
+    const user = await userService.updateAvatar(req.user.id, req.file);
+    return ApiResponse.success(res, user, 'Avatar updated successfully', httpStatus.OK);
   });
 }

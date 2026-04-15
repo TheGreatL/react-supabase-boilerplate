@@ -11,7 +11,12 @@ const envSchema = z.object({
   REFRESH_TOKEN_DURATION: z.string().default('7d'),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
   RESEND_API_KEY: z.string().optional(),
-  EMAIL_FROM: z.string().default('onboarding@resend.dev')
+  EMAIL_FROM: z.string().default('onboarding@resend.dev'),
+  // Storage Configuration
+  UPLOAD_DIR: z.string().default('uploads'),
+  STORAGE_BUCKET_NAME: z.string().optional(),
+  SUPABASE_URL: z.string().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);

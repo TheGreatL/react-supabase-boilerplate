@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
 import { UserRepository } from '../user/user.repository';
 import { SessionRepository } from './session.repository';
+import { getStorageProvider } from '../../shared/providers/storage.provider';
 import { HttpException } from '../../shared/exceptions/http-exception';
 import { TokenService } from '../../shared/services/token.service';
 import { TUser } from '../../shared/database/db.types';
@@ -57,7 +58,8 @@ export class AuthService {
     const payload: TJWTPayload = {
       id: String(user.id),
       email: user.email,
-      role: user.role
+      role: user.role,
+      avatar: user.avatar ? await getStorageProvider().getSignedUrl(user.avatar) : null
     };
 
     // 2. Prepare Payload for Refresh Token
@@ -79,7 +81,14 @@ export class AuthService {
     await activityService.recordActivity(user.id, ActivityType.LOGIN, 'User logged in successfully');
 
     const { password: _, ...userWithoutPassword } = user;
-    return { accessToken, refreshToken, user: userWithoutPassword };
+    return { 
+      accessToken, 
+      refreshToken, 
+      user: {
+        ...userWithoutPassword,
+        avatar: payload.avatar
+      }
+    };
   }
 
   /**
@@ -106,7 +115,8 @@ export class AuthService {
     const payload: TJWTPayload = {
       id: String(user.id),
       email: user.email,
-      role: user.role
+      role: user.role,
+      avatar: user.avatar ? await getStorageProvider().getSignedUrl(user.avatar) : null
     };
 
     const refreshPayload: TRefreshTokenPayload = {
@@ -130,7 +140,14 @@ export class AuthService {
       .catch((err) => console.error('Failed to send welcome email:', err));
 
     const { password: _, ...userWithoutPassword } = user;
-    return { accessToken, refreshToken, user: userWithoutPassword };
+    return { 
+      accessToken, 
+      refreshToken, 
+      user: {
+        ...userWithoutPassword,
+        avatar: payload.avatar
+      }
+    };
   }
 
   /**
@@ -158,7 +175,8 @@ export class AuthService {
       const accessToken = await TokenService.signAccessToken({
         id: user.id,
         email: user.email,
-        role: user.role
+        role: user.role,
+        avatar: user.avatar ? await getStorageProvider().getSignedUrl(user.avatar) : null
       });
 
       const newRefreshToken = await TokenService.signRefreshToken(

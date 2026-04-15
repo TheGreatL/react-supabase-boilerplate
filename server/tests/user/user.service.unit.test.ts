@@ -20,6 +20,16 @@ const repoMethods = vi.hoisted(() => ({
   create: vi.fn()
 }));
 
+const storageMethods = vi.hoisted(() => ({
+  upload: vi.fn(),
+  delete: vi.fn(),
+  getSignedUrl: vi.fn()
+}));
+
+const activityMethods = vi.hoisted(() => ({
+  recordActivity: vi.fn()
+}));
+
 vi.mock('../../src/features/user/user.repository', () => {
   class UserRepository {
     findById = repoMethods.findById;
@@ -30,6 +40,23 @@ vi.mock('../../src/features/user/user.repository', () => {
   }
   return {UserRepository};
 });
+
+vi.mock('../../src/shared/providers/storage.provider', () => ({
+  getStorageProvider: vi.fn(() => ({
+    upload: storageMethods.upload,
+    delete: storageMethods.delete,
+    getSignedUrl: storageMethods.getSignedUrl
+  }))
+}));
+
+vi.mock('../../src/shared/services/activity.service', () => ({
+  activityService: {
+    recordActivity: activityMethods.recordActivity
+  },
+  ActivityType: {
+    PROFILE_UPDATE: 'PROFILE_UPDATE'
+  }
+}));
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -112,6 +139,47 @@ describe('UserService', () => {
 
       await expect(userService.updateUser('bad-id', {firstName: 'X'})).rejects.toThrow('User not found');
       expect(repoMethods.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('updateAvatar', () => {
+    const mockFile = {
+      buffer: Buffer.from('fake'),
+      originalname: 'test.png'
+    } as Express.Multer.File;
+
+    it('uploads a new avatar and updates the user record', async () => {
+      repoMethods.findById.mockResolvedValue(mockUser);
+      storageMethods.upload.mockResolvedValue('avatars/new-avatar.png');
+      repoMethods.update.mockResolvedValue({...mockUser, avatar: 'avatars/new-avatar.png'});
+
+      const result = await userService.updateAvatar('user-1', mockFile);
+
+      expect(storageMethods.upload).toHaveBeenCalledWith(mockFile, 'avatars');
+      expect(repoMethods.update).toHaveBeenCalledWith('user-1', {avatar: 'avatars/new-avatar.png'});
+      expect(result.avatar).toBe('avatars/new-avatar.png');
+    });
+
+    it('cleans up the old avatar if one already existed', async () => {
+      const userWithAvatar = {...mockUser, avatar: 'avatars/old-avatar.png'};
+      repoMethods.findById.mockResolvedValue(userWithAvatar);
+      storageMethods.upload.mockResolvedValue('avatars/new-avatar.png');
+      repoMethods.update.mockResolvedValue({...mockUser, avatar: 'avatars/new-avatar.png'});
+      storageMethods.delete.mockResolvedValue(undefined);
+
+      await userService.updateAvatar('user-1', mockFile);
+
+      expect(storageMethods.delete).toHaveBeenCalledWith('avatars/old-avatar.png');
+    });
+
+    it('does not attempt to delete if no previous avatar existed', async () => {
+      repoMethods.findById.mockResolvedValue(mockUser); // avatar is null
+      storageMethods.upload.mockResolvedValue('avatars/new.png');
+      repoMethods.update.mockResolvedValue({...mockUser, avatar: 'avatars/new.png'});
+
+      await userService.updateAvatar('user-1', mockFile);
+
+      expect(storageMethods.delete).not.toHaveBeenCalled();
     });
   });
 });
