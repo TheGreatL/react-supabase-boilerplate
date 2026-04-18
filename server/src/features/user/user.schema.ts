@@ -10,6 +10,7 @@ export const userSchema = registry.register(
     firstName: z.string(),
     lastName: z.string(),
     roles: z.array(z.string()),
+    permissions: z.array(z.string()),
     createdAt: z.date(),
     updatedAt: z.date()
   })
