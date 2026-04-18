@@ -19,7 +19,8 @@ cd client && npm install && npm run dev
 
 ## 🏗️ Adding a New Feature (Server)
 
-Every feature follows the **Controller → Service → Repository** pattern. Use the existing `user` feature as the reference implementation.
+Every feature follows the **Controller → Service → Repository** pattern. Use the existing `user` feature as the
+reference implementation.
 
 ### 1. Create the feature folder
 
@@ -42,8 +43,7 @@ import {Post} from '../../shared/database/db.types';
 
 export class PostRepository {
   async findById(id: string): Promise<Selectable<Post> | null> {
-    return (await db.selectFrom('Post').selectAll()
-      .where('id', '=', id).where(active).executeTakeFirst()) || null;
+    return (await db.selectFrom('Post').selectAll().where('id', '=', id).where(active).executeTakeFirst()) || null;
   }
 }
 ```
@@ -111,12 +111,12 @@ Edit the generated file in `src/shared/database/migrations/`:
 export async function up(db: Kysely<DB>): Promise<void> {
   await db.schema
     .createTable('Post')
-    .addColumn('id', 'text', col => col.primaryKey())
-    .addColumn('title', 'text', col => col.notNull())
-    .addColumn('userId', 'text', col => col.notNull().references('User.id').onDelete('cascade'))
-    .addColumn('createdAt', 'timestamp', col => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
-    .addColumn('updatedAt', 'timestamp', col => col.notNull())
-    .addColumn('deletedAt', 'timestamp')   // soft delete
+    .addColumn('id', 'text', (col) => col.primaryKey())
+    .addColumn('title', 'text', (col) => col.notNull())
+    .addColumn('userId', 'text', (col) => col.notNull().references('User.id').onDelete('cascade'))
+    .addColumn('createdAt', 'timestamp', (col) => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
+    .addColumn('updatedAt', 'timestamp', (col) => col.notNull())
+    .addColumn('deletedAt', 'timestamp') // soft delete
     .execute();
 }
 
@@ -145,7 +145,7 @@ Use `vi.hoisted()` so the mock is available inside the hoisted `vi.mock()` facto
 ```ts
 const repoMethods = vi.hoisted(() => ({
   findById: vi.fn(),
-  create: vi.fn(),
+  create: vi.fn()
 }));
 
 vi.mock('./post.repository', () => {
@@ -169,7 +169,8 @@ await expect(service.getPostById('bad')).rejects.toThrow(NotFoundException);
 
 ### Integration tests
 
-Use `supertest` against the full app — see `tests/api.integration.test.ts` and `tests/health.integration.test.ts` as references.
+Use `supertest` against the full app — see `tests/api.integration.test.ts` and `tests/health.integration.test.ts` as
+references.
 
 Run all tests:
 

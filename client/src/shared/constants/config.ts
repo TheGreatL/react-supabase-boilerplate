@@ -8,8 +8,16 @@ import { z } from 'zod'
 export const env = createEnv({
   clientPrefix: 'VITE_',
   client: {
-    VITE_BASE_URL: z.string().describe('VITE_BASE_URL must be a valid root URL (e.g. http://localhost:5173)'),
-    VITE_API_URL: z.string().describe('VITE_API_URL can be a relative path (e.g. /api) or absolute URL'),
+    VITE_BASE_URL: z
+      .string()
+      .describe(
+        'VITE_BASE_URL must be a valid root URL (e.g. http://localhost:5173)',
+      ),
+    VITE_API_URL: z
+      .string()
+      .describe(
+        'VITE_API_URL can be a relative path (e.g. /api) or absolute URL',
+      ),
     VITE_BASE_URL_MEDIA: z.string().optional(),
     VITE_APP_TITLE: z.string().default('React Supabase Boilerplate'),
   },

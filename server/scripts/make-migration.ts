@@ -22,7 +22,10 @@ if (!name) {
 }
 
 // Sanitize: lowercase, replace spaces/hyphens with underscores
-const safeName = name.trim().toLowerCase().replace(/[\s-]+/g, '_');
+const safeName = name
+  .trim()
+  .toLowerCase()
+  .replace(/[\s-]+/g, '_');
 
 // Timestamp: YYYYMMDDHHmmss
 const now = new Date();

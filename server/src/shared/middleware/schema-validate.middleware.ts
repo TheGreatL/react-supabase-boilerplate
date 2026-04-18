@@ -3,10 +3,10 @@ import {ZodType} from 'zod';
 import httpStatus from 'http-status';
 import {ApiResponse} from '../utils/api-response';
 
-export const validateSchema = (schema: ZodType) => {
+export const validateSchema = (schema: ZodType, type: 'body' | 'query' | 'params' = 'body') => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req.body);
+      schema.parse(req[type]);
       next();
     } catch (err: unknown) {
       if (err instanceof Error && err.name === 'ZodError') {

@@ -83,7 +83,10 @@ registry.registerPath({
   tags: ['Auth'],
   summary: 'Refresh access token (uses httpOnly refreshToken cookie)',
   responses: {
-    200: {description: 'Token refreshed', content: {'application/json': {schema: successResponseSchema.extend({data: z.object({accessToken: z.string()})})}}},
+    200: {
+      description: 'Token refreshed',
+      content: {'application/json': {schema: successResponseSchema.extend({data: z.object({accessToken: z.string()})})}}
+    },
     401: {description: 'Refresh token required or invalid'}
   }
 });

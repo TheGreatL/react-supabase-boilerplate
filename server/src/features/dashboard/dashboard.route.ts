@@ -11,6 +11,8 @@ const route = Router();
  *   description: System overview and statistics
  */
 
+import {authorize} from '../../shared/middleware/rbac.middleware';
+
 /**
  * @swagger
  * /dashboard/stats:
@@ -27,7 +29,7 @@ const route = Router();
  *             schema:
  *               $ref: '#/components/schemas/DashboardStats'
  */
-route.get('/stats', authMiddleware, DashboardController.getStats);
+route.get('/stats', authMiddleware, authorize('DASHBOARD', 'READ'), DashboardController.getStats);
 
 /**
  * @swagger
@@ -45,6 +47,6 @@ route.get('/stats', authMiddleware, DashboardController.getStats);
  *             schema:
  *               $ref: '#/components/schemas/DashboardActivities'
  */
-route.get('/activities', authMiddleware, DashboardController.getActivities);
+route.get('/activities', authMiddleware, authorize('DASHBOARD', 'READ'), DashboardController.getActivities);
 
 export default route;

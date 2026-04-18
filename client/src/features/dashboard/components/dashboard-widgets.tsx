@@ -98,11 +98,11 @@ export const ActivityWidget = () => {
             >
               <div className="flex flex-col">
                 <p className="text-foreground text-sm font-medium">
-                  {activity.action}
+                  {activity.title}
                 </p>
                 <p className="text-muted-foreground text-xs">
-                  {activity.user.firstName} {activity.user.lastName} (
-                  {activity.user.email})
+                  {activity.performer.firstName} {activity.performer.lastName} (
+                  {activity.performer.email})
                 </p>
               </div>
               <span className="text-muted-foreground/60 text-[10px] font-medium">

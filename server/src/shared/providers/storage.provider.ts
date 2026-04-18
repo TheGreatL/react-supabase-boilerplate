@@ -6,7 +6,7 @@ import {createClient} from '@supabase/supabase-js';
 
 /**
  * Gold Standard: Storage Provider Abstraction
- * This allows the application to switch between local development storage 
+ * This allows the application to switch between local development storage
  * and production bucket storage (e.g., Supabase, S3) seamlessly.
  */
 export interface IStorageProvider {
@@ -82,12 +82,10 @@ export class SupabaseStorageProvider implements IStorageProvider {
   async upload(file: Express.Multer.File, folder: string = ''): Promise<string> {
     const fileName = `${folder ? folder + '/' : ''}${Date.now()}-${file.originalname.replace(/\s+/g, '-')}`;
 
-    const {data, error} = await this.client.storage
-      .from(this.bucket)
-      .upload(fileName, file.buffer, {
-        contentType: file.mimetype,
-        upsert: false
-      });
+    const {data, error} = await this.client.storage.from(this.bucket).upload(fileName, file.buffer, {
+      contentType: file.mimetype,
+      upsert: false
+    });
 
     if (error) throw error;
     return data.path;
@@ -99,9 +97,7 @@ export class SupabaseStorageProvider implements IStorageProvider {
   }
 
   async getSignedUrl(fileUrl: string): Promise<string> {
-    const {data, error} = await this.client.storage
-      .from(this.bucket)
-      .createSignedUrl(fileUrl, 3600); // 1 hour
+    const {data, error} = await this.client.storage.from(this.bucket).createSignedUrl(fileUrl, 3600); // 1 hour
 
     if (error) throw error;
     return data.signedUrl;

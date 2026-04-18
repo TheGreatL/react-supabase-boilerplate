@@ -112,7 +112,9 @@ async function request<T>(
             const text = await refreshResponse.text()
             refreshData = JSON.parse(text)
           } catch (e) {
-            throw new Error(`Invalid JSON response from refresh: ${refreshResponse.status}`)
+            throw new Error(
+              `Invalid JSON response from refresh: ${refreshResponse.status}`,
+            )
           }
 
           if (refreshData.success && refreshData.data.accessToken) {
@@ -125,14 +127,17 @@ async function request<T>(
             throw new Error('Refresh failed')
           }
         } catch (refreshError) {
-          console.error('❌ Session refresh failed (Fetch). Full error detail:', {
-            message: (refreshError as Error).message,
-            error: refreshError,
-          })
+          console.error(
+            '❌ Session refresh failed (Fetch). Full error detail:',
+            {
+              message: (refreshError as Error).message,
+              error: refreshError,
+            },
+          )
           processQueue(refreshError, null)
           if (typeof window !== 'undefined') {
             // Delegate cleanup to the auth store — it owns session state
-            const {useAuthStore} = await import('../stores/auth.store')
+            const { useAuthStore } = await import('../stores/auth.store')
             useAuthStore.getState().logout()
             window.location.href = '/login?reason=expired'
           }

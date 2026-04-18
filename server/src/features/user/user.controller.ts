@@ -119,9 +119,9 @@ export class UserController {
 
   /**
    * @swagger
-   * /user/profile/avatar:
+   * /user/profile/photo:
    *   patch:
-   *     summary: Update current user avatar
+   *     summary: Update current user profile photo
    *     tags: [Users]
    *     security:
    *       - bearerAuth: []
@@ -131,20 +131,20 @@ export class UserController {
    *           schema:
    *             type: object
    *             properties:
-   *               avatar:
+   *               photo:
    *                 type: string
    *                 format: binary
    *     responses:
    *       200:
-   *         description: Avatar updated
+   *         description: Profile photo updated
    */
-  static updateAvatar = asyncHandler(async (req: TAuthenticatedRequest, res: Response) => {
+  static updateProfilePhoto = asyncHandler(async (req: TAuthenticatedRequest, res: Response) => {
     if (!req.user) throw new BadRequestException('User not authenticated');
     if (!req.file) {
-      throw new BadRequestException('No avatar image provided');
+      throw new BadRequestException('No photo provided');
     }
 
-    const user = await userService.updateAvatar(req.user.id, req.file);
-    return ApiResponse.success(res, user, 'Avatar updated successfully', httpStatus.OK);
+    const user = await userService.updateProfilePhoto(req.user.id, req.file);
+    return ApiResponse.success(res, user, 'Profile photo updated successfully', httpStatus.OK);
   });
 }

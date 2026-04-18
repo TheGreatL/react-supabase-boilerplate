@@ -22,8 +22,9 @@ export interface TUser {
   email: string
   firstName: string
   lastName: string
-  role: string
-  avatar?: string
+  roles: string[]
+  permissions: string[]
+  profilePhoto?: string | null
 }
 
 export interface TAuthResponse {

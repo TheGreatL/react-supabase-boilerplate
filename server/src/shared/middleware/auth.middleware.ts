@@ -3,9 +3,9 @@ import {TokenService} from '../services/token.service';
 import {TAuthenticatedRequest} from '../types/auth.types';
 import {UnauthorizedException} from '../exceptions/unauthorized-exception';
 import {ForbiddenException} from '../exceptions/forbidden-exception';
-import {TRole} from '../database/db.types';
 import rateLimit from 'express-rate-limit';
 import {ApiResponse} from '../utils/api-response';
+import {config} from '../config';
 
 /**
  * Gold Standard:
@@ -32,7 +32,7 @@ export const authMiddleware = async (req: TAuthenticatedRequest, res: Response, 
 
     // 5. Bind user identity to the pino logger for structured log tracing
     if (req.log) {
-      req.log = req.log.child({userId: decoded.id, role: decoded.role});
+      req.log = req.log.child({userId: decoded.id, roles: decoded.roles});
     }
 
     next();
@@ -50,24 +50,27 @@ export const authMiddleware = async (req: TAuthenticatedRequest, res: Response, 
  * @example
  * route.delete('/:id', authMiddleware, requireRole('ADMIN'), UserController.deleteUser);
  */
-export const requireRole = (roles: TRole | TRole[]) => {
+export const requireRole = (roles: string | string[]) => {
   return async (req: TAuthenticatedRequest, res: Response, next: NextFunction) => {
     const allowedRoles = Array.isArray(roles) ? roles : [roles];
 
-    if (!req.user || !allowedRoles.includes(req.user.role)) {
-      throw new ForbiddenException('Insufficient permissions');
+    if (!req.user || !allowedRoles.some((role) => req.user!.roles.includes(role))) {
+      throw new ForbiddenException('Insufficient role permissions');
     }
 
     next();
   };
 };
 
-export const authAttemptLimiter = rateLimit({
-  windowMs: 1000 * 60 * 15, // 15 minutes
-  limit: 8,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-  handler: (req, res) => {
-    ApiResponse.error(res, 'You reached the allowed login attempts. Please try again after 15 minutes.', 429);
-  }
-});
+export const authAttemptLimiter =
+  config.NODE_ENV === 'test' ?
+    (_req: Request, _res: Response, next: NextFunction) => next()
+  : rateLimit({
+      windowMs: 1000 * 60 * 15,
+      limit: 8,
+      standardHeaders: 'draft-8',
+      legacyHeaders: false,
+      handler: (req, res) => {
+        ApiResponse.error(res, 'You reached the allowed login attempts. Please try again after 15 minutes.', 429);
+      }
+    });

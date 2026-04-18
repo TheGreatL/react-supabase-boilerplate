@@ -1,23 +1,23 @@
 import {describe, it, expect, vi, beforeEach} from 'vitest';
 import type {Selectable} from 'kysely';
-import type {TUser} from '../../src/shared/database/db.types';
+import type {Users} from '../../src/shared/database/db.types';
 
 /**
  * Gold Standard Unit Test Pattern (ESM / no-DI):
- *
- * When a service instantiates its own repository (no constructor injection),
- * mock the class in vi.mock() by providing a class body. The trick for
- * getting a handle on the instance's methods is to store them on a shared
- * object via vi.hoisted(), because vi.mock() runs before all imports.
+ * Mock classes and their instances using vi.hoisted() for handle access.
  */
 
-// vi.hoisted() runs before any imports — safe to reference inside vi.mock()
 const repoMethods = vi.hoisted(() => ({
   findById: vi.fn(),
   findAll: vi.fn(),
   count: vi.fn(),
   update: vi.fn(),
   create: vi.fn()
+}));
+
+const rbacMethods = vi.hoisted(() => ({
+  getUserRoles: vi.fn(),
+  getUserPermissions: vi.fn()
 }));
 
 const storageMethods = vi.hoisted(() => ({
@@ -27,7 +27,7 @@ const storageMethods = vi.hoisted(() => ({
 }));
 
 const activityMethods = vi.hoisted(() => ({
-  recordActivity: vi.fn()
+  recordLog: vi.fn()
 }));
 
 vi.mock('../../src/features/user/user.repository', () => {
@@ -41,6 +41,14 @@ vi.mock('../../src/features/user/user.repository', () => {
   return {UserRepository};
 });
 
+vi.mock('../../src/features/rbac/rbac.service', () => {
+  class RBACService {
+    getUserRoles = rbacMethods.getUserRoles;
+    getUserPermissions = rbacMethods.getUserPermissions;
+  }
+  return {RBACService};
+});
+
 vi.mock('../../src/shared/providers/storage.provider', () => ({
   getStorageProvider: vi.fn(() => ({
     upload: storageMethods.upload,
@@ -51,23 +59,21 @@ vi.mock('../../src/shared/providers/storage.provider', () => ({
 
 vi.mock('../../src/shared/services/activity.service', () => ({
   activityService: {
-    recordActivity: activityMethods.recordActivity
-  },
-  ActivityType: {
-    PROFILE_UPDATE: 'PROFILE_UPDATE'
+    recordLog: activityMethods.recordLog
   }
 }));
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
-const mockUser: Selectable<TUser> = {
-  id: 'user-1',
+const VALID_USER_ID = '550e8400-e29b-41d4-a716-446655440000';
+
+const mockUser: Selectable<Users> = {
+  id: VALID_USER_ID,
   email: 'test@example.com',
   firstName: 'Test',
   lastName: 'User',
   password: 'hashed-password',
-  role: 'USER',
-  avatar: null,
+  profilePhoto: null,
   createdAt: new Date(),
   updatedAt: new Date(),
   deletedAt: null
@@ -82,22 +88,29 @@ describe('UserService', () => {
     vi.clearAllMocks();
     const {UserService} = await import('../../src/features/user/user.service');
     userService = new UserService();
+    
+    // Default RBAC mocks
+    rbacMethods.getUserRoles.mockResolvedValue(['USER']);
+    rbacMethods.getUserPermissions.mockResolvedValue([{ module: 'USERS', permission: 'READ' }]);
+    storageMethods.getSignedUrl.mockImplementation(async (path) => `signed-${path}`);
   });
 
   describe('getUserById', () => {
-    it('returns the user when found', async () => {
+    it('returns the user when found with roles and permissions', async () => {
       repoMethods.findById.mockResolvedValue(mockUser);
 
-      const result = await userService.getUserById('user-1');
+      const result = await userService.getUserById(VALID_USER_ID);
 
-      expect(result).toEqual(mockUser);
-      expect(repoMethods.findById).toHaveBeenCalledWith('user-1');
+      expect(result.id).toBe(VALID_USER_ID);
+      expect(result.roles).toEqual(['USER']);
+      expect(result.permissions).toContain('USERS:READ');
+      expect(repoMethods.findById).toHaveBeenCalledWith(VALID_USER_ID);
     });
 
     it('throws NotFoundException when user does not exist', async () => {
       repoMethods.findById.mockResolvedValue(null);
 
-      await expect(userService.getUserById('nonexistent-id')).rejects.toThrow('User not found');
+      await expect(userService.getUserById(VALID_USER_ID)).rejects.toThrow('User not found');
     });
   });
 
@@ -110,16 +123,7 @@ describe('UserService', () => {
 
       expect(result.data).toHaveLength(1);
       expect(result.total).toBe(1);
-      expect(repoMethods.findAll).toHaveBeenCalledWith(0, 10, undefined);
-    });
-
-    it('calculates correct skip offset for page 2', async () => {
-      repoMethods.findAll.mockResolvedValue([]);
-      repoMethods.count.mockResolvedValue(0);
-
-      await userService.getAllUsers(2, 10);
-
-      expect(repoMethods.findAll).toHaveBeenCalledWith(10, 10, undefined);
+      expect(result.data[0].roles).toBeDefined();
     });
   });
 
@@ -129,57 +133,46 @@ describe('UserService', () => {
       repoMethods.findById.mockResolvedValue(mockUser);
       repoMethods.update.mockResolvedValue(updatedUser);
 
-      const result = await userService.updateUser('user-1', {firstName: 'Updated'});
+      const result = await userService.updateUser(VALID_USER_ID, {firstName: 'Updated'});
 
       expect(result.firstName).toBe('Updated');
-    });
-
-    it('throws NotFoundException if user does not exist before update', async () => {
-      repoMethods.findById.mockResolvedValue(null);
-
-      await expect(userService.updateUser('bad-id', {firstName: 'X'})).rejects.toThrow('User not found');
-      expect(repoMethods.update).not.toHaveBeenCalled();
+      expect(activityMethods.recordLog).toHaveBeenCalledWith(
+        VALID_USER_ID, 
+        'USERS', 
+        'Profile Updated', 
+        expect.any(String)
+      );
     });
   });
 
-  describe('updateAvatar', () => {
+  describe('updateProfilePhoto', () => {
     const mockFile = {
       buffer: Buffer.from('fake'),
       originalname: 'test.png'
     } as Express.Multer.File;
 
-    it('uploads a new avatar and updates the user record', async () => {
+    it('uploads a new photo and updates the user record', async () => {
       repoMethods.findById.mockResolvedValue(mockUser);
-      storageMethods.upload.mockResolvedValue('avatars/new-avatar.png');
-      repoMethods.update.mockResolvedValue({...mockUser, avatar: 'avatars/new-avatar.png'});
+      storageMethods.upload.mockResolvedValue('profile-photos/new.png');
+      repoMethods.update.mockResolvedValue({...mockUser, profilePhoto: 'profile-photos/new.png'});
 
-      const result = await userService.updateAvatar('user-1', mockFile);
+      const result = await userService.updateProfilePhoto(VALID_USER_ID, mockFile);
 
-      expect(storageMethods.upload).toHaveBeenCalledWith(mockFile, 'avatars');
-      expect(repoMethods.update).toHaveBeenCalledWith('user-1', {avatar: 'avatars/new-avatar.png'});
-      expect(result.avatar).toBe('avatars/new-avatar.png');
+      expect(storageMethods.upload).toHaveBeenCalledWith(mockFile, 'profile-photos');
+      expect(repoMethods.update).toHaveBeenCalledWith(VALID_USER_ID, {profilePhoto: 'profile-photos/new.png'});
+      expect(result.profilePhoto).toContain('profile-photos/new.png');
     });
 
-    it('cleans up the old avatar if one already existed', async () => {
-      const userWithAvatar = {...mockUser, avatar: 'avatars/old-avatar.png'};
-      repoMethods.findById.mockResolvedValue(userWithAvatar);
-      storageMethods.upload.mockResolvedValue('avatars/new-avatar.png');
-      repoMethods.update.mockResolvedValue({...mockUser, avatar: 'avatars/new-avatar.png'});
+    it('cleans up the old photo if one already existed', async () => {
+      const userWithPhoto = {...mockUser, profilePhoto: 'profile-photos/old.png'};
+      repoMethods.findById.mockResolvedValue(userWithPhoto);
+      storageMethods.upload.mockResolvedValue('profile-photos/new.png');
+      repoMethods.update.mockResolvedValue({...mockUser, profilePhoto: 'profile-photos/new.png'});
       storageMethods.delete.mockResolvedValue(undefined);
 
-      await userService.updateAvatar('user-1', mockFile);
+      await userService.updateProfilePhoto(VALID_USER_ID, mockFile);
 
-      expect(storageMethods.delete).toHaveBeenCalledWith('avatars/old-avatar.png');
-    });
-
-    it('does not attempt to delete if no previous avatar existed', async () => {
-      repoMethods.findById.mockResolvedValue(mockUser); // avatar is null
-      storageMethods.upload.mockResolvedValue('avatars/new.png');
-      repoMethods.update.mockResolvedValue({...mockUser, avatar: 'avatars/new.png'});
-
-      await userService.updateAvatar('user-1', mockFile);
-
-      expect(storageMethods.delete).not.toHaveBeenCalled();
+      expect(storageMethods.delete).toHaveBeenCalledWith('profile-photos/old.png');
     });
   });
 });

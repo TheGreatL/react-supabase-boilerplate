@@ -5,10 +5,10 @@ import {logger} from '../lib/logger';
 import {HttpException} from '../exceptions/http-exception';
 import {config} from '../config';
 
-export const errorMiddleware = (error: any, req: Request, res: Response, _next: NextFunction) => {
+export const errorMiddleware = (error: Error & {code?: string; detail?: string; table?: string; name: string; errors?: unknown}, req: Request, res: Response, _next: NextFunction) => {
   let statusCode = httpStatus.INTERNAL_SERVER_ERROR as number;
   let message = 'Internal Server Error';
-  let errors: any = null;
+  let errors: unknown = null;
 
   // 1. Handle Known HttpExceptions
   if (error instanceof HttpException) {
@@ -25,7 +25,7 @@ export const errorMiddleware = (error: any, req: Request, res: Response, _next: 
   else if (error.code && typeof error.code === 'string') {
     statusCode = httpStatus.BAD_REQUEST;
     message = 'Database operation failed';
-    if (config.NODE_ENV === 'development') {
+    if (config.NODE_ENV === 'development' || config.NODE_ENV === 'test') {
       errors = {
         code: error.code,
         detail: error.detail,

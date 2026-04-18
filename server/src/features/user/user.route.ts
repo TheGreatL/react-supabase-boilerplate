@@ -11,6 +11,8 @@ const route = Router();
  *   description: User management and profile operations
  */
 
+import {authorize} from '../../shared/middleware/rbac.middleware';
+
 /**
  * @swagger
  * /users:
@@ -23,7 +25,7 @@ const route = Router();
  *       200:
  *         description: List of users
  */
-route.get('/', authMiddleware, UserController.getAllUsers);
+route.get('/', authMiddleware, authorize('USERS', 'READ'), UserController.getAllUsers);
 
 /**
  * @swagger
@@ -43,7 +45,7 @@ route.get('/', authMiddleware, UserController.getAllUsers);
  *       200:
  *         description: User details
  */
-route.get('/:id', authMiddleware, UserController.getUserById);
+route.get('/:id', authMiddleware, authorize('USERS', 'READ'), UserController.getUserById);
 
 /**
  * @swagger
@@ -58,14 +60,14 @@ route.patch('/profile', authMiddleware, UserController.updateProfile);
 
 /**
  * @swagger
- * /user/profile/avatar:
+ * /user/profile/photo:
  *   patch:
- *     summary: Update current user avatar
+ *     summary: Update current user profile photo
  *     tags: [User]
  *     security:
  *       - bearerAuth: []
  */
 import {upload} from '../../shared/middleware/upload.middleware';
-route.patch('/profile/avatar', authMiddleware, upload.single('avatar'), UserController.updateAvatar);
+route.patch('/profile/photo', authMiddleware, upload.single('photo'), UserController.updateProfilePhoto);
 
 export default route;

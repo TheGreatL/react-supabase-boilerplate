@@ -7,7 +7,7 @@ export class DashboardRepository {
    */
   async getUserCount(): Promise<number> {
     const result = await db
-      .selectFrom('User')
+      .selectFrom('Users')
       .select(db.fn.count<number>('id').as('count'))
       .where(active)
       .executeTakeFirst();
@@ -19,7 +19,7 @@ export class DashboardRepository {
    * Get total number of activities
    */
   async getActivityCount(): Promise<number> {
-    const result = await db.selectFrom('Activity').select(db.fn.count<number>('id').as('count')).executeTakeFirst();
+    const result = await db.selectFrom('ActivityLogs').select(db.fn.count<number>('id').as('count')).executeTakeFirst();
 
     return Number(result?.count || 0);
   }

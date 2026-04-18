@@ -19,6 +19,7 @@ tests.
 - **Frontend Testing**: Focus on user interactions and accessibility roles, not implementation details or fragile HTML
   selectors.
 - **Backend Testing**: Focus on API contracts, middleware validation, and database abstraction.
+- **Dual Coverage Mandate**: Every feature MUST have at least one **Unit Test** (mocked) and one **Integration Test** (real database).
 - **Test Isolation**: Ensure tests run independently and reliably without side-effects or database pollution.
 
 ## 📜 Key References

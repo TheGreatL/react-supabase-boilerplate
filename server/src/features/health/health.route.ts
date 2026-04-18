@@ -13,7 +13,7 @@ router.get('/', async (req: Request, res: Response) => {
 
   try {
     // Lightweight DB ping — no table scan
-    await db.selectFrom('User').select('id').limit(1).execute();
+    await db.selectFrom('Users').select('id').limit(1).execute();
   } catch {
     dbStatus = 'error';
   }

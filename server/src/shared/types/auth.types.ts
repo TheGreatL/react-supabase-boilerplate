@@ -1,5 +1,4 @@
-import { TRole } from '../database/db.types';
-import { Request } from 'express';
+import {Request} from 'express';
 
 /**
  * Payload stored within identifying JWT tokens
@@ -7,8 +6,8 @@ import { Request } from 'express';
 export interface TJWTPayload {
   id: string;
   email: string;
-  role: TRole;
-  avatar: string | null;
+  roles: string[];
+  profilePhoto: string | null;
 }
 
 /**
@@ -17,6 +16,7 @@ export interface TJWTPayload {
 export interface TRefreshTokenPayload {
   id: string;
   email: string;
+  jti?: string;
 }
 
 /**

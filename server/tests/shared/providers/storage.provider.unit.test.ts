@@ -20,14 +20,18 @@ describe('LocalStorageProvider', () => {
     // Ensure clean state before each test
     try {
       await fs.rm(testUploadRoot, {recursive: true, force: true});
-    } catch {}
+    } catch {
+      // ignore
+    }
   });
 
   afterEach(async () => {
     // Cleanup after tests
     try {
       await fs.rm(testUploadRoot, {recursive: true, force: true});
-    } catch {}
+    } catch {
+      // ignore
+    }
   });
 
   it('should create the upload directory if it does not exist', async () => {

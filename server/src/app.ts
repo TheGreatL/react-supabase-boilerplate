@@ -58,7 +58,10 @@ app.use('/uploads', express.static(path.join(process.cwd(), config.UPLOAD_DIR)))
 
 app.use(csrfMiddleware); // Prevent Cross-Site Request Forgery
 
-app.use('/api', globalLimiter);
+// 4. Rate Limiting (Skip in tests to avoid flakiness)
+if (config.NODE_ENV !== 'test') {
+  app.use('/api', globalLimiter);
+}
 
 // 5. API Routes
 app.use('/api', routes);
@@ -66,12 +69,12 @@ app.use('/api', routes);
 // 6. Swagger API Documentation (accessible at /api/docs)
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// 7. 404 Handler for undefined routes
+// 8. Global Error Handler (Must be registered after all routes/middleware)
+app.use(errorMiddleware);
+
+// 9. 404 Handler for undefined routes (If no error handled it)
 app.use((req: Request, res: Response) => {
   ApiResponse.error(res, 'Resource not found', httpStatus.NOT_FOUND);
 });
-
-// 8. Global Error Handler (Must be last)
-app.use(errorMiddleware);
 
 export default app;

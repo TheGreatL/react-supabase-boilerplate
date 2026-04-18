@@ -46,7 +46,9 @@ To ensure consistency and type safety throughout the project:
 
 ### 1. Single Source of Truth (Repository Pattern)
 
-Services MUST NOT interact with the database (`db`) directly. All data access must go through **Repositories**. This ensures a single source of truth for queries and makes it easier to change the data layer if needed without affecting business logic.
+Services MUST NOT interact with the database (`db`) directly. All data access must go through **Repositories**. This
+ensures a single source of truth for queries and makes it easier to change the data layer if needed without affecting
+business logic.
 
 ### 2. Mandatory Pagination
 

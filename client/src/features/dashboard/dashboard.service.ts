@@ -9,10 +9,11 @@ export interface TDashboardStats {
 
 export interface TActivity {
   id: string
-  type: string
-  action: string
+  module: string
+  title: string
+  description?: string
   createdAt: string
-  user: {
+  performer: {
     firstName: string
     lastName: string
     email: string

@@ -1,21 +1,21 @@
 import {db} from '../../shared/database/db';
-import {TUser} from '../../shared/database/db.types';
+import {Users} from '../../shared/database/db.types';
 import {active} from '../../shared/lib/db-utils';
 import {Insertable, Updateable, Selectable} from 'kysely';
 
 export class UserRepository {
-  async findById(id: string): Promise<Selectable<TUser> | null> {
-    return (await db.selectFrom('User').selectAll().where('id', '=', id).where(active).executeTakeFirst()) || null;
+  async findById(id: string): Promise<Selectable<Users> | null> {
+    return (await db.selectFrom('Users').selectAll().where('id', '=', id).where(active).executeTakeFirst()) || null;
   }
 
-  async findByEmail(email: string): Promise<Selectable<TUser> | null> {
+  async findByEmail(email: string): Promise<Selectable<Users> | null> {
     return (
-      (await db.selectFrom('User').selectAll().where('email', '=', email).where(active).executeTakeFirst()) || null
+      (await db.selectFrom('Users').selectAll().where('email', '=', email).where(active).executeTakeFirst()) || null
     );
   }
 
-  async findAll(skip: number, limit: number, search?: string): Promise<Selectable<TUser>[]> {
-    let query = db.selectFrom('User').selectAll().where(active).offset(skip).limit(limit);
+  async findAll(skip: number, limit: number, search?: string): Promise<Selectable<Users>[]> {
+    let query = db.selectFrom('Users').selectAll().where(active).offset(skip).limit(limit);
 
     if (search) {
       query = query.where((eb) =>
@@ -31,7 +31,7 @@ export class UserRepository {
   }
 
   async count(search?: string): Promise<number> {
-    let query = db.selectFrom('User').select(db.fn.count<number>('id').as('count')).where(active);
+    let query = db.selectFrom('Users').select(db.fn.count<number>('id').as('count')).where(active);
 
     if (search) {
       query = query.where((eb) =>
@@ -47,9 +47,9 @@ export class UserRepository {
     return Number(result?.count) || 0;
   }
 
-  async create(data: Insertable<TUser>): Promise<Selectable<TUser>> {
+  async create(data: Insertable<Users>): Promise<Selectable<Users>> {
     return await db
-      .insertInto('User')
+      .insertInto('Users')
       .values({
         ...data,
         updatedAt: new Date()
@@ -58,9 +58,9 @@ export class UserRepository {
       .executeTakeFirstOrThrow();
   }
 
-  async update(id: string, data: Updateable<TUser>): Promise<Selectable<TUser>> {
+  async update(id: string, data: Updateable<Users>): Promise<Selectable<Users>> {
     return await db
-      .updateTable('User')
+      .updateTable('Users')
       .set({
         ...data,
         updatedAt: new Date()

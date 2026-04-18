@@ -1,12 +1,11 @@
 import {db} from '../../shared/database/db';
-import {TSession, TUser} from '../../shared/database/db.types';
+import {Sessions, Users} from '../../shared/database/db.types';
 import {Insertable, Selectable, Updateable} from 'kysely';
 
-
 export class SessionRepository {
-  async create(data: Insertable<TSession>): Promise<Selectable<TSession>> {
+  async create(data: Insertable<Sessions>): Promise<Selectable<Sessions>> {
     return await db
-      .insertInto('Session')
+      .insertInto('Sessions')
       .values({
         ...data,
         id: data.id || crypto.randomUUID(),
@@ -17,24 +16,23 @@ export class SessionRepository {
       .executeTakeFirstOrThrow();
   }
 
-  async findByToken(refreshToken: string): Promise<(Selectable<TSession> & { user: Selectable<TUser> }) | null> {
+  async findByToken(refreshToken: string): Promise<(Selectable<Sessions> & {user: Selectable<Users>}) | null> {
     const result = await db
-      .selectFrom('Session')
-      .innerJoin('User', 'User.id', 'Session.userId')
-      .selectAll('Session')
+      .selectFrom('Sessions')
+      .innerJoin('Users', 'Users.id', 'Sessions.userId')
+      .selectAll('Sessions')
       .select([
-        'User.id as user_id',
-        'User.email as user_email',
-        'User.firstName as user_firstName',
-        'User.lastName as user_lastName',
-        'User.role as user_role',
-        'User.avatar as user_avatar',
-        'User.createdAt as user_createdAt',
-        'User.updatedAt as user_updatedAt',
-        'User.deletedAt as user_deletedAt'
+        'Users.id as user_id',
+        'Users.email as user_email',
+        'Users.firstName as user_firstName',
+        'Users.lastName as user_lastName',
+        'Users.profilePhoto as user_profilePhoto',
+        'Users.createdAt as user_createdAt',
+        'Users.updatedAt as user_updatedAt',
+        'Users.deletedAt as user_deletedAt'
       ])
-      .where('Session.refreshToken', '=', refreshToken)
-      .where('Session.deletedAt', 'is', null)
+      .where('Sessions.refreshToken', '=', refreshToken)
+      .where('Sessions.deletedAt', 'is', null)
       .executeTakeFirst();
 
     if (!result) return null;
@@ -45,8 +43,7 @@ export class SessionRepository {
       user_email,
       user_firstName,
       user_lastName,
-      user_role,
-      user_avatar,
+      user_profilePhoto,
       user_createdAt,
       user_updatedAt,
       user_deletedAt,
@@ -54,25 +51,24 @@ export class SessionRepository {
     } = result;
 
     return {
-      ...(session as Selectable<TSession>),
+      ...(session as Selectable<Sessions>),
       user: {
         id: user_id,
         email: user_email,
         firstName: user_firstName,
         lastName: user_lastName,
-        role: user_role,
-        avatar: user_avatar,
+        profilePhoto: user_profilePhoto,
         createdAt: user_createdAt,
         updatedAt: user_updatedAt,
         deletedAt: user_deletedAt
-      } as Selectable<TUser>
+      } as Selectable<Users>
     };
   }
 
   async deleteByToken(refreshToken: string) {
     // Soft delete session
     return await db
-      .updateTable('Session')
+      .updateTable('Sessions')
       .set({deletedAt: new Date()})
       .where('refreshToken', '=', refreshToken)
       .execute();
@@ -80,16 +76,16 @@ export class SessionRepository {
 
   async deleteExpired() {
     // Hard delete expired sessions to keep DB clean
-    return await db.deleteFrom('Session').where('expiresAt', '<', new Date()).execute();
+    return await db.deleteFrom('Sessions').where('expiresAt', '<', new Date()).execute();
   }
 
   async deleteAllUserSessions(userId: string) {
-    return await db.updateTable('Session').set({deletedAt: new Date()}).where('userId', '=', userId).execute();
+    return await db.updateTable('Sessions').set({deletedAt: new Date()}).where('userId', '=', userId).execute();
   }
 
-  async update(id: string, data: Updateable<TSession>): Promise<Selectable<TSession>> {
+  async update(id: string, data: Updateable<Sessions>): Promise<Selectable<Sessions>> {
     return await db
-      .updateTable('Session')
+      .updateTable('Sessions')
       .set({
         ...data,
         updatedAt: new Date()

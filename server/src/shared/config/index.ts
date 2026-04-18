@@ -16,7 +16,7 @@ const envSchema = z.object({
   UPLOAD_DIR: z.string().default('uploads'),
   STORAGE_BUCKET_NAME: z.string().optional(),
   SUPABASE_URL: z.string().optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional()
 });
 
 const _env = envSchema.safeParse(process.env);

@@ -6,6 +6,12 @@ import {
   StatsWidget,
   ActivityWidget,
 } from '@/features/dashboard/components/dashboard-widgets'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/shared/components/ui/avatar'
+import { UserIcon } from 'lucide-react'
 
 export const Route = createFileRoute('/_protected/dashboard')({
   component: DashboardComponent,
@@ -48,10 +54,16 @@ function DashboardComponent() {
                 My Profile
               </h3>
               <div className="flex items-center gap-4">
-                <div className="bg-muted text-muted-foreground flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold uppercase">
-                  {user?.firstName ?? ''}
-                  {user?.lastName ?? ''}
-                </div>
+                <Avatar className="border-border bg-muted text-muted-foreground flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold uppercase">
+                  <AvatarImage
+                    src={user?.profilePhoto || ''}
+                    alt={user?.firstName}
+                    className="object-cover"
+                  />
+                  <AvatarFallback>
+                    <UserIcon />
+                  </AvatarFallback>
+                </Avatar>
                 <div>
                   <p className="text-foreground text-lg font-bold">
                     {user?.firstName} {user?.lastName}

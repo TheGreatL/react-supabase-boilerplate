@@ -3,63 +3,107 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from "kysely";
+import type {ColumnType} from 'kysely';
 
-export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S, I | undefined, U>
-  : ColumnType<T, T | undefined, T>;
-
-export type Json = JsonValue;
-
-export type JsonArray = JsonValue[];
-
-export type JsonObject = {
-  [x: string]: JsonValue | undefined;
-};
-
-export type JsonPrimitive = boolean | number | string | null;
-
-export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
-
-export type TRole = "ADMIN" | "USER";
+export type Generated<T> =
+  T extends ColumnType<infer S, infer I, infer U> ? ColumnType<S, I | undefined, U> : ColumnType<T, T | undefined, T>;
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-export interface TActivity {
-  action: string;
+export interface ActivityLogs {
   createdAt: Generated<Timestamp>;
-  id: string;
-  metadata: Json | null;
-  type: string;
-  userId: string;
+  description: string | null;
+  id: Generated<string>;
+  moduleId: string;
+  performerId: string;
+  title: string;
 }
 
-export interface TSession {
+export interface ModulePermissions {
+  createdAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+  id: Generated<string>;
+  moduleId: string;
+  permissionId: string;
+  updatedAt: Generated<Timestamp>;
+}
+
+export interface Modules {
+  createdAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+  description: string | null;
+  id: Generated<string>;
+  name: string;
+  updatedAt: Generated<Timestamp>;
+}
+
+export interface Permissions {
+  createdAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+  description: string | null;
+  id: Generated<string>;
+  name: string;
+  updatedAt: Generated<Timestamp>;
+}
+
+export interface RolePermissions {
+  createdAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+  id: Generated<string>;
+  modulePermissionId: string;
+  roleId: string;
+  updatedAt: Generated<Timestamp>;
+}
+
+export interface Roles {
+  createdAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+  description: string | null;
+  id: Generated<string>;
+  name: string;
+  updatedAt: Generated<Timestamp>;
+}
+
+export interface Sessions {
   createdAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
   expiresAt: Timestamp;
-  id: string;
+  id: Generated<string>;
   lastLogin: Timestamp | null;
   refreshToken: string;
-  updatedAt: Timestamp;
+  updatedAt: Generated<Timestamp>;
   userId: string;
 }
 
-export interface TUser {
-  avatar: Generated<string | null>;
+export interface UserRoles {
+  createdAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+  id: Generated<string>;
+  roleId: string;
+  updatedAt: Generated<Timestamp>;
+  userId: string;
+}
+
+export interface Users {
   createdAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
   email: string;
   firstName: string;
-  id: string;
+  id: Generated<string>;
   lastName: string;
   password: string;
-  role: Generated<TRole>;
-  updatedAt: Timestamp;
+  profilePhoto: string | null;
+  updatedAt: Generated<Timestamp>;
 }
 
 export interface DB {
-  Activity: TActivity;
-  Session: TSession;
-  User: TUser;
+  ActivityLogs: ActivityLogs;
+  ModulePermissions: ModulePermissions;
+  Modules: Modules;
+  Permissions: Permissions;
+  RolePermissions: RolePermissions;
+  Roles: Roles;
+  Sessions: Sessions;
+  UserRoles: UserRoles;
+  Users: Users;
 }

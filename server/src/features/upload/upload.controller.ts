@@ -25,11 +25,16 @@ export default class UploadController {
     // Get signed URL for the response (works locally and with buckets)
     const url = await UploadController.storage.getSignedUrl(filePath);
 
-    return ApiResponse.success(res, {
-      path: filePath,
-      url,
-      mimetype: req.file.mimetype,
-      size: req.file.size
-    }, 'File uploaded successfully', httpStatus.CREATED);
+    return ApiResponse.success(
+      res,
+      {
+        path: filePath,
+        url,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+      },
+      'File uploaded successfully',
+      httpStatus.CREATED
+    );
   });
 }
