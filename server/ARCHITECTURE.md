@@ -13,7 +13,7 @@ This project follows a strict separation of concerns to ensure maintainability a
 
 - **`errorMiddleware`**: Catches all exceptions and returns standardized `ApiResponse` JSON.
 - **`asyncHandler`**: Wraps async controller methods to remove `try/catch` boilerplate.
-- **`validateSchema`**: Uses Zod to validate request bodies before they reach the controller.
+- **`validateSchema`**: Uses Zod to validate request bodies, queries, or params before they reach the controller. **Mandatory for all inputs.**
 - **`authMiddleware`**: Verifies JWTs and attaches the authenticated user to the request.
 
 ## 💾 Database & Kysely
@@ -57,6 +57,17 @@ This ensures the API is scalable and prevents performance issues as the data gro
 
 - Default: `page=1`, `limit=10`
 - Response includes `meta` with `total`, `totalPages`, `hasNextPage`, and `hasPrevPage`.
+- **Validation**: Pagination parameters (`page`, `limit`) MUST be validated using `validateSchema(paginationSchema, 'query')`.
+
+### 3. Mandatory Input Validation & Documentation
+
+Any route that requires input from the client (via `params`, `query`, or `body`) MUST adhere to the following triple-sync rule:
+
+1.  **Define a Schema**: Create a Zod schema (prefixed with `T` for types) in the relevant `.schema.ts` file.
+2.  **Apply Middleware**: Use the `validateSchema(schema, 'type')` middleware in the route definition.
+3.  **Sync Swagger**: The exact same schema structure MUST be reflected in the route's Swagger JSDoc block (`/** @openapi ... */`) to ensure the `/api/docs` documentation remains accurate and actionable.
+
+*Strict adherence prevents runtime crashes and ensures the API self-documents its requirements.*
 
 ## 🧪 Testing Architecture
 

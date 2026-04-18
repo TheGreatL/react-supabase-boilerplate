@@ -248,7 +248,9 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 This project follows a strict **Gold Standard** architecture to ensure scalability and developer efficiency. For detailed implementation guidance, refer to the [Code Pattern Guide](file:///c:/Users/hp15s/Desktop/Boiler-Plates/react-supabase-boilerplate/CODE_PATTERNS.md).
 
 ### Backend (Node.js + Express)
-We follow a **Controller-Service-Repository** pattern:
+We follow a **Controller-Service-Repository** pattern with strict enforcement of the **Triple-Sync Rule**:
+- **Triple-Sync Rule**: All endpoints requiring input MUST have a **Zod Schema**, apply the `validateSchema` middleware, and be synchronized with the **OpenAPI (Swagger)** registry.
+- **Dynamic RBAC**: Authorization is handled via a dynamic Role and Permission system backed by database tables (no static Enums). We use names (e.g., `'ADMIN'`) for lookups to maintain security and flexibility.
 - **Controllers**: Handle HTTP requests/responses and input validation.
 - **Services**: Contain business logic and coordinate between multiple repositories.
 - **Repositories**: Handle all database interactions (Kysely). Services MUST NOT talk to the database directly.

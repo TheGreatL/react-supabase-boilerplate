@@ -35,3 +35,32 @@ export const dashboardActivitiesSchema = registry.register(
     data: z.array(activitySchema)
   })
 );
+
+// --- OpenAPI Path Registrations ---
+registry.registerPath({
+  method: 'get',
+  path: '/dashboard/stats',
+  tags: ['Dashboard'],
+  summary: 'Get dashboard statistics',
+  security: [{bearerAuth: []}],
+  responses: {
+    200: {
+      description: 'Dashboard statistics retrieved',
+      content: {'application/json': {schema: dashboardStatsSchema}}
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/dashboard/activities',
+  tags: ['Dashboard'],
+  summary: 'Get recent activities',
+  security: [{bearerAuth: []}],
+  responses: {
+    200: {
+      description: 'Recent activities retrieved',
+      content: {'application/json': {schema: dashboardActivitiesSchema}}
+    }
+  }
+});

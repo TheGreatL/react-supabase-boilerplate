@@ -46,12 +46,14 @@ All features MUST be organized into these three layers:
    - **Pattern**: Direct **Kysely** query builder calls using the global `db` client.
    - **Constraint**: No business logic. Simple CRUD operations using `active` filter for soft-deletes.
 
-### Validation & Documentation
-- **Zod**: Every endpoint must have a Zod schema (`*.schema.ts`) for input validation.
-- **OpenAPI**: Routes must be decorated with `@swagger` JSDoc comments.
-- **Registration**: Register every Zod schema in the `OpenAPIRegistry` for accurate documentation.
+### Validation & Documentation (Triple-Sync Rule)
+All endpoints must adhere to the **Triple-Sync Rule**:
+1. **Zod**: Every endpoint must have a Zod schema (`*.schema.ts`) for input validation.
+2. **Middleware**: Apply the `validateSchema` middleware to enforce the schema.
+3. **Swagger Registration**: Register every schema and path in the `OpenAPIRegistry` (in the schema file) to keep the documentation at `/api/docs` perfectly synchronized.
 
-### Database (Kysely)
+### Database & RBAC
+- **Dynamic RBAC**: Authorization is handled via total permissions. We use `authorize('MODULE', 'PERMISSION')`. Enums for roles are deprecated; we use strings (names) for dynamic role identification in the `Roles` table.
 - **Soft Delete**: Use the `active` helper from `@/shared/lib/db-utils` in repository queries.
   - Example: `.where(active)`
 - **Type Safety**: Leverage `Selectable<User>`, `Insertable<User>`, and `Updateable<User>` types from the generated `DB` interface.

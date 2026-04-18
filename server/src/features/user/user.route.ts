@@ -1,6 +1,9 @@
 import {Router} from 'express';
 import {UserController} from './user.controller';
 import {authMiddleware} from '../../shared/middleware/auth.middleware';
+import {upload} from '../../shared/middleware/upload.middleware';
+import {validateSchema} from '../../shared/middleware/schema-validate.middleware';
+import {updateProfileSchema, userByIdParamsSchema} from './user.schema';
 
 const route = Router();
 
@@ -15,7 +18,7 @@ import {authorize} from '../../shared/middleware/rbac.middleware';
 
 /**
  * @swagger
- * /users:
+ * /user:
  *   get:
  *     summary: Get all users
  *     tags: [User]
@@ -29,7 +32,7 @@ route.get('/', authMiddleware, authorize('USERS', 'READ'), UserController.getAll
 
 /**
  * @swagger
- * /users/{id}:
+ * /user/{id}:
  *   get:
  *     summary: Get user by ID
  *     tags: [User]
@@ -40,12 +43,16 @@ route.get('/', authMiddleware, authorize('USERS', 'READ'), UserController.getAll
  *         name: id
  *         required: true
  *         schema:
- *           type: string
+ *           $ref: '#/components/schemas/UserByIdParams'
  *     responses:
  *       200:
  *         description: User details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CreateUserRequest'
  */
-route.get('/:id', authMiddleware, authorize('USERS', 'READ'), UserController.getUserById);
+route.get('/:id', authMiddleware, authorize('USERS', 'READ'), validateSchema(userByIdParamsSchema, 'params'), UserController.getUserById);
 
 /**
  * @swagger
@@ -55,8 +62,17 @@ route.get('/:id', authMiddleware, authorize('USERS', 'READ'), UserController.get
  *     tags: [User]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateProfileRequest'
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
  */
-route.patch('/profile', authMiddleware, UserController.updateProfile);
+route.patch('/profile', authMiddleware, validateSchema(updateProfileSchema), UserController.updateProfile);
 
 /**
  * @swagger
@@ -67,7 +83,6 @@ route.patch('/profile', authMiddleware, UserController.updateProfile);
  *     security:
  *       - bearerAuth: []
  */
-import {upload} from '../../shared/middleware/upload.middleware';
 route.patch('/profile/photo', authMiddleware, upload.single('photo'), UserController.updateProfilePhoto);
 
 export default route;

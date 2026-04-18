@@ -40,3 +40,9 @@ Manage the stack via root-level `npm` scripts:
 - **Unit/Integration**: Vitest. `tests/[feature]/[name].[unit|integration].test.[ts|tsx]`.
 - **E2E**: Playwright. Root `/e2e/tests`.
 - **Execution**: Root scripts `npm run test` and `npm run test:e2e`.
+## 📡 Backend Development Standards
+
+Follow the **Triple-Sync Rule** for all API routes requiring `body`, `query`, or `params`:
+1.  **Zod Schema**: Define a comprehensive Zod schema in the module's `.schema.ts`.
+2.  **Middleware**: Apply `validateSchema(schema, 'body' | 'query' | 'params')` in the route.
+3.  **Swagger Documentation**: Explicitly reflect the exact same schema in the route's Swagger JDoc (`/** @openapi ... */`).

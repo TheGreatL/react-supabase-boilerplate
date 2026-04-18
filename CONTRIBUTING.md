@@ -80,13 +80,25 @@ export class PostController {
 }
 ```
 
-### 5. Define the route
+### 5. Define the route (Triple-Sync Rule)
+
+All routes must follow the **Triple-Sync Rule**: (1) Define a Zod schema, (2) Apply `validateSchema` middleware, and (3) Synchronize with Swagger.
 
 ```ts
-import {authMiddleware, requireRole} from '../../shared/middleware';
+import {authMiddleware, authorize, validateSchema} from '../../shared/middleware';
+import {postByIdSchema, createPostSchema} from './post.schema';
 
-route.get('/:id', authMiddleware, PostController.getById);
-route.delete('/:id', authMiddleware, requireRole('ADMIN'), PostController.delete);
+route.get('/:id', 
+  authMiddleware, 
+  validateSchema(postByIdSchema, 'params'), 
+  PostController.getById
+);
+
+route.delete('/:id', 
+  authMiddleware, 
+  authorize('POSTS', 'DELETE'), 
+  PostController.delete
+);
 ```
 
 ### 6. Mount in `routes.ts`
@@ -180,19 +192,18 @@ npm test
 
 ---
 
-## 🛡️ Using RBAC
+## 🛡️ Using RBAC (Dynamic Permissions)
 
-`requireRole` must come **after** `authMiddleware` in the middleware chain:
+We use a granular permission system. `authorize` must come **after** `authMiddleware` in the middleware chain.
 
 ```ts
 // Anyone authenticated
 route.get('/', authMiddleware, PostController.getAll);
 
-// Admin only
-route.delete('/:id', authMiddleware, requireRole('ADMIN'), PostController.delete);
+// Dynamic RBAC: module 'POSTS', permission 'DELETE'
+route.delete('/:id', authMiddleware, authorize('POSTS', 'DELETE'), PostController.delete);
 
-// Admin or User (multiple roles)
-route.post('/', authMiddleware, requireRole('ADMIN', 'USER'), PostController.create);
+// Admin bypass is handled internally by authorize (checks for SUPER_ADMIN role)
 ```
 
 ---
@@ -204,6 +215,6 @@ Before pushing, make sure:
 - [ ] `npm run lint` passes
 - [ ] `npm test` passes
 - [ ] `db:generate` was run after any migration
-- [ ] New routes have `@swagger` JSDoc annotations
+- [ ] **Triple-Sync**: Every route with input has a Zod schema, `validateSchema` middleare, and is registered in the Swagger registry.
 - [ ] Repositories only use `db` — services never touch it directly
 - [ ] Exceptions are thrown (not `res.status(...)`-d) in services

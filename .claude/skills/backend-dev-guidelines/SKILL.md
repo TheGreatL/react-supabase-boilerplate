@@ -173,15 +173,12 @@ config.auth.jwtSecret;
 * Route params
 * Webhook payloads
 
-```ts
-const schema = z.object({
-  email: z.string().email(),
-});
+**The Triple-Sync Rule:**
+1.  **Zod Schema**: Defined in the module's `.schema.ts`.
+2.  **Middleware**: Applied via `validateSchema(schema, 'type')` in the route definition.
+3.  **Swagger Documentation**: Explicitly synchronized in the route's JDoc block.
 
-const input = schema.parse(req.body);
-```
-
-No validation = bug.
+No validation + No documentation = rejection.
 
 ---
 

@@ -1,6 +1,8 @@
 import {Router} from 'express';
 import {authMiddleware} from '../../shared/middleware/auth.middleware';
 import {upload} from '../../shared/middleware/upload.middleware';
+import {validateSchema} from '../../shared/middleware/schema-validate.middleware';
+import {uploadSingleSchema} from './upload.schema';
 import UploadController from './upload.controller';
 
 const router = Router();
@@ -17,17 +19,15 @@ const router = Router();
  *       content:
  *         multipart/form-data:
  *           schema:
- *             type: object
- *             properties:
- *               file:
- *                 type: string
- *                 format: binary
- *               folder:
- *                 type: string
+ *             $ref: '#/components/schemas/UploadSingleRequest'
  *     responses:
  *       201:
  *         description: File uploaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UploadResponse'
  */
-router.post('/', authMiddleware, upload.single('file'), UploadController.uploadSingle);
+router.post('/', authMiddleware, upload.single('file'), validateSchema(uploadSingleSchema), UploadController.uploadSingle);
 
 export default router;

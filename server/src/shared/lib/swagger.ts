@@ -4,6 +4,9 @@ import {registry} from './openapi-registry';
 // Import schemas to ensure they are registered (must come after registry creation)
 import '../../features/auth/auth.schema';
 import '../../features/user/user.schema';
+import '../../features/dashboard/dashboard.schema';
+import '../../features/upload/upload.schema';
+import '../../features/health/health.schema';
 
 const generator = new OpenApiGeneratorV3(registry.definitions);
 

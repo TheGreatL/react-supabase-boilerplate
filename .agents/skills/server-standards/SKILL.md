@@ -27,8 +27,8 @@ This skill focuses on delivering a robust, scalable, and secure backend using th
 - **Security First**:
   - Use `helmet` for security headers.
   - Implement rigorous CORS policies.
-  - Validate all inputs using Zod (Schema Validation).
-  - Prevent raw Prisma errors from leaking; use `errorMiddleware`.
+  - Validate all inputs (body, query, params) using Zod + `validateSchema` middleware.
+  - Prevent raw Prisma/Kysely errors from leaking; use `errorMiddleware`.
 - **API Design**:
   - Follow RESTful principles (standard HTTP verbs, status codes).
   - Always return the unified `ApiResponse` format.
@@ -43,8 +43,8 @@ This skill focuses on delivering a robust, scalable, and secure backend using th
   - NEVER return raw, unfiltered data dumps for the frontend to format. Validate and sanitize pagination parameters
     (`page`, `limit`) using Zod.
 - **API Documentation**:
-  - ALWAYS write Swagger JSDoc annotations (`/** @openapi ... */`) above new Routes/Controllers to ensure the
-    `/api/docs` endpoint is automatically updated.
+  - ALWAYS write Swagger JSDoc annotations (`/** @openapi ... */`) above new Routes/Controllers.
+  - **Synchronization**: Any Zod schema used for validation MUST have a matching definition in the Swagger JSDoc.
 - **Testing**:
   - ALWAYS write API integration tests in `server/tests/` using **Supertest**.
   - Ensure new endpoints return the correct `ApiResponse` structure and status codes.

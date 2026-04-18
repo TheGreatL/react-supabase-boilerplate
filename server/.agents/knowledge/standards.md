@@ -27,15 +27,23 @@ We enforce a strict separation of concerns:
 
 ---
 
-## 🛡️ Security & Validation
-- **Zod**: Use `*.schema.ts` for all route input validation via `validateSchema` middleware.
+## 🛡️ Security & Validation (Triple-Sync Rule)
+We enforce the **Triple-Sync Rule**: (1) Zod Schema, (2) Validation Middleware, and (3) Swagger Sync.
+
+- **Zod**: All route inputs MUST be defined in `*.schema.ts`.
+- **Validation**: Use `validateSchema(schema, 'type')` for all inputs.
 - **CSRF**: `csrfMiddleware` is applied globally — do not disable it.
 - **Auth**: Authenticated routes use `authMiddleware`.
-- **RBAC**: Role-restricted routes chain `requireRole('ADMIN')` or `requireRole('ADMIN', 'USER')` AFTER `authMiddleware`.
+- **Dynamic RBAC**: We use modular permissions via the `authorize('MODULE', 'PERMISSION')` middleware.
 
 ```ts
-// Example: admin-only route
-route.delete('/:id', authMiddleware, requireRole('ADMIN'), UserController.deleteUser);
+// Example: granular permission check
+route.delete('/:id', 
+  authMiddleware, 
+  validateSchema(userByIdParamsSchema, 'params'), 
+  authorize('USERS', 'DELETE'), 
+  UserController.deleteUser
+);
 ```
 
 ---
@@ -59,8 +67,9 @@ res.status(404).json({ ... });
 ---
 
 ## 📡 API Documentation
-- Every route file MUST include JSDoc `@swagger` definitions.
-- All request/response schemas must be registered in the `OpenAPIRegistry`.
+- Every endpoint must be registered in the `OpenAPIRegistry` inside its `*.schema.ts` file.
+- Documentation and validation MUST be synchronized (Triple-Sync).
+- All successful and error responses should be explicitly defined for full schema visibility in Swagger.
 
 ---
 
